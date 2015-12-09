@@ -18,6 +18,7 @@
     requests to the container's default Servlet -->
     <mvc:default-servlet-handler/>
 
+
     <!-- Register "global" interceptor beans to apply to all registered HandlerMappings -->
     <!-- 
     <mvc:interceptors>

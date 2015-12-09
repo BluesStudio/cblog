@@ -296,6 +296,23 @@
                     logotxt.text("班级动态");
                 }
             };
+            var hash = window.location.hash;
+            switch (hash){
+                case "#apply":
+                    showBox.showApplyBox();
+                    break;
+                case "#login":
+                    showBox.showLoginBox();
+                    break;
+                case "#register":
+                    showBox.showRegisterBox();
+                    break;
+                case "#adminlogin":
+                    showBox.showAdminLoginBox();
+                    break;
+                default:
+                    showBox.showMainBox();
+            }
             /* whichBox对象:
              * 键为mainBox, applyBox, loginBox, registerBox, adminLoginBox, moreBox
              * 值为1则表示出现, 0表示隐藏

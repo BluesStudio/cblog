@@ -36,7 +36,7 @@
 |class-album.html|班级相册|
 |class-members.html|班级成员|
 
-### 注：闵聪的文件夹（`src/main/webapp`） ###
+#### 注：闵聪的文件夹（`src/main/webapp`） ####
 
 - css
 - fonts
@@ -45,4 +45,18 @@
 - js
 - music
 - readme.md
+
+index.html各子页面
+
+|URI|Description|
+|:---:|:---:|
+|index.html|主页面|
+|index.html#apply|申请班级博客|
+|index.html#adminlogin|管理员登录|
+|index.html#register|用户注册|
+|index.html#login|用户登录|
+
+
+
+
 
