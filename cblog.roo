@@ -1,0 +1,110 @@
+// Spring Roo 2.0.0.M1 [rev 33e5d76] log opened at 2015-11-20 10:06:29
+project setup --topLevelPackage cn.edu.cqupt.cblog
+jpa setup --database MYSQL --provider HIBERNATE
+database properties set --key database.url --value jdbc:mysql://localhost:3306/cblog?useUnicode=true&amp;characterEncoding=utf-8
+database properties set --key database.username --value root
+database properties set --key database.password --value root
+entity jpa --class ~.domain.Admin
+entity jpa --class ~.domain.Album
+entity jpa --class ~.domain.AlbumComment
+entity jpa --class ~.domain.Article
+entity jpa --class ~.domain.ArticleComment
+entity jpa --class ~.domain.Clazz
+entity jpa --class ~.domain.ClazzHonor
+entity jpa --class ~.domain.HonorWall
+entity jpa --class ~.domain.PersonalHonor
+entity jpa --class ~.domain.Student
+entity jpa --class ~.domain.SuperAdmin
+entity jpa --class ~.domain.Tease
+// [failed] entity jpa --class ~.domain.User
+entity jpa --class ~.domain.UserRequest
+entity jpa --class ~.domain.BlogUser
+field string --fieldName username --class ~.domain.Admin --notNull --sizeMax 30 --unique 
+field string --fieldName passwd --class ~.domain.Admin --notNull --sizeMax 60 --sizeMin 6
+field reference --fieldName clazz --type ~.domain.Clazz --class ~.domain.Admin
+field string --fieldName image --class ~.domain.Album
+// [failed] field date --fieldName date --type java.util.Date --class ~.domain.Album
+field date --fieldName albumDate --type java.util.Date --class ~.domain.Album
+field number --fieldName zan --type java.lang.Integer --value 0
+field date --fieldName albumCommentDate --type java.util.Date --timeFormat MEDIUM --class ~.domain.AlbumComment
+field string --fieldName content --notNull --sizeMax 500
+field reference --fieldName student --type ~.domain.Student
+field reference --fieldName article --type ~.domain.Article
+field string --fieldName title --notNull --sizeMax 50 --class ~.domain.Article
+field string --fieldName participant --notNull --sizeMax 50
+field date --fieldName publishDate --type java.util.Date --notNull 
+field date --fieldName activityDate --type java.util.Date --notNull 
+field string --fieldName site --notNull --sizeMax 50
+field string --fieldName content --notNull --sizeMax 20000
+field reference --fieldName clazz --type ~.domain.Clazz
+// [failed] field set --fieldName articleComments --type ~.domain.ArticleComments
+field set --fieldName articleComments --type ~.domain.ArticleComment
+field string --fieldName content --notNull --sizeMax 2000 --class ~.domain.ArticleComment
+field date --fieldName articleCommentDate --type java.util.Date --notNull 
+field reference --fieldName student --type ~.domain.Student
+field reference --fieldName article --type ~.domain.Article
+
+field string --fieldName clazzName --notNull --sizeMax 50 --class ~.domain.Clazz
+field string --fieldName school --notNull --sizeMax 50
+field string --fieldName major --notNull --sizeMax 100
+field string --fieldName flagImg
+field string --fieldName song
+field string --fieldName songTitle --sizeMax 200
+field string --fieldName lyric
+field string --fieldName songImg
+field string --fieldName overview
+field string --fieldName clazzImg
+field string --fieldName slogan
+field set --fieldName students --type ~.domain.Student
+field set --fieldName articles --type ~.domain.Article
+field set --fieldName albums --type ~.domain.Album
+field set --fieldName personalHonors --type ~.domain.PersonalHonor
+field set --fieldName honorWalls --type ~.domain.HonorWall
+field set --fieldName clazzHonors --type ~.domain.ClazzHonor
+field string --fieldName honorName --notNull --sizeMax 100 --class ~.domain.ClazzHonor
+field date --fieldName clazzHonorDate --type java.util.Date --notNull 
+field string --fieldName image --notNull --class ~.domain.HonorWall
+field string --fieldName award --notNull --sizeMax 100 --class ~.domain.PersonalHonor
+field date --fieldName personalHonorDate --type java.util.Date
+field reference --fieldName student --type ~.domain.Student
+// [failed] field string --fieldName username --notNull --sizeMax 50 --unique --class ~.domain.Studnet
+field string --fieldName username --notNull --sizeMax 50 --unique --class ~.domain.Student
+field string --fieldName passwd --notNull --sizeMax 100
+field string --fieldName access --notNull --sizeMax 50
+field string --fieldName stuId --notNull --sizeMax 50
+field reference --fieldName clazz --type ~.domain.Clazz
+field string --fieldName stuName 
+field number --fieldName age --type java.lang.Integer
+field string --fieldName gender
+field string --fieldName stuImg
+field string --fieldName motto
+field reference --fieldName blogUser --type ~.domain.BlogUser
+field set --fieldName send --type ~.domain.Tease
+field set --fieldName receive --type ~.domain.Tease
+field set --fieldName articleComments --type ~.domain.ArticleComment
+field string --fieldName username --notNull --sizeMax 50 --class ~.domain.SuperAdmin
+field string --fieldName passwd --notNull --sizeMax 50
+field string --fieldName content --class ~.domain.Tease --notNull --sizeMax 200
+field date --fieldName teaseDate --type java.util.Date
+field reference --fieldName sender --type ~.domain.Student
+// Spring Roo 2.0.0.M1 [rev 33e5d76] log opened at 2015-11-20 11:35:36
+field reference --fieldName receiver --class ~.domain.Tease --type ~.domain.Student
+field string --fieldName username --notNull --sizeMax 50 --class ~.domain.BlogUser
+field string --fieldName passwd --notNull --sizeMax 50
+field reference --fieldName student --type ~.domain.Student
+
+field string --fieldName clazzName --class ~.domain.UserRequest
+field string --fieldName stuName
+field string --fieldName stuId
+field string --fieldName reason
+field date --fieldName userRequestDate --type java.util.Date
+field string --fieldName dispose
+field reference --fieldName blogUser --type ~.domain.BlogUser
+// quit
+// Spring Roo 2.0.0.M1 [rev 33e5d76] log closed at 2015-11-20 11:45:28
+// Spring Roo 2.0.0.M1 [rev 33e5d76] log opened at 2015-11-20 16:01:41
+web mvc setup
+//web mvc all --package ~.web
+//service all --interfacePackage cn.edu.cqupt.cblog.service
+//json all
+//web mvc json all
