@@ -258,6 +258,7 @@
             var logotxt = $(".logo h1");
             var showBox = {
                 showMainBox: function(){
+                    window.location.hash = "";
                     toggleBox({"mainBox": 1});
                     logobox.stop(true).animate({top: "50px", marginTop: "0px"},500);
                     logoimg.stop(true).animate({width: "400px"},500);
@@ -265,30 +266,35 @@
                     logotxt.text("班级博客系统");
                 },
                 showApplyBox: function(){
+                    window.location.hash = "#adminRegister";
                     toggleBox({"applyBox": 1});
                     logobox.stop(true).animate({top: "0px"},500);
                     logoimg.stop(true).animate({width: "250px"},500);
                     logotxt.stop(true).animate({fontSize: "16px"},500);
                 },
                 showLoginBox: function(){
+                    window.location.hash = "#userLogin";
                     toggleBox({"loginBox": 1});
                     logobox.stop(true).animate({top: "0px"},500);
                     logoimg.stop(true).animate({width: "250px"},500);
                     logotxt.stop(true).animate({fontSize: "16px"},500);
                 },
                 showRegisterBox: function(){
+                    window.location.hash = "#userRegister";
                     toggleBox({"registerBox": 1});
                     logobox.stop(true).animate({top: "0px"},500);
                     logoimg.stop(true).animate({width: "250px"},500);
                     logotxt.stop(true).animate({fontSize: "16px"},500);
                 },
                 showAdminLoginBox: function(){
+                    window.location.hash = "#adminLogin";
                     toggleBox({"adminLoginBox": 1});
                     logobox.stop(true).animate({top: "0px"},500);
                     logoimg.stop(true).animate({width: "250px"},500);
                     logotxt.stop(true).animate({fontSize: "16px"},500);
                 },
                 showMoreBox: function(){
+                    window.location.hash = "#more";
                     toggleBox({"moreBox": 1});
                     logobox.stop(true).animate({top: "0px", marginTop: "-70px"},750);
                     logoimg.stop(true).animate({width: "150px"},750);
@@ -298,17 +304,20 @@
             };
             var hash = window.location.hash;
             switch (hash){
-                case "#apply":
+                case "#adminRegister":
                     showBox.showApplyBox();
                     break;
-                case "#login":
+                case "#userLogin":
                     showBox.showLoginBox();
                     break;
-                case "#register":
+                case "#userRegister":
                     showBox.showRegisterBox();
                     break;
-                case "#adminlogin":
+                case "#adminLogin":
                     showBox.showAdminLoginBox();
+                    break;
+                case "#more":
+                    showBox.showMoreBox();
                     break;
                 default:
                     showBox.showMainBox();
@@ -365,19 +374,19 @@
             });
         });
         $(function(){
-        $('.search').bind({
-        focus:function(){
-        if (this.value == this.defaultValue){
-        this.value="";
-        }
-        },
-        blur:function(){
-        if (this.value == ""){
-        this.value = this.defaultValue;
-        }
-        }
+            $('.search').bind({
+            focus:function(){
+            if (this.value == this.defaultValue){
+            this.value="";
+            }
+            },
+            blur:function(){
+            if (this.value == ""){
+            this.value = this.defaultValue;
+            }
+            }
+            });
         });
-        })
         $(function(){
         	var o = $("#wallpaper");
 	        o.error(function(){
