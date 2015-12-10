@@ -6,11 +6,16 @@ import org.springframework.roo.addon.javabean.annotations.RooJavaBean;
 import org.springframework.roo.addon.javabean.annotations.RooToString;
 import org.springframework.roo.addon.jpa.annotations.activerecord.RooJpaActiveRecord;
 import org.springframework.transaction.annotation.Transactional;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.Map.Entry;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,6 +25,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import javax.persistence.Version;
 
 @Configurable
@@ -32,6 +38,7 @@ public class Clazz {
     /**
      */
     @NotNull
+    @Column(unique = true)
     @Size(max = 50)
     private String clazzName;
 
@@ -308,6 +315,36 @@ public class Clazz {
         return entityManager().find(Clazz.class, id);
     }
 
+	/**
+	 * @since 2015-12-10
+	 * 新增，根据属性集查找
+	 * */
+	public static List<Clazz> findClazzsByProperties(Map<String, String> properties){
+		
+		StringBuilder jpaQueryBuilder=new StringBuilder();
+		for(String key: properties.keySet()){
+			jpaQueryBuilder.append(" and o."+key+" = :"+key);
+		}
+		String jpaQuery="select o from Clazz o";
+		if(jpaQueryBuilder.length()>0){
+			jpaQuery+=" where"+jpaQueryBuilder.substring(4);;
+		}
+		System.out.println("jpaQuery:"+jpaQuery);
+		List<Clazz> clazzs=null;
+		try{
+			TypedQuery<Clazz> query=entityManager().createQuery(jpaQuery, Clazz.class);
+			for(Entry<String, String> entry: properties.entrySet()){
+				query.setParameter(entry.getKey(), entry.getValue());
+			}
+			//若无结果，返回一个size为0的list
+			clazzs=query.getResultList();
+		//}catch(NoResultException e){//这里好奇怪，抛出这种异常怎么不行
+		}catch(Exception e){
+			// 未找到相关实体信息");
+		}
+		return clazzs;
+	}
+	
 	public static List<Clazz> findClazzEntries(int firstResult, int maxResults) {
         return entityManager().createQuery("SELECT o FROM Clazz o", Clazz.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
     }

@@ -8,4 +8,5 @@ import cn.edu.cqupt.cblog.domain.Admin;
 public interface AdminService {
 
 	public void register(Admin admin, BindingResult result);
+	public void login(Admin admin, BindingResult result);
 }

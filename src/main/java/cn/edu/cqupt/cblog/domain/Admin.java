@@ -1,5 +1,7 @@
 package cn.edu.cqupt.cblog.domain;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,8 +10,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -84,22 +86,34 @@ public class Admin {
     }
 	
 	/**
-	 * @since 2015-12-09
-	 * 新增根据用户名查找
+	 * @since 2015-12-10
+	 * 新增，根据属性集查找
 	 * */
-	public static Admin findAdminByUsername(String username){
-		String jpaQuery="select o from Admin o where o.username = :username";
-		Admin admin=null;
-		try{
-			admin=entityManager().createQuery(jpaQuery, Admin.class)
-									.setParameter("username", username)
-									.getSingleResult();
-		}catch(NoResultException e){
-			System.err.println("Admin.findAdminByUsername(username) 未找到相关实体信息");
+	public static List<Admin> findAdminsByProperties(Map<String, String> properties){
+		
+		StringBuilder jpaQueryBuilder=new StringBuilder();
+		for(String key: properties.keySet()){
+			jpaQueryBuilder.append(" and o."+key+" = :"+key);
 		}
-		return admin;
+		String jpaQuery="select o from Admin o";
+		if(jpaQueryBuilder.length()>0){
+			jpaQuery+=" where"+jpaQueryBuilder.substring(4);;
+		}
+		System.out.println("jpaQuery:"+jpaQuery);
+		List<Admin> admins=null;
+		try{
+			TypedQuery<Admin> query=entityManager().createQuery(jpaQuery, Admin.class);
+			for(Entry<String, String> entry: properties.entrySet()){
+				query.setParameter(entry.getKey(), entry.getValue());
+			}
+			//若无结果，返回一个size为0的list
+			admins=query.getResultList();
+		//}catch(NoResultException e){//这里好奇怪，抛出这种异常怎么不行
+		}catch(Exception e){
+			//未找到相关实体信息");
+		}
+		return admins;
 	}
-	
 
 	public static List<Admin> findAdminEntries(int firstResult, int maxResults) {
         return entityManager().createQuery("SELECT o FROM Admin o", Admin.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
