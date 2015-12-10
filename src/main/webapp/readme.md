@@ -51,10 +51,11 @@ index.html各子页面
 |URI|Description|
 |:---:|:---:|
 |index.html|主页面|
-|index.html#apply|申请班级博客|
-|index.html#adminlogin|管理员登录|
-|index.html#register|用户注册|
-|index.html#login|用户登录|
+|index.html#adminRegister|申请班级博客|
+|index.html#adminLogin|管理员登录|
+|index.html#userRegister|用户注册|
+|index.html#userLogin|用户登录|
+|index.html#more|文章展示|
 
 
 
