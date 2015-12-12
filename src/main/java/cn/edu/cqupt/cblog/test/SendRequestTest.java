@@ -21,14 +21,14 @@ import org.apache.http.message.BasicNameValuePair;
 public class SendRequestTest {
 
 	public static void main(String[] args) {
-		adminRegister();
+		adminLogin();
 
 	}
 	public static void adminLogin(){
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		List<NameValuePair> formParams=new ArrayList<NameValuePair>();
-		formParams.add(new BasicNameValuePair("username", "xiaofei"));
-		formParams.add(new BasicNameValuePair("passwd", "xiaofei"));
+		formParams.add(new BasicNameValuePair("username", ""));
+		formParams.add(new BasicNameValuePair("passwd", "xiasdfsofei"));
 		UrlEncodedFormEntity formEntity=new UrlEncodedFormEntity(formParams, Consts.UTF_8);
 		HttpPost httpPost = new HttpPost("http://localhost:8080/cblog/admins/login");
 		httpPost.addHeader("Accept", "application/json");
@@ -81,9 +81,9 @@ public class SendRequestTest {
 	public static void adminRegister(){
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		List<NameValuePair> formParams=new ArrayList<NameValuePair>();
-		formParams.add(new BasicNameValuePair("username", "xiaofe"));
+		formParams.add(new BasicNameValuePair("username", "xiaohong"));
 		formParams.add(new BasicNameValuePair("passwd", "asdfas"));
-		formParams.add(new BasicNameValuePair("clazz.clazzName", "0401306"));
+		formParams.add(new BasicNameValuePair("clazz.clazzName", "0401311"));
 		UrlEncodedFormEntity formEntity=new UrlEncodedFormEntity(formParams, Consts.UTF_8);
 		HttpPost httpPost = new HttpPost("http://localhost:8080/cblog/admins/register");
 		httpPost.addHeader("Accept", "application/json");

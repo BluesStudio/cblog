@@ -24,6 +24,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.Version;
@@ -92,12 +93,12 @@ public class Clazz {
 
     /**
      */
-    @ManyToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
     private Set<Article> articles = new HashSet<Article>();
 
     /**
      */
-    @ManyToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
     private Set<Album> albums = new HashSet<Album>();
 
     /**
@@ -319,22 +320,21 @@ public class Clazz {
 	 * @since 2015-12-10
 	 * 新增，根据属性集查找
 	 * */
-	public static List<Clazz> findClazzsByProperties(Map<String, String> properties){
+	public static List<Clazz> findClazzsByProperties(Map<String, Object> properties){
 		
 		StringBuilder jpaQueryBuilder=new StringBuilder();
 		for(String key: properties.keySet()){
-			jpaQueryBuilder.append(" and o."+key+" = :"+key);
+			jpaQueryBuilder.append(" and o."+key+" = :"+key.replace(".", ""));
 		}
 		String jpaQuery="select o from Clazz o";
 		if(jpaQueryBuilder.length()>0){
 			jpaQuery+=" where"+jpaQueryBuilder.substring(4);;
 		}
-		System.out.println("jpaQuery:"+jpaQuery);
 		List<Clazz> clazzs=null;
 		try{
 			TypedQuery<Clazz> query=entityManager().createQuery(jpaQuery, Clazz.class);
-			for(Entry<String, String> entry: properties.entrySet()){
-				query.setParameter(entry.getKey(), entry.getValue());
+			for(Entry<String, Object> entry: properties.entrySet()){
+				query.setParameter(entry.getKey().replace(".", ""), entry.getValue());
 			}
 			//若无结果，返回一个size为0的list
 			clazzs=query.getResultList();

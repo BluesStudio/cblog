@@ -1,10 +1,11 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<!doctype html>
 <html class="no-js">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>cBlog-后台管理-0401308班</title>
+    <title>cBlog-后台管理-${sessionScope.admin.clazz.clazzName }班</title>
     <meta name="description" content="这是一个 index 页面">
     <meta name="keywords" content="index">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -34,11 +35,11 @@
     <div class="am-collapse am-topbar-collapse" id="topbar-collapse">
 
         <ul class="am-nav am-nav-pills am-topbar-nav am-topbar-right admin-header-list">
-            <li><a><span class="am-icon-star"></span> 0401308班 </a></li>
+            <li><a><span class="am-icon-star"></span> ${sessionScope.admin.clazz.clazzName }班 </a></li>
             <li><a href="class-home.html" target="_blank"><span class="am-icon-home"></span> 进入博客主页 </a></li>
             <li class="am-dropdown" data-am-dropdown>
                 <a class="am-dropdown-toggle" data-am-dropdown-toggle href="javascript:;">
-                    <span class="am-icon-user"></span> mcc108 <span class="am-icon-caret-down"></span>
+                    <span class="am-icon-user"></span> ${sessionScope.admin.username } <span class="am-icon-caret-down"></span>
                 </a>
                 <ul class="am-dropdown-content">
                     <li><a href="admin-setting.html"><span class="am-icon-cog"></span> 更多设置</a></li>
@@ -61,9 +62,9 @@
                 <a class="am-cf" data-am-collapse="{target: '#collapse-nav1'}"><span class="am-icon-file"></span> 班级文章管理
                     <span class="am-icon-angle-right am-fr am-margin-right"></span></a>
                 <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav1">
-                    <li><a href="admin-article.html"><span class="am-icon-calendar"></span> 文章列表<span
-                            class="am-badge am-badge-secondary am-margin-right am-fr">13</span></a></li>
-                    <li><a href="admin-article-edit.html"><span class="am-icon-pencil-square-o"></span> 写文章</a></li>
+                    <li><a href="/cblog/articles?clazzId=${sessionScope.admin.clazz.id }"><span class="am-icon-calendar"></span> 文章列表<span
+                            class="am-badge am-badge-secondary am-margin-right am-fr">${fn:length(sessionScope.admin.clazz.articles) }</span></a></li>
+                    <li><a href="/cblog/articles?form"><span class="am-icon-pencil-square-o"></span> 写文章</a></li>
                 </ul>
             </li>
             <li class="admin-parent">
@@ -71,7 +72,7 @@
                     <span class="am-icon-angle-right am-fr am-margin-right"></span></a>
                 <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav2">
                     <li><a href="admin-album.html"><span class="am-icon-calendar"></span> 照片列表<span
-                            class="am-badge am-badge-success am-margin-right am-fr">45</span></a></li>
+                            class="am-badge am-badge-success am-margin-right am-fr">${fn:length(sessionScope.admin.clazz.albums) }</span></a></li>
                     <li><a href="admin-album-upload.html"><span class="am-icon-upload"></span> 上传照片</a></li>
                 </ul>
             </li>
@@ -80,10 +81,10 @@
                     班级成员管理 <span class="am-icon-angle-right am-fr am-margin-right"></span></a>
                 <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav3">
                     <li><a href="admin-members.html"><span class="am-icon-calendar"></span> 成员列表<span
-                            class="am-badge am-badge-warning am-margin-right am-fr">27</span></a></li>
+                            class="am-badge am-badge-warning am-margin-right am-fr">${fn:length(sessionScope.admin.clazz.students) }</span></a></li>
                     <li><a href="admin-members-add.html"><span class="am-icon-plus"></span> 添加成员</a></li>
                     <li><a href="admin-members-apply.html"><span class="am-icon-user-md"></span> 绑定申请核实<span
-                            class="am-badge am-badge-danger am-margin-right am-fr am-round">+2</span></a></li>
+                            class="am-badge am-badge-danger am-margin-right am-fr am-round">+${fn:length(userRequests) }</span></a></li>
                 </ul>
             </li>
             <li><a href="admin-introduction.html"><span class="am-icon-check"></span> 班级简介管理</a></li>
@@ -123,16 +124,16 @@
 
         <ul class="am-avg-sm-1 am-avg-md-5 am-margin am-padding am-text-center admin-content-list ">
             <li><a href="admin-article.html" class="am-text-secondary"><span
-                    class="am-icon-btn am-icon-file-text"></span><br/>班级文章<br/>13</a></li>
-            <li><a href="admin-album.html" class="am-text-success"><span class="am-icon-btn am-icon-th"></span><br/>班级照片<br/>45</a>
+                    class="am-icon-btn am-icon-file-text"></span><br/>班级文章<br/>${fn:length(sessionScope.admin.clazz.articles) }</a></li>
+            <li><a href="admin-album.html" class="am-text-success"><span class="am-icon-btn am-icon-th"></span><br/>班级照片<br/>${fn:length(sessionScope.admin.clazz.albums) }</a>
             </li>
             <li><a href="admin-members.html" class="am-text-warning"><span
-                    class="am-icon-btn am-icon-users"></span><br/>班级成员<br/>27</a></li>
-            <li><a class="am-text-danger""am-text-warning"><span class="am-icon-btn am-icon-copy"></span><br/>总评论数<br/>22</a>
+                    class="am-icon-btn am-icon-users"></span><br/>班级成员<br/>${fn:length(sessionScope.admin.clazz.students) }</a></li>
+            <li><a class="am-text-danger""am-text-warning"><span class="am-icon-btn am-icon-copy"></span><br/>总评论数<br/>${fn:length(sessionScope.admin.clazz.albums) }</a>
             </li>
             <li><a class="am-text-warning"><span class="am-icon-btn am-icon-recycle"></span><br/>访问量<br/>2333</a></li>
         </ul>
-        <h3 class="admin-welcome">欢迎回来,mcc108!</h3>
+        <h3 class="admin-welcome">欢迎回来,${admin.username }!</h3>
         <hr/>
         <div class="am-cf am-padding-bottom am-padding-left">
             <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">开始</strong> /

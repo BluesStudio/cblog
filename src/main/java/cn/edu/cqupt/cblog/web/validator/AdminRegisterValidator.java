@@ -33,9 +33,9 @@ public class AdminRegisterValidator implements Validator{
 				errors.reject("admin.passwd.required", "密码长度只能为6-60");
 			}
 			if(admin.getClazz()==null||admin.getClazz().getClazzName()==null||admin.getClazz().getClazzName().trim().equals("")){
-				errors.reject("admin.passwd.required", "班级名称不能为空");
+				errors.reject("admin.clazz.clazzName.required", "班级名称不能为空");
 			}else if(admin.getClazz().getClazzName().length()>50){
-				errors.reject("admin.passwd.required", "班级名称长度只能为1-50");
+				errors.reject("admin.clazz.clazzName.required", "班级名称长度只能为1-50");
 			}
 		}
 	}

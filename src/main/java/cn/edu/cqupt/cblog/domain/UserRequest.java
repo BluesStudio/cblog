@@ -5,8 +5,12 @@ import org.springframework.roo.addon.javabean.annotations.RooJavaBean;
 import org.springframework.roo.addon.javabean.annotations.RooToString;
 import org.springframework.roo.addon.jpa.annotations.activerecord.RooJpaActiveRecord;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
@@ -16,9 +20,12 @@ import javax.persistence.Id;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.TypedQuery;
 import javax.persistence.Version;
+
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.ManyToOne;
 
 @Entity
@@ -51,6 +58,8 @@ public class UserRequest {
     private Date userRequestDate;
 
     /**
+     * 请求处理标志
+     * unsolved、agree、disagree
      */
     private String dispose;
 
@@ -122,7 +131,35 @@ public class UserRequest {
         if (id == null) return null;
         return entityManager().find(UserRequest.class, id);
     }
-
+	/**
+	 * @since 2015-12-10
+	 * 新增，根据属性集查找
+	 * */
+	public static List<UserRequest> findUserRequestsByProperties(Map<String, String> properties){
+		
+		StringBuilder jpaQueryBuilder=new StringBuilder();
+		for(String key: properties.keySet()){
+			jpaQueryBuilder.append(" and o."+key+" = :"+key);
+		}
+		String jpaQuery="select o from UserRequest o";
+		if(jpaQueryBuilder.length()>0){
+			jpaQuery+=" where"+jpaQueryBuilder.substring(4);;
+		}
+		System.out.println("jpaQuery:"+jpaQuery);
+		List<UserRequest> userRequests=null;
+		try{
+			TypedQuery<UserRequest> query=entityManager().createQuery(jpaQuery, UserRequest.class);
+			for(Entry<String, String> entry: properties.entrySet()){
+				query.setParameter(entry.getKey(), entry.getValue());
+			}
+			//若无结果，返回一个size为0的list
+			userRequests=query.getResultList();
+		//}catch(NoResultException e){//这里好奇怪，抛出这种异常怎么不行
+		}catch(Exception e){
+			// 未找到相关实体信息");
+		}
+		return userRequests;
+	}
 	public static List<UserRequest> findUserRequestEntries(int firstResult, int maxResults) {
         return entityManager().createQuery("SELECT o FROM UserRequest o", UserRequest.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
     }

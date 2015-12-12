@@ -1,6 +1,7 @@
 package cn.edu.cqupt.cblog.service.impl;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,9 +42,9 @@ public class AdminServiceImpl implements AdminService{
 	public void register(Admin admin, BindingResult result) {
 		adminRegisterValidator.validate(admin, result);
 		if(!result.hasErrors()){
-			Map<String, String> adminProperties=new HashMap<String, String>();
+			Map<String, Object> adminProperties=new HashMap<String, Object>();
 			adminProperties.put("username", admin.getUsername());
-			Map<String, String> clazzProperties=new HashMap<String, String>();
+			Map<String, Object> clazzProperties=new HashMap<String, Object>();
 			clazzProperties.put("clazzName", admin.getClazz().getClazzName());
 			boolean flag=false;
 			if(Admin.findAdminsByProperties(adminProperties).size()!=0){
@@ -65,19 +66,19 @@ public class AdminServiceImpl implements AdminService{
 	public void login(Admin admin, BindingResult result) {
 		adminLoginValidator.validate(admin, result);
 		if(!result.hasErrors()){
-			Map<String, String> property=new HashMap<String, String>();
+			Map<String, Object> property=new HashMap<String, Object>();
 			property.put("username", admin.getUsername());
-			if(Admin.findAdminsByProperties(property).get(0)==null){
+			if(Admin.findAdminsByProperties(property).size()==0){
 				result.reject("admin.username.required", "该用户名尚未注册");
 			}else{
-				Map<String, String> properties=new HashMap<String, String>();
+				Map<String, Object> properties=new HashMap<String, Object>();
 				properties.put("username", admin.getUsername());
 				properties.put("passwd", admin.getPasswd());
-				Admin adminTemp=Admin.findAdminsByProperties(properties).get(0);
-				if(adminTemp==null){
+				List<Admin> admins=Admin.findAdminsByProperties(properties);
+				if(admins.size()==0){
 					result.reject("admin.passwd.required", "密码错误");
 				}else{
-					admin.setId(adminTemp.getId());
+					admin.setId(admins.get(0).getId());
 				}
 			}
 		}

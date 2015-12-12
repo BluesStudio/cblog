@@ -304,6 +304,20 @@
 		<version>2.4</version>
 		<classifier>jdk15</classifier>
 	</dependency>
+
+	<dependency>
+		<groupId>com.thetransactioncompany</groupId>
+		<artifactId>cors-filter</artifactId>
+		<version>2.4</version>
+	</dependency>
+	
+	<dependency>
+		<groupId>com.thetransactioncompany</groupId>
+		<artifactId>java-property-utils</artifactId>
+		<version>1.9</version>
+	</dependency>
+	
+
 	
     </dependencies>
     <build>

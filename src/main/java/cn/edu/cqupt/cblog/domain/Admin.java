@@ -89,22 +89,21 @@ public class Admin {
 	 * @since 2015-12-10
 	 * 新增，根据属性集查找
 	 * */
-	public static List<Admin> findAdminsByProperties(Map<String, String> properties){
+	public static List<Admin> findAdminsByProperties(Map<String, Object> properties){
 		
 		StringBuilder jpaQueryBuilder=new StringBuilder();
 		for(String key: properties.keySet()){
-			jpaQueryBuilder.append(" and o."+key+" = :"+key);
+			jpaQueryBuilder.append(" and o."+key+" = :"+key.replace(".", ""));//去掉参数中的.
 		}
 		String jpaQuery="select o from Admin o";
 		if(jpaQueryBuilder.length()>0){
 			jpaQuery+=" where"+jpaQueryBuilder.substring(4);;
 		}
-		System.out.println("jpaQuery:"+jpaQuery);
 		List<Admin> admins=null;
 		try{
 			TypedQuery<Admin> query=entityManager().createQuery(jpaQuery, Admin.class);
-			for(Entry<String, String> entry: properties.entrySet()){
-				query.setParameter(entry.getKey(), entry.getValue());
+			for(Entry<String, Object> entry: properties.entrySet()){
+				query=query.setParameter(entry.getKey().replace(".", ""), entry.getValue());
 			}
 			//若无结果，返回一个size为0的list
 			admins=query.getResultList();
