@@ -151,6 +151,7 @@ public class ArticleController {
 		for(Article article:articles){
 			JSONObject subJson=new JSONObject();
 			subJson.put("id", article.getId());
+			subJson.put("clazzId", article.getClazz().getId());
 			DateFormat format=new SimpleDateFormat("yyyy年MM月dd日");
 			subJson.put("activityDate", format.format(article.getActivityDate()));
 			format=new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");

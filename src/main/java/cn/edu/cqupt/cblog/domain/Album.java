@@ -136,7 +136,31 @@ public class Album {
 	public static long countAlbums() {
         return entityManager().createQuery("SELECT COUNT(o) FROM Album o", Long.class).getSingleResult();
     }
-
+	///新增
+	public static long countAlbums(Map<String, Object> properties) {
+		StringBuilder jpaQueryBuilder=new StringBuilder();
+		for(String key: properties.keySet()){
+			jpaQueryBuilder.append(" and o."+key+" = :"+key.replace(".", ""));
+		}
+		String jpaQuery="SELECT COUNT(o) FROM Album o";
+		if(jpaQueryBuilder.length()>0){
+			jpaQuery+=" where"+jpaQueryBuilder.substring(4);;
+		}
+		Long result=0L;
+		try{
+			TypedQuery<Long> query=entityManager().createQuery(jpaQuery, Long.class);
+			for(Entry<String, Object> entry: properties.entrySet()){
+				query.setParameter(entry.getKey().replace(".", ""), entry.getValue());
+			}
+			//若无结果，返回一个size为0的list
+			result=query.getSingleResult();
+		//}catch(NoResultException e){//这里好奇怪，抛出这种异常怎么不行
+		}catch(Exception e){
+			// 未找到相关实体信息");
+		}
+		return result;
+    }
+	
 	public static List<Album> findAllAlbums() {
         return entityManager().createQuery("SELECT o FROM Album o", Album.class).getResultList();
     }

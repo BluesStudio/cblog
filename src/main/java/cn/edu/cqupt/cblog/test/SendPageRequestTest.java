@@ -27,7 +27,7 @@ public class SendPageRequestTest {
 		List<NameValuePair> formParams=new ArrayList<NameValuePair>();
 		formParams.add(new BasicNameValuePair("clazzId", "1"));
 		UrlEncodedFormEntity formEntity=new UrlEncodedFormEntity(formParams, Consts.UTF_8);
-		HttpPost httpPost = new HttpPost("http://localhost:8080/cblog/articles/list");
+		HttpPost httpPost = new HttpPost("http://localhost:8080/cblog/albums/list");
 		httpPost.addHeader("Accept", "application/json");
 		httpPost.setEntity(formEntity);
 		

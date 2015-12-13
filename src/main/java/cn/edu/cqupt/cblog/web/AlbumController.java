@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -14,7 +16,13 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
 
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -26,6 +34,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import cn.edu.cqupt.cblog.domain.Admin;
 import cn.edu.cqupt.cblog.domain.Album;
+import cn.edu.cqupt.cblog.domain.Article;
 import cn.edu.cqupt.cblog.domain.Clazz;
 import cn.edu.cqupt.cblog.util.FileUploadUtil;
 
@@ -66,6 +75,7 @@ public class AlbumController {
 		filename=UUID.randomUUID().toString().replaceAll("-", "")+"."+filename;
 		
 		File file=new File(dir, filename);
+		System.out.println("albumController.create:"+file.getAbsolutePath());
 		Clazz clazz=null;
 		try {
 			FileOutputStream out=new FileOutputStream(file);
@@ -107,13 +117,12 @@ System.out.println("filename:"+filename);
 		model.addAttribute("album", Album.findAlbum(id));
 		return "class-article";
 	}*/
-	
-	//这个方法可增加一些参数
+
 	/**
-	 * 相册分页
+	 * 文章分页
 	 * */
-	@RequestMapping(produces="text/html")
-	public String list(@RequestParam(value="page", required=false) Integer page, @RequestParam(value="size", required=false) Integer size, @RequestParam(value="sortFieldName", required=false) String sortFieldName, @RequestParam(value="sortOrder", required=false) String sortOrder, @RequestParam(value="clazzId", required=false) Long clazzId, Model model){
+	@RequestMapping(value="/list",method=RequestMethod.POST, headers = "Accept=application/json")
+	public ResponseEntity<String> list(@RequestParam(value="page", required=false) Integer page, @RequestParam(value="size", required=false) Integer size, @RequestParam(value="sortFieldName", required=false) String sortFieldName, @RequestParam(value="sortOrder", required=false) String sortOrder, @RequestParam(value="clazzId", required=false) Long clazzId, Model model){
 		Integer pageNum=page==null? 1:page;
 		Integer sizeNum=size==null? 15:size;
 		String sortFieldNameStr=sortFieldName==null? "albumDate":sortFieldName;
@@ -122,17 +131,36 @@ System.out.println("filename:"+filename);
 		int firstResult=(pageNum-1)*sizeNum;
 		int maxResults=sizeNum;
 		List<Album> albums=null;
+		long recordNum=0L;
 		if(clazzId!=null){
 			Map<String, Object> properties=new HashMap<String, Object>();
 			properties.put("clazz.id", clazzId);
 			albums=Album.findAlbumEntriesByProperties(firstResult, maxResults, sortFieldNameStr, sortOrderStr, properties);
+			recordNum=Album.countAlbums(properties);
 		}else{
 			albums=Album.findAlbumEntries(firstResult, maxResults, sortFieldNameStr, sortOrderStr);
+			recordNum=Album.countAlbums();
 		}
+		long maxPage=recordNum%sizeNum==0? recordNum/sizeNum:recordNum/sizeNum+1;
 		
-		model.addAttribute("albums", albums);
-System.out.println("albums.size:"+albums.size());
-		
-		return "admin-album";
+		JSONObject json=new JSONObject();
+		json.put("page", pageNum);
+		json.put("maxPage", maxPage);
+		JSONArray jsonArr=new JSONArray();
+		for(Album album:albums){
+			JSONObject subJson=new JSONObject();
+			subJson.put("id", album.getId());
+			subJson.put("clazzId", album.getClazz().getId());
+			DateFormat format=new SimpleDateFormat("yyyy.MM.dd");
+			subJson.put("albumDate", format.format(album.getAlbumDate()));
+			subJson.put("image", album.getImage());
+			jsonArr.add(subJson);
+		}
+		json.put("albums", jsonArr);
+System.out.println("json.toString:"+json.toString());
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "application/json; charset=utf-8");
+		return new ResponseEntity<String>(json.toString(), headers, HttpStatus.OK);
 	}	
+	
 }
