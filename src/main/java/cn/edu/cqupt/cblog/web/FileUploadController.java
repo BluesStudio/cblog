@@ -25,8 +25,12 @@ import com.alibaba.media.upload.UploadResponse;
 @Controller
 public class FileUploadController {
 	
+	@RequestMapping(value = "/fileUpload", method = RequestMethod.GET)
+	public String uploadFileForm(){
+		return "hello";
+	}
 	
-	@RequestMapping(value = "/fileUpload", method = RequestMethod.POST, headers = "Accept=application/json")
+	@RequestMapping(value = "/fileUpload", method = RequestMethod.POST)
     @ResponseBody
 	public ResponseEntity<String> uploadFile(@ModelAttribute("uploadFile") MultipartFile uploadFile){
 		String filename=uploadFile.getOriginalFilename().substring(uploadFile.getOriginalFilename().lastIndexOf(".")+1);

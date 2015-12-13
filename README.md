@@ -12,6 +12,7 @@
 	- 用户登录:#userLogin
 4. admin-members-add.html这个页面没有错误信息的位置，还有些写文章的那个也是
 5. admin-members-add.html这个页面保存修改按钮不起作用
+6. admin-introduction.html班级简介这个页面的按钮都不能用
 
 	
 

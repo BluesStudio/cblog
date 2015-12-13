@@ -8,5 +8,9 @@
 </head>
 <body>
 enheng,hello...
+<form action="/cblog/fileUpload" method="POST" enctype="multipart/form-data">
+	<input type="file" name="uploadFile"/>
+	<input type="submit"/>
+</form>
 </body>
 </html>
