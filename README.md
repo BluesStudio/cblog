@@ -10,7 +10,8 @@
 	- 管理员登录：#adminLogin
 	- 用户注册：#userRegister
 	- 用户登录:#userLogin
-
+4. admin-members-add.html这个页面没有错误信息的位置，还有些写文章的那个也是
+5. admin-members-add.html这个页面保存修改按钮不起作用
 
 	
 
@@ -154,7 +155,7 @@ articles属性说明
 |:---:|:---:|
 |page|当前页码，若你觉得多余，可以让我把它删掉|
 |maxPage|最大页数|
-|albums|文章，数组的表现形式|
+|albums|相册，数组的表现形式|
 
 albums属性说明
 
@@ -164,6 +165,56 @@ albums属性说明
 |clazzId|班级编号|
 |albumDate|相册日期|
 |image|相册图片，访问路径为http://xiaofeig.image.alimmdn.com/cblog/{image}|
+
+评论什么的暂木哟
+
+##### 1.1.4 请求示例 #####
+
+	无
+	
+##### 1.1.5 返回参数示例 #####
+
+	无
+
+### 4. 学生student的接口  ###
+
+#### 1.1 获取学生列表 ####
+
+##### 1.1.1 接口调用请求说明 #####
+
+	http请求方式：POST
+	http://125.87.199.38:8080/cblog/students/list
+	
+##### 1.1.2 请求参数说明 #####
+
+|参数|是否必须|说明|
+|:---:|:---:|:---:|
+|page|否|请求分页的页码，默认为1|
+|size|否|分页大小，默认为15|
+|sortFieldName|否|排序属性，默认为id，可选值为id|
+|sortOrder|否|排序方式，默认为DESC，可选值为ASC、DESC|
+|clazzId|否|班级编号，不提交则获取所有班级|
+
+##### 1.1.3 返回参数说明 #####
+
+|参数|说明|
+|:---:|:---:|
+|page|当前页码，若你觉得多余，可以让我把它删掉|
+|maxPage|最大页数|
+|students|学生，数组的表现形式|
+
+albums属性说明
+
+|参数|说明|
+|:---:|:---:|
+|id|编号|
+|clazzId|班级编号|
+|stuId|学号|
+|stuName|姓名|
+|age|年龄|
+|gender|性别（unknown、man、woman）|
+|stuImg|照片，访问路径为http://xiaofeig.image.alimmdn.com/cblog/{image}|
+|motto|座右铭|
 
 评论什么的暂木哟
 

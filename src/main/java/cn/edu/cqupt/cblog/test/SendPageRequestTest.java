@@ -27,7 +27,7 @@ public class SendPageRequestTest {
 		List<NameValuePair> formParams=new ArrayList<NameValuePair>();
 		formParams.add(new BasicNameValuePair("clazzId", "1"));
 		UrlEncodedFormEntity formEntity=new UrlEncodedFormEntity(formParams, Consts.UTF_8);
-		HttpPost httpPost = new HttpPost("http://localhost:8080/cblog/albums/list");
+		HttpPost httpPost = new HttpPost("http://localhost:8080/cblog/students/list");
 		httpPost.addHeader("Accept", "application/json");
 		httpPost.setEntity(formEntity);
 		
@@ -38,7 +38,7 @@ public class SendPageRequestTest {
 			HttpEntity entity = response.getEntity();
 			if (entity != null) {
 				instream = entity.getContent();
-				byte[] b = new byte[200];
+				byte[] b = new byte[2000];
 				int len = -1;
 				StringBuilder strBuilder = new StringBuilder();
 				while ((len = instream.read(b)) > 0) {

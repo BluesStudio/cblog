@@ -1,4 +1,24 @@
 package cn.edu.cqupt.cblog.domain;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EntityManager;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import javax.persistence.Version;
+import javax.validation.constraints.Size;
+
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -6,22 +26,6 @@ import org.springframework.roo.addon.javabean.annotations.RooJavaBean;
 import org.springframework.roo.addon.javabean.annotations.RooToString;
 import org.springframework.roo.addon.jpa.annotations.activerecord.RooJpaActiveRecord;
 import org.springframework.transaction.annotation.Transactional;
-import javax.persistence.Column;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import javax.persistence.ManyToOne;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.EntityManager;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Version;
 
 @Configurable
 @Entity
@@ -32,26 +36,22 @@ public class Student {
 
     /**
      */
-    @NotNull
     @Column(unique = true)
     @Size(max = 50)
     private String username;
 
     /**
      */
-    @NotNull
     @Size(max = 100)
     private String passwd;
 
     /**
      */
-    @NotNull
     @Size(max = 50)
     private String access;
 
     /**
      */
-    @NotNull
     @Size(max = 50)
     private String stuId;
 
@@ -114,7 +114,30 @@ public class Student {
 	public static long countStudents() {
         return entityManager().createQuery("SELECT COUNT(o) FROM Student o", Long.class).getSingleResult();
     }
-
+	///新增
+	public static long countStudents(Map<String, Object> properties) {
+		StringBuilder jpaQueryBuilder=new StringBuilder();
+		for(String key: properties.keySet()){
+			jpaQueryBuilder.append(" and o."+key+" = :"+key.replace(".", ""));
+		}
+		String jpaQuery="SELECT COUNT(o) FROM Student o";
+		if(jpaQueryBuilder.length()>0){
+			jpaQuery+=" where"+jpaQueryBuilder.substring(4);;
+		}
+		Long result=0L;
+		try{
+			TypedQuery<Long> query=entityManager().createQuery(jpaQuery, Long.class);
+			for(Entry<String, Object> entry: properties.entrySet()){
+				query.setParameter(entry.getKey().replace(".", ""), entry.getValue());
+			}
+			//若无结果，返回一个size为0的list
+			result=query.getSingleResult();
+		//}catch(NoResultException e){//这里好奇怪，抛出这种异常怎么不行
+		}catch(Exception e){
+			// 未找到相关实体信息");
+		}
+		return result;
+    }
 	public static List<Student> findAllStudents() {
         return entityManager().createQuery("SELECT o FROM Student o", Student.class).getResultList();
     }
@@ -138,7 +161,39 @@ public class Student {
 	public static List<Student> findStudentEntries(int firstResult, int maxResults) {
         return entityManager().createQuery("SELECT o FROM Student o", Student.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
     }
-
+	/**
+	 * 新增，根据属性集查找分页结果
+	 * @since 2015-12-11
+	 * */
+	public static List<Student> findStudentEntriesByProperties(int firstResult, int maxResults, String sortFieldName, String sortOrder, Map<String, Object> properties) {
+		StringBuilder jpaQueryBuilder=new StringBuilder();
+		for(String key: properties.keySet()){
+			jpaQueryBuilder.append(" and o."+key+" = :"+key.replace(".", ""));//去掉参数中的.
+		}
+		String jpaQuery = "SELECT o FROM Student o";
+		if(jpaQueryBuilder.length()>0){
+			jpaQuery+=" where"+jpaQueryBuilder.substring(4);;
+		}
+		if (fieldNames4OrderClauseFilter.contains(sortFieldName)) {
+            jpaQuery = jpaQuery + " ORDER BY " + sortFieldName;
+            if ("ASC".equalsIgnoreCase(sortOrder) || "DESC".equalsIgnoreCase(sortOrder)) {
+                jpaQuery = jpaQuery + " " + sortOrder;
+            }
+        }
+		TypedQuery<Student> query=entityManager().createQuery(jpaQuery, Student.class).setFirstResult(firstResult).setMaxResults(maxResults);
+		List<Student> students=null;
+		try{
+			for(Entry<String, Object> entry: properties.entrySet()){
+				query=query.setParameter(entry.getKey().replace(".", ""), entry.getValue());
+			}
+			//若无结果，返回一个size为0的list
+			students=query.getResultList();
+		//}catch(NoResultException e){//这里好奇怪，抛出这种异常怎么不行
+		}catch(Exception e){
+			//未找到相关实体信息");
+		}
+		return students;
+    }
 	public static List<Student> findStudentEntries(int firstResult, int maxResults, String sortFieldName, String sortOrder) {
         String jpaQuery = "SELECT o FROM Student o";
         if (fieldNames4OrderClauseFilter.contains(sortFieldName)) {

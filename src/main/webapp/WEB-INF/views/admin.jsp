@@ -84,7 +84,7 @@
                             class="am-badge am-badge-warning am-margin-right am-fr">${fn:length(sessionScope.admin.clazz.students) }</span></a></li>
                     <li><a href="admin-members-add.html"><span class="am-icon-plus"></span> 添加成员</a></li>
                     <li><a href="admin-members-apply.html"><span class="am-icon-user-md"></span> 绑定申请核实<span
-                            class="am-badge am-badge-danger am-margin-right am-fr am-round">+${fn:length(userRequests) }</span></a></li>
+                            class="am-badge am-badge-danger am-margin-right am-fr am-round">+0</span></a></li>
                 </ul>
             </li>
             <li><a href="admin-introduction.html"><span class="am-icon-check"></span> 班级简介管理</a></li>
