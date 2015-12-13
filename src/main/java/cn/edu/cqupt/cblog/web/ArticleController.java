@@ -1,5 +1,7 @@
 package cn.edu.cqupt.cblog.web;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -7,9 +9,13 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -117,8 +123,8 @@ public class ArticleController {
 	/**
 	 * 文章分页
 	 * */
-	@RequestMapping(produces="text/html")
-	public String list(@RequestParam(value="page", required=false) Integer page, @RequestParam(value="size", required=false) Integer size, @RequestParam(value="sortFieldName", required=false) String sortFieldName, @RequestParam(value="sortOrder", required=false) String sortOrder, @RequestParam(value="clazzId", required=false) Long clazzId, Model model){
+	@RequestMapping(value="/list",method=RequestMethod.POST, headers = "Accept=application/json")
+	public ResponseEntity<String> list(@RequestParam(value="page", required=false) Integer page, @RequestParam(value="size", required=false) Integer size, @RequestParam(value="sortFieldName", required=false) String sortFieldName, @RequestParam(value="sortOrder", required=false) String sortOrder, @RequestParam(value="clazzId", required=false) Long clazzId, Model model){
 		Integer pageNum=page==null? 1:page;
 		Integer sizeNum=size==null? 15:size;
 		String sortFieldNameStr=sortFieldName==null? "publishDate":sortFieldName;
@@ -127,21 +133,37 @@ public class ArticleController {
 		int firstResult=(pageNum-1)*sizeNum;
 		int maxResults=sizeNum;
 		List<Article> articles=null;
+		long recordNum=0L;
 		if(clazzId!=null){
 			Map<String, Object> properties=new HashMap<String, Object>();
 			properties.put("clazz.id", clazzId);
 			articles=Article.findArticleEntriesByProperties(firstResult, maxResults, sortFieldNameStr, sortOrderStr, properties);
+			recordNum=Article.countArticles(properties);
 		}else{
 			articles=Article.findArticleEntries(firstResult, maxResults, sortFieldNameStr, sortOrderStr);
+			recordNum=Article.countArticles();
 		}
-		
-		model.addAttribute("articles", articles);
-
-		/*for(Article article: articles){
-			System.out.println("article.id:"+article.getId());
-		}*/
-		
-		return "admin-article";
+		long maxPage=recordNum%sizeNum==0? recordNum/sizeNum:recordNum/sizeNum+1;
+		JSONObject json=new JSONObject();
+		json.put("page", pageNum);
+		json.put("maxPage", maxPage);
+		JSONArray jsonArr=new JSONArray();
+		for(Article article:articles){
+			JSONObject subJson=new JSONObject();
+			subJson.put("id", article.getId());
+			DateFormat format=new SimpleDateFormat("yyyy年MM月dd日");
+			subJson.put("activityDate", format.format(article.getActivityDate()));
+			format=new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
+			subJson.put("publishDate", format.format(article.getPublishDate()));
+			subJson.put("title", article.getTitle());
+			subJson.put("content", article.getContent());
+			jsonArr.add(subJson);
+		}
+		json.put("articles", jsonArr);
+System.out.println("json.toString:"+json.toString());
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "application/json; charset=utf-8");
+		return new ResponseEntity<String>(json.toString(), headers, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.DELETE, produces="text/html")

@@ -47,10 +47,23 @@ public class PersonalHonor {
     @ManyToOne
     private Student student;
 
+    @ManyToOne
+    private Clazz clazz;
+    
 	@PersistenceContext
     transient EntityManager entityManager;
 
 	public static final List<String> fieldNames4OrderClauseFilter = java.util.Arrays.asList("award", "personalHonorDate", "student");
+
+	
+	
+	public Clazz getClazz() {
+		return clazz;
+	}
+
+	public void setClazz(Clazz clazz) {
+		this.clazz = clazz;
+	}
 
 	public static final EntityManager entityManager() {
         EntityManager em = new PersonalHonor().entityManager;

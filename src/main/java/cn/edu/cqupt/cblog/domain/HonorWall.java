@@ -6,13 +6,16 @@ import org.springframework.roo.addon.javabean.annotations.RooJavaBean;
 import org.springframework.roo.addon.javabean.annotations.RooToString;
 import org.springframework.roo.addon.jpa.annotations.activerecord.RooJpaActiveRecord;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
@@ -37,6 +40,20 @@ public class HonorWall {
 	@Version
     @Column(name = "version")
     private Integer version;
+
+	
+	@ManyToOne
+	private Clazz clazz;
+	
+	
+	
+	public Clazz getClazz() {
+		return clazz;
+	}
+
+	public void setClazz(Clazz clazz) {
+		this.clazz = clazz;
+	}
 
 	public Long getId() {
         return this.id;

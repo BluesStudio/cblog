@@ -5,20 +5,25 @@ import org.springframework.roo.addon.javabean.annotations.RooJavaBean;
 import org.springframework.roo.addon.javabean.annotations.RooToString;
 import org.springframework.roo.addon.jpa.annotations.activerecord.RooJpaActiveRecord;
 import org.springframework.transaction.annotation.Transactional;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
 import java.util.Date;
 import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Version;
+
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -35,6 +40,9 @@ public class ClazzHonor {
     @Size(max = 100)
     private String honorName;
 
+    @ManyToOne
+    private Clazz clazz;
+    
     /**
      */
     @NotNull
@@ -62,6 +70,16 @@ public class ClazzHonor {
 	public void setId(Long id) {
         this.id = id;
     }
+
+	
+	
+	public Clazz getClazz() {
+		return clazz;
+	}
+
+	public void setClazz(Clazz clazz) {
+		this.clazz = clazz;
+	}
 
 	public Integer getVersion() {
         return this.version;

@@ -93,27 +93,27 @@ public class Clazz {
 
     /**
      */
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy="clazz")
     private Set<Article> articles = new HashSet<Article>();
 
     /**
      */
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy="clazz")
     private Set<Album> albums = new HashSet<Album>();
 
     /**
      */
-    @ManyToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy="clazz")
     private Set<PersonalHonor> personalHonors = new HashSet<PersonalHonor>();
 
     /**
      */
-    @ManyToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy="clazz")
     private Set<HonorWall> honorWalls = new HashSet<HonorWall>();
 
     /**
      */
-    @ManyToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy="clazz")
     private Set<ClazzHonor> clazzHonors = new HashSet<ClazzHonor>();
 
 	@Id
