@@ -8,7 +8,7 @@ var showItem  = function(s, data){
     });
     list.html(template(data));
 };
-function get_pagination(which, indexPage, totalPage, url){
+function get_pagination(which, indexPage, totalPage, url, clazzId){
     $("#"+which+"-pagination" + " .am-pagination-indexpage").text(indexPage);
     $("#"+which+"-pagination" + " .am-pagination-totalpage").text(totalPage);
     var pages = [];
@@ -42,7 +42,7 @@ function get_pagination(which, indexPage, totalPage, url){
             dataType: "json",
             data: {
                 "page": $(this).attr("data-id"),
-                "clazzId": "1"
+                "clazzId": clazzId
             },
             success: function(d){
                 showItem(which, d);

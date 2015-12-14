@@ -236,16 +236,17 @@
 <script type="text/javascript" src="../js/handlebars.js"></script>
 <script type="text/javascript">
   $(function(){
+    var clazzId = "1";
     $.ajax({
       type: "POST",
       url: "/cblog/students/list",
       dataType: "json",
       data: {
-        "clazzId": "1"
+        "clazzId": clazzId
       },
       success: function(data){
         showItem("admin-members", data);
-        get_pagination("admin-members", data.page, data.maxPage, this.url);
+        get_pagination("admin-members", data.page, data.maxPage, this.url, clazzId);
       }
     });
   });

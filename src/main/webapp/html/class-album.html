@@ -30,8 +30,6 @@
 					<div class="ablum-discuss-time">2015年6月2日 14:42</div>
 				</div>
 			</div>
-			
-		
 		</div>
 		</div>
 	</div>
@@ -60,43 +58,44 @@
 </div>
 <div id="content">
 	<h1 class="content-title">班级相册</h1>
-	<div id="album">
-		<div id="pho-show">
-	        <ul>
-            <li><div class="cimgbox"><img src="../img/class/album/0.jpg" class="cimg"></div></li>
-            <li><div class="cimgbox"><img src="../img/class/album/1.jpg" class="cimg"></div></li>
-            <li><div class="cimgbox"><img src="../img/class/album/0.jpg" class="cimg"></div></li>
-            <li><div class="cimgbox" id="spe"><img src="../img/class/album/1.jpg" class="cimg"></div></li>
-            <li><div class="cimgbox"><img src="../img/class/album/0.jpg" class="cimg"></div></li>
-            <li><div class="cimgbox"><img src="../img/class/album/1.jpg" class="cimg"></div></li>
-            <li><div class="cimgbox"><img src="../img/class/album/0.jpg" class="cimg"></div></li>
-	         </ul>
-	    </div>
-		<table id="pho-list">
-	        <tr>
-	            <td><div class="dimgbox"><img class="dimg" src="../img/class/album/1.jpg"></div></td>
-	            <td><div class="dimgbox"><img class="dimg" src="../img/class/album/1.jpg"></div></td>
-	            <td><div class="dimgbox"><img class="dimg" src="../img/class/album/1.jpg"></div></td>
-	            <td><div class="dimgbox"><img class="dimg" src="../img/class/album/1.jpg"></div></td>
-	        </tr>
-	        <tr>
-	            <td><div class="dimgbox"><img class="dimg" src="../img/class/album/0.jpg"></div></td>
-	            <td><div class="dimgbox"><img class="dimg" src="../img/class/album/0.jpg"></div></td>
-	            <td><div class="dimgbox"><img class="dimg" src="../img/class/album/0.jpg"></div></td>
-	            <td><div class="dimgbox"><img class="dimg" src="../img/class/album/0.jpg"></div></td>
-	        </tr>
-        </table>
-    </div>
+	<div id="album"></div>
 </div>
 <div id="footer">
 	<img src="../img/class/grass.png" class="grass">
 </div>
-
+<!-- handlebars -->
+<script id="more-item" type="text/x-handlebars-template">
+    {{#albums}}
+    {{#tableId @index}}
+    <div id="pho-show">
+        <ul>
+            <li><div class="cimgbox"><img src="../img/class/album/0.jpg" class="cimg"></div></li>
+        </ul>
+    </div>
+    {{else}}
+    <table id="pho-list">
+        <tr>
+            <td><div class="dimgbox"><img class="dimg" src="../img/class/album/1.jpg"></div></td>
+            <td><div class="dimgbox"><img class="dimg" src="../img/class/album/1.jpg"></div></td>
+            <td><div class="dimgbox"><img class="dimg" src="../img/class/album/1.jpg"></div></td>
+            <td><div class="dimgbox"><img class="dimg" src="../img/class/album/1.jpg"></div></td>
+        </tr>
+        <tr>
+            <td><div class="dimgbox"><img class="dimg" src="../img/class/album/0.jpg"></div></td>
+            <td><div class="dimgbox"><img class="dimg" src="../img/class/album/0.jpg"></div></td>
+            <td><div class="dimgbox"><img class="dimg" src="../img/class/album/0.jpg"></div></td>
+            <td><div class="dimgbox"><img class="dimg" src="../img/class/album/0.jpg"></div></td>
+        </tr>
+    </table>
+    {{/tableId}}
+    {{/albums}}
+</script>
 <!--  script  -->
 <script src="../js/jquery.min.js" type="text/javascript"></script>
 <script src="../js/smoothscroll.js" type="text/javascript"></script>
 <script src="../js/big.js" type="text/javascript"></script>
 <script src="../js/top.js" type="text/javascript"></script>
+<script type="text/javascript" src="../js/handlebars.js"></script>
 <script type="text/javascript">
 $(function(){
 	var oImg=$(".cimgbox");
@@ -111,6 +110,28 @@ $(function(){
 			$(oImg[3]).attr("id","spe");
 	    });
 	}
+    var album = $("#album");
+    var source = $("#more-item").html();
+    var template = Handlebars.compile(source);
+    var clazzId = "1";
+    $.ajax({
+        type: "POST",
+        url: "http://host.congm.in:8080/cblog/albums/list",
+        dataType: "json",
+        data: {
+            "clazzId": clazzId
+        },
+        success: function(data){
+            Handlebars.registerHelper('tableId', function(index, options) {
+                if(index < 7){
+                    return options.fn(this);
+                }else{
+                    return options.inverse(this);
+                }
+            });
+            album.html(template(data));
+        }
+    });
 })
 </script>
 </body>
