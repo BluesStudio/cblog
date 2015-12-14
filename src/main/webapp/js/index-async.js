@@ -8,7 +8,7 @@ $(".ccapInput").keydown(function(e){
 $(".toapply").on("click", function(){
     $.ajax({
         type: "POST",
-        url: "http://125.87.199.252:8080/cblog/admins/register",
+        url: "/cblog/admins/register",
         dataType: "json",
         data: {
             "username": $("#applyAdminName").val(),
@@ -26,7 +26,7 @@ $(".toapply").on("click", function(){
                 alert(error_text);
             }else{
                 alert("申请成功！请以管理员用户方式登录。");
-                window.location.href = "index.html#adminLogin";
+                window.location.href = "index#adminLogin";
             }
         }
     });
@@ -36,7 +36,7 @@ $(".toapply").on("click", function(){
 $(".toadminlogin").on("click", function(){
     $.ajax({
         type: "POST",
-        url: "http://125.87.199.252:8080/cblog/admins/login",
+        url: "/cblog/admins/login",
         dataType: "json",
         data: {
             "username": $("#adminName").val(),
@@ -52,7 +52,7 @@ $(".toadminlogin").on("click", function(){
                 error_text += error;
                 alert(error_text);
             }else{
-                window.location.href = "admin.html";
+                window.location.href = "/cblog/admins/index";
             }
         }
     });
@@ -62,7 +62,7 @@ $(".toadminlogin").on("click", function(){
 $(".toregister").on("click", function(){
     $.ajax({
         type: "POST",
-        url: "http://125.87.199.252:8080/cblog/blogUsers/register",
+        url: "/cblog/blogUsers/register",
         dataType: "json",
         data: {
             "username": $("#userRegisterName").val(),
@@ -79,7 +79,7 @@ $(".toregister").on("click", function(){
                 alert(error_text);
             }else{
                 alert("注册成功！请登录。");
-                window.location.href = "index.html#userLogin";
+                window.location.href = "index#userLogin";
             }
         }
     });
@@ -89,7 +89,7 @@ $(".toregister").on("click", function(){
 $(".tologin").on("click", function(){
     $.ajax({
         type: "POST",
-        url: "http://125.87.199.252:8080/cblog/blogUsers/login",
+        url: "/cblog/blogUsers/login",
         dataType: "json",
         data: {
             "username": $("#userName").val(),
@@ -106,7 +106,7 @@ $(".tologin").on("click", function(){
                 alert(error_text);
             }else{
                 alert("登录成功！");
-                window.location.href = "user.html";
+                window.location.href = "/cblog/blogUsers/index";
             }
         }
     });
