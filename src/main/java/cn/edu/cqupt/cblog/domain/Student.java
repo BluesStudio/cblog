@@ -14,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.Version;
@@ -82,7 +83,7 @@ public class Student {
 
     /**
      */
-    @ManyToOne
+    @OneToOne(mappedBy="student")
     private BlogUser blogUser;
 
     /**
@@ -157,7 +158,34 @@ public class Student {
         if (id == null) return null;
         return entityManager().find(Student.class, id);
     }
-
+	/**
+	 * @since 2015-12-14
+	 * 新增，根据属性集查找
+	 * */
+	public static List<Student> findStudentsByProperties(Map<String, Object> properties){
+		
+		StringBuilder jpaQueryBuilder=new StringBuilder();
+		for(String key: properties.keySet()){
+			jpaQueryBuilder.append(" and o."+key+" = :"+key.replace(".", ""));
+		}
+		String jpaQuery="select o from Student o";
+		if(jpaQueryBuilder.length()>0){
+			jpaQuery+=" where"+jpaQueryBuilder.substring(4);;
+		}
+		List<Student> students=null;
+		try{
+			TypedQuery<Student> query=entityManager().createQuery(jpaQuery, Student.class);
+			for(Entry<String, Object> entry: properties.entrySet()){
+				query.setParameter(entry.getKey().replace(".", ""), entry.getValue());
+			}
+			//若无结果，返回一个size为0的list
+			students=query.getResultList();
+		//}catch(NoResultException e){//这里好奇怪，抛出这种异常怎么不行
+		}catch(Exception e){
+			// 未找到相关实体信息");
+		}
+		return students;
+	}
 	public static List<Student> findStudentEntries(int firstResult, int maxResults) {
         return entityManager().createQuery("SELECT o FROM Student o", Student.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
     }

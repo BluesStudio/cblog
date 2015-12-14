@@ -1,4 +1,21 @@
 package cn.edu.cqupt.cblog.domain;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EntityManager;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import javax.persistence.Version;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -6,18 +23,6 @@ import org.springframework.roo.addon.javabean.annotations.RooJavaBean;
 import org.springframework.roo.addon.javabean.annotations.RooToString;
 import org.springframework.roo.addon.jpa.annotations.activerecord.RooJpaActiveRecord;
 import org.springframework.transaction.annotation.Transactional;
-import java.util.List;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EntityManager;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Version;
 
 @Configurable
 @Entity
@@ -40,7 +45,7 @@ public class BlogUser {
 
     /**
      */
-    @ManyToOne
+    @OneToOne
     private Student student;
 
 	public String getUsername() {
@@ -130,7 +135,34 @@ public class BlogUser {
         if (id == null) return null;
         return entityManager().find(BlogUser.class, id);
     }
-
+	/**
+	 * @since 2015-12-10
+	 * 新增，根据属性集查找
+	 * */
+	public static List<BlogUser> findBlogUsersByProperties(Map<String, Object> properties){
+		
+		StringBuilder jpaQueryBuilder=new StringBuilder();
+		for(String key: properties.keySet()){
+			jpaQueryBuilder.append(" and o."+key+" = :"+key.replace(".", ""));//去掉参数中的.
+		}
+		String jpaQuery="select o from BlogUser o";
+		if(jpaQueryBuilder.length()>0){
+			jpaQuery+=" where"+jpaQueryBuilder.substring(4);;
+		}
+		List<BlogUser> blogUsers=null;
+		try{
+			TypedQuery<BlogUser> query=entityManager().createQuery(jpaQuery, BlogUser.class);
+			for(Entry<String, Object> entry: properties.entrySet()){
+				query=query.setParameter(entry.getKey().replace(".", ""), entry.getValue());
+			}
+			//若无结果，返回一个size为0的list
+			blogUsers=query.getResultList();
+		//}catch(NoResultException e){//这里好奇怪，抛出这种异常怎么不行
+		}catch(Exception e){
+			//未找到相关实体信息");
+		}
+		return blogUsers;
+	}
 	public static List<BlogUser> findBlogUserEntries(int firstResult, int maxResults) {
         return entityManager().createQuery("SELECT o FROM BlogUser o", BlogUser.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
     }

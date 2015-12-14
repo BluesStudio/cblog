@@ -1,11 +1,11 @@
 package cn.edu.cqupt.cblog.web;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -20,48 +20,30 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import cn.edu.cqupt.cblog.domain.Admin;
-import cn.edu.cqupt.cblog.domain.UserRequest;
-import cn.edu.cqupt.cblog.service.AdminService;
-import cn.edu.cqupt.cblog.service.impl.AdminServiceImpl;
+import cn.edu.cqupt.cblog.domain.BlogUser;
+import cn.edu.cqupt.cblog.domain.Student;
+import cn.edu.cqupt.cblog.service.BlogUserService;
+
 
 @Controller
-@RequestMapping("/admins")
-public class AdminController {
+@RequestMapping("/blogUsers")
+public class BlogUserController {
 
 	@Autowired
-	private AdminService adminService=new AdminServiceImpl();
+	private BlogUserService blogUserService;
 	
-	public AdminService getAdminService() {
-		return adminService;
+	public BlogUserService getBlogUserService() {
+		return blogUserService;
 	}
-	public void setAdminService(AdminService adminService) {
-		this.adminService = adminService;
+	public void setBlogUserService(BlogUserService blogUserService) {
+		this.blogUserService = blogUserService;
 	}
 
-
-	@RequestMapping(value="/index", method=RequestMethod.GET)
-	public String index(Model model, HttpSession session){
-		Admin admin=Admin.findAdmin(1L);
-		Map<String, String> properties=new HashMap<String, String>();
-		properties.put("clazzName", admin.getClazz().getClazzName());
-		properties.put("dispose", "unsolved");
-		List<UserRequest> userRequests=UserRequest.findUserRequestsByProperties(properties);
-//System.out.println(ReflectionToStringBuilder.toString(admin, ToStringStyle.SIMPLE_STYLE));
-//System.out.println(ReflectionToStringBuilder.toString(userRequests, ToStringStyle.SIMPLE_STYLE));
-
-//没有总评论数
-		session.setAttribute("admin", admin);
-		model.addAttribute("userRequests", userRequests);
-		return "admin";
-	}
-	
-	
 	@RequestMapping(value = "/register", method = RequestMethod.POST, headers = "Accept=application/json")
     @ResponseBody
-    public ResponseEntity<String> register(@ModelAttribute("admin") Admin admin, BindingResult result) {
-		//System.out.println(ReflectionToStringBuilder.toString(admin, ToStringStyle.SIMPLE_STYLE));
-		adminService.register(admin, result);
+    public ResponseEntity<String> register(@ModelAttribute("blogUser") BlogUser blogUser, BindingResult result) {
+		System.out.println(ReflectionToStringBuilder.toString(blogUser, ToStringStyle.SIMPLE_STYLE));
+		blogUserService.register(blogUser, result);
 		
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json; charset=utf-8");
@@ -80,8 +62,8 @@ public class AdminController {
 	
 	@RequestMapping(value="/login", method=RequestMethod.POST, headers="Accept=application/json")
 	@ResponseBody
-	public ResponseEntity<String> login(@ModelAttribute("admin") Admin admin, BindingResult result, HttpSession session){
-		adminService.login(admin, result);
+	public ResponseEntity<String> login(@ModelAttribute("blogUser") BlogUser blogUser, BindingResult result, HttpSession session){
+		blogUserService.login(blogUser, result);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json; charset=utf-8");
         if(result.hasErrors()){
@@ -94,23 +76,52 @@ public class AdminController {
 			String errorsJson="{"+errorsBuffer.toString().substring(1)+"}";
 			return new ResponseEntity<String>(errorsJson, headers, HttpStatus.OK);
 		}
-        admin=Admin.findAdmin(admin.getId());
-        session.setAttribute("admin", admin);
+        blogUser=BlogUser.findBlogUser(blogUser.getId());
+        session.setAttribute("blogUser", blogUser);
         return new ResponseEntity<String>("{\"success\":\"true\"}", headers, HttpStatus.OK);
 	}
 	
+	@RequestMapping(value="/user-setting", method=RequestMethod.GET)
+	public String userSetting(){
+		return "user-setting";
+	}
+	
+	@RequestMapping(value="/user-setting", method=RequestMethod.POST)
+	public String updateInfo(@ModelAttribute("blogUser") BlogUser blogUserTemp, BindingResult bindingResult, HttpSession session){
+		BlogUser blogUser=(BlogUser)session.getAttribute("blogUser");
+		Student student=blogUserTemp.getStudent();
+		if(student==null){
+			student=new Student();
+		}
+		student.setStuName(blogUserTemp.getStudent().getStuName());
+		student.setGender(blogUserTemp.getStudent().getGender());
+		student.setAge(blogUserTemp.getStudent().getAge());
+		student.setStuId(blogUserTemp.getStudent().getStuId());
+		student.setMotto(blogUserTemp.getStudent().getMotto());
+		if(blogUserTemp.getStudent()==null){
+			student.persist();
+		}else{
+			student.merge();
+		}
+		blogUser.setStudent(student);
+		blogUser.merge();
+		session.setAttribute("blogUser", blogUser);
+		return "user-setting";
+	}
+	
+	
 	@RequestMapping(value="/modifyPasswd", method=RequestMethod.GET)
 	public String modifyPasswd(){
-		return "admin-setting";
+		return "user-setting";
 	}
 	
 	@RequestMapping(value="/modifyPasswd", method=RequestMethod.POST)
 	public String modifyPasswd(@ModelAttribute("oldPasswd") String oldPasswd, @ModelAttribute("newPasswd") String newPasswd, @ModelAttribute("newPasswd2") String newPasswd2, BindingResult bindingResult, HttpSession session, Model model){
-		Admin admin=(Admin)session.getAttribute("admin");
+		BlogUser blogUser=(BlogUser)session.getAttribute("blogUser");
 		
 		if(oldPasswd==null||oldPasswd.trim().equals("")){
 			bindingResult.reject("oldPasswd.required", "请输入原密码");
-		}else if(!oldPasswd.equals(admin.getPasswd())){
+		}else if(!oldPasswd.equals(blogUser.getPasswd())){
 			bindingResult.reject("oldPasswd.required", "原密码输入错误");
 		}
 		if(newPasswd==null||newPasswd.trim().equals("")){
@@ -128,10 +139,11 @@ public class AdminController {
 			for(FieldError error: errors){
 				System.out.println(error.getDefaultMessage());
 			}
-			return "admin-setting";
+			return "user-setting";
 		}
-		admin.setPasswd(newPasswd);
-		session.setAttribute("admin", admin.merge());
-		return "redirect:/admins/modifyPasswd";
+		blogUser.setPasswd(newPasswd);
+		session.setAttribute("blogUser", blogUser.merge());
+		return "redirect:/blogUsers/modifyPasswd";
 	}
+	
 }

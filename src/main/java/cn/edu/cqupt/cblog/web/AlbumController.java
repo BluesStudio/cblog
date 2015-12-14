@@ -9,7 +9,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -20,7 +19,6 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -34,7 +32,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import cn.edu.cqupt.cblog.domain.Admin;
 import cn.edu.cqupt.cblog.domain.Album;
-import cn.edu.cqupt.cblog.domain.Article;
 import cn.edu.cqupt.cblog.domain.Clazz;
 import cn.edu.cqupt.cblog.util.FileUploadUtil;
 
