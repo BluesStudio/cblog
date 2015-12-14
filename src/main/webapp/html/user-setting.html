@@ -178,11 +178,20 @@
                     <div class="am-panel am-panel-default">
                         <div class="am-panel-bd">
                             <h2 class="user-title">修改密码</h2>
-                            <input class="am-form-field" type="password" id="doc-vld-name-2" placeholder="原密码"/>
-                            <input class="am-margin-top am-form-field" type="password" id="doc-vld-pwd-1"
-                                   placeholder="新密码" required/>
-                            <input class="am-margin-top am-form-field" type="password" id="doc-vld-pwd-2"
-                                   placeholder="确认新密码" data-equal-to="#doc-vld-pwd-1" required/>
+                            <div class="am-g">
+                                <div class="am-u-sm-2 am-padding-0 am-margin-bottom"><label>原密码</label></div>
+                                <div class="am-u-sm-10"><input class="am-form-field" type="password" id="doc-vld-name-2" placeholder="原密码"/></div>
+                            </div>
+                            <div class="am-g">
+                                <div class="am-u-sm-2 am-padding-0 am-margin-bottom"><label>新密码</label></div>
+                                <div class="am-u-sm-10"><input class="am-margin-top am-form-field" type="password" id="doc-vld-pwd-1"
+                                   placeholder="新密码" required/></div>
+                            </div>
+                            <div class="am-g">
+                                <div class="am-u-sm-2 am-padding-0 am-margin-bottom"><label>确认新密码</label></div>
+                                <div class="am-u-sm-10"><input class="am-margin-top am-form-field" type="password" id="doc-vld-pwd-2"
+                                   placeholder="确认新密码" data-equal-to="#doc-vld-pwd-1" required/></div>
+                            </div>
                             <button class="am-margin-top am-btn am-btn-secondary" type="submit">提交</button>
                         </div>
                     </div>
