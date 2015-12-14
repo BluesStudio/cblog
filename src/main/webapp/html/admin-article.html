@@ -218,17 +218,17 @@
 <script type="text/javascript" src="../js/handlebars.js"></script>
 <script type="text/javascript">
 $(function(){
-    var clazzId = "1";
+    var clazzName = "1";
     $.ajax({
         type: "POST",
         url: "/cblog/articles/list",
         dataType: "json",
         data: {
-            "clazzId": clazzId
+            "clazzName": clazzName
         },
         success: function(data){
             showItem("admin-article", data);
-            get_pagination("admin-article", data.page, data.maxPage, this.url, clazzId);
+            get_pagination("admin-article", data.page, data.maxPage, this.url, clazzName);
         }
     });
 });

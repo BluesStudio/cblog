@@ -70,6 +70,12 @@
     <div id="pho-show">
         <ul>
             <li><div class="cimgbox"><img src="../img/class/album/0.jpg" class="cimg"></div></li>
+            <li><div class="cimgbox"><img src="../img/class/album/0.jpg" class="cimg"></div></li>
+            <li><div class="cimgbox"><img src="../img/class/album/0.jpg" class="cimg"></div></li>
+            <li><div class="cimgbox" id="spe"><img src="../img/class/album/0.jpg" class="cimg"></div></li>
+            <li><div class="cimgbox"><img src="../img/class/album/0.jpg" class="cimg"></div></li>
+            <li><div class="cimgbox"><img src="../img/class/album/0.jpg" class="cimg"></div></li>
+            <li><div class="cimgbox"><img src="../img/class/album/0.jpg" class="cimg"></div></li>
         </ul>
     </div>
     {{else}}
@@ -113,13 +119,13 @@ $(function(){
     var album = $("#album");
     var source = $("#more-item").html();
     var template = Handlebars.compile(source);
-    var clazzId = "1";
+    var clazzName = "1";
     $.ajax({
         type: "POST",
         url: "http://host.congm.in:8080/cblog/albums/list",
         dataType: "json",
         data: {
-            "clazzId": clazzId
+            "clazzName": clazzName
         },
         success: function(data){
             Handlebars.registerHelper('tableId', function(index, options) {

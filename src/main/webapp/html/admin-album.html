@@ -229,11 +229,11 @@
       url: "/cblog/albums/list",
       dataType: "json",
       data: {
-        "clazzId": clazzId
+        "clazzName": clazzName
       },
       success: function(data){
         showItem("admin-album", data);
-        get_pagination("admin-album", data.page, data.maxPage, this.url, clazzId);
+        get_pagination("admin-album", data.page, data.maxPage, this.url, clazzName);
       }
     });
   });
