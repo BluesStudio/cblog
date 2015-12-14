@@ -130,8 +130,10 @@
           <div id="file-list"></div>
           <div class="am-form-group"> 
             <div class="am-u-sm-9 am-u-sm-push-3">
+            <!-- 
             <input type="submit"/>
-              <button type="button" class="am-btn am-btn-primary">保存修改</button>
+             -->
+              <button type="submit" class="am-btn am-btn-primary">保存修改</button>
             </div>
           </div>
         </form>

@@ -13,9 +13,9 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="Cache-Control" content="no-siteapp" />
   <meta name="apple-mobile-web-app-title" content="Amaze UI" />
-  <link rel="stylesheet" href="/cblog/css/amazeui.min.css"/>
-  <link rel="stylesheet" href="/cblog/css/admin-style.css">
-  <link rel="stylesheet" href="/cblog/css/admin.css">
+  <link rel="stylesheet" href="../css/amazeui.min.css"/>
+  <link rel="stylesheet" href="../css/admin-style.css">
+  <link rel="stylesheet" href="../css/admin.css">
 </head>
 <body>
 <!--[if lte IE 9]>
@@ -91,7 +91,7 @@
     <div class="am-panel am-panel-default admin-sidebar-panel">
       <div class="am-panel-bd">
         <p><span class="am-icon-tag"></span> ©cBlog <a href="aboutus.html" target="_blank" class="am-panel-bd-aboutus">关于我们</a></p>
-        <p>网站设计与前端开发：闵聪<br>网站后台开发：高小飞<br>安卓移动端开发：王春河</p>
+        <p>网站设计与前端开发：闵聪<br>网站后台开发：高小飞</p>
       </div>
     </div>
     
@@ -109,7 +109,7 @@
       <li><a href="admin-article.html" class="am-text-secondary"><span class="am-icon-btn am-icon-file-text"></span><br/>班级文章<br/>13</a></li>
       <li><a href="admin-album.html" class="am-text-success"><span class="am-icon-btn am-icon-th"></span><br/>班级照片<br/>45</a></li>
       <li><a href="admin-members.html" class="am-text-warning"><span class="am-icon-btn am-icon-users"></span><br/>班级成员<br/>27</a></li>
-      <li><a class="am-text-danger""am-text-warning"><span class="am-icon-btn am-icon-copy"></span><br/>总评论数<br/>22</a></li>
+      <li><a class="am-text-danger am-text-warning"><span class="am-icon-btn am-icon-copy"></span><br/>总评论数<br/>22</a></li>
       <li><a class="am-text-warning"><span class="am-icon-btn am-icon-recycle"></span><br/>访问量<br/>2333</a></li>
     </ul>
     
@@ -123,86 +123,11 @@
       </div>
     </div>
 
-    <ul data-am-widget="gallery" class="am-gallery am-gallery-overlay am-avg-sm-2 am-avg-md-4 am-avg-lg-4 am-margin gallery-list" data-am-gallery="{ pureview: true }">
-    
-    <c:forEach var="album" items="${albums }">
-      <li>
-        <header data-am-widget="header" class="am-header am-header-default admin-members-hd">
-          <div class="am-header-left am-header-nav admin-members-hd-nav"><p><span class="am-icon-photo"></span> <fmt:formatDate value="${album.albumDate }" pattern="yyyy.MM.dd"/> </p></div>
-          <div class="am-dropdown am-header-right am-header-nav admin-members-hd-nav" data-am-dropdown>
-            <div class="am-dropdown-toggle admin-members-hd-btn" data-am-dropdown-toggle><span class="am-icon-bars"></span></div>
-            <ul class="am-dropdown-content admin-members-dd-ul">
-              <li><a href="#" data-am-modal="{target: '#album-discuss'}"><span class="am-icon-check"></span> 查看照片评论</a></li>
-              <li><a href="#"><span class="am-icon-times"></span> 删除照片</a></li>
-            </ul>
-          </div>
-        </header>
-        <a href="http://xiaofeig.image.alimmdn.com/cblog/${album.image }">
-          <img class="am-img-thumbnail am-img-bdrs" src="http://xiaofeig.image.alimmdn.com/cblog/${album.image }" alt='${album.albumDate }'/>
-        </a>
-      </li>
-    </c:forEach>
-      <!-- 
-      <li>
-        <header data-am-widget="header" class="am-header am-header-default admin-members-hd">
-          <div class="am-header-left am-header-nav admin-members-hd-nav"><p><span class="am-icon-photo"></span> 2014.10.01 </p></div>
-          <div class="am-dropdown am-header-right am-header-nav admin-members-hd-nav" data-am-dropdown>
-            <div class="am-dropdown-toggle admin-members-hd-btn" data-am-dropdown-toggle><span class="am-icon-bars"></span></div>
-            <ul class="am-dropdown-content admin-members-dd-ul">
-              <li><a href="#" data-am-modal="{target: '#album-discuss'}"><span class="am-icon-check"></span> 查看照片评论</a></li>
-              <li><a href="#"><span class="am-icon-times"></span> 删除照片</a></li>
-            </ul>
-          </div>
-        </header>
-        <a href="img/class/album/0.jpg">
-          <img class="am-img-thumbnail am-img-bdrs" src="/cblog/img/class/album/0.jpg" alt="2014.10.01"/>
-        </a>
-      </li>
-      <li>
-        <header data-am-widget="header" class="am-header am-header-default admin-members-hd">
-          <div class="am-header-left am-header-nav admin-members-hd-nav"><p><span class="am-icon-photo"></span> 2014.10.01 </p></div>
-          <div class="am-dropdown am-header-right am-header-nav admin-members-hd-nav" data-am-dropdown>
-            <div class="am-dropdown-toggle admin-members-hd-btn" data-am-dropdown-toggle><span class="am-icon-bars"></span></div>
-            <ul class="am-dropdown-content admin-members-dd-ul">
-              <li><a href="#" data-am-modal="{target: '#album-discuss'}"><span class="am-icon-check"></span> 查看照片评论</a></li>
-              <li><a href="#"><span class="am-icon-times"></span> 删除照片</a></li>
-            </ul>
-          </div>
-        </header>
-        <a href="img/class/album/0.jpg">
-          <img class="am-img-thumbnail am-img-bdrs" src="/cblog/img/class/album/0.jpg" alt="2014.10.01"/>
-        </a>
-      </li>
-      <li>
-        <header data-am-widget="header" class="am-header am-header-default admin-members-hd">
-          <div class="am-header-left am-header-nav admin-members-hd-nav"><p><span class="am-icon-photo"></span> 2014.10.02 </p></div>
-          <div class="am-dropdown am-header-right am-header-nav admin-members-hd-nav" data-am-dropdown>
-            <div class="am-dropdown-toggle admin-members-hd-btn" data-am-dropdown-toggle><span class="am-icon-bars"></span></div>
-            <ul class="am-dropdown-content admin-members-dd-ul">
-              <li><a href="#" data-am-modal="{target: '#album-discuss'}"><span class="am-icon-check"></span> 查看照片评论</a></li>
-              <li><a href="#"><span class="am-icon-times"></span> 删除照片</a></li>
-            </ul>
-          </div>
-        </header>
-        <a href="img/class/album/1.jpg">
-          <img class="am-img-thumbnail am-img-bdrs" src="/cblog/img/class/album/1.jpg" alt="2014.10.02"/>
-        </a>
-      </li>
-       -->
-    </ul>
+    <ul data-am-widget="gallery" class="am-gallery am-gallery-overlay am-avg-sm-2 am-avg-md-4 am-avg-lg-4 am-margin gallery-list admin-album-list" data-am-gallery="{ pureview: true }"></ul>
 
-
-    <div class="am-margin am-cf">
-      <hr/>
-      <p class="am-fl">每页最多 16 条记录</p>
+    <div id="admin-album-pagination">
+      <p class="am-fl am-margin-left">第 <span class="am-pagination-indexpage">1</span> / <span class="am-pagination-totalpage">1</span> 页</p>
       <ol class="am-pagination am-fr">
-        <li class="am-disabled"><a href="#">&laquo;</a></li>
-        <li class="am-active"><a href="#">1</a></li>
-        <li><a href="#">2</a></li>
-        <li><a href="#">3</a></li>
-        <li><a href="#">4</a></li>
-        <li><a href="#">5</a></li>
-        <li><a href="#">&raquo;</a></li>
       </ol>
     </div>
 
@@ -218,7 +143,7 @@
         <div class="am-panel-bd am-collapse am-in am-cf">
             <ul class="am-comments-list admin-content-comment">
               <li class="am-comment">
-                <a href="#"><img src="/cblog/img/class/members/1.jpg" alt="" class="am-comment-avatar" id="article-discuss-user-logo"></a>
+                <a href="#"><img src="../img/class/members/1.jpg" alt="" class="am-comment-avatar" id="article-discuss-user-logo"></a>
                 <div class="am-comment-main">
                   <header class="am-comment-hd">
                     <div class="am-comment-meta"><a class="am-comment-author">闵聪</a> 评论于 <time>2014-7-12 15:30</time></div>
@@ -232,7 +157,7 @@
               </li>
 
               <li class="am-comment">
-                <a href="#"><img src="/cblog/img/class/members/1.jpg" alt="" class="am-comment-avatar" width="48" height="48"></a>
+                <a href="#"><img src="../img/class/members/1.jpg" alt="" class="am-comment-avatar" width="48" height="48"></a>
                 <div class="am-comment-main">
                   <header class="am-comment-hd">
                     <div class="am-comment-meta"><a class="am-comment-author">闵聪</a> 评论于 <time>2014-7-12 15:30</time></div>
@@ -246,7 +171,7 @@
               </li>
               
               <li class="am-comment">
-                <a href="#"><img src="/cblog/img/class/members/1.jpg" alt="" class="am-comment-avatar" width="48" height="48"></a>
+                <a href="#"><img src="../img/class/members/1.jpg" alt="" class="am-comment-avatar" width="48" height="48"></a>
                 <div class="am-comment-main">
                   <header class="am-comment-hd">
                     <div class="am-comment-meta"><a class="am-comment-author">闵聪</a> 评论于 <time>2014-7-12 15:30</time></div>
@@ -275,9 +200,46 @@
   <hr>
   <p class="am-padding-left">Copyright © 2015 <a href="index.html" target="_blank">cBlog.</a></p>
 </footer>
-
-<script src="/cblog/js/jquery.min.js"></script>
-<script src="/cblog/js/amazeui.min.js"></script>
-<script src="/cblog/js/app.js"></script>
+<!-- handlebars -->
+<script id="admin-album-item" type="text/x-handlebars-template">
+  {{#albums}}
+  <li>
+    <header data-am-widget="header" class="am-header am-header-default admin-members-hd">
+      <div class="am-header-left am-header-nav admin-members-hd-nav"><p><span class="am-icon-photo"></span> {{albumDate}} </p></div>
+      <div class="am-dropdown am-header-right am-header-nav admin-members-hd-nav" data-am-dropdown>
+        <div class="am-dropdown-toggle admin-members-hd-btn" data-am-dropdown-toggle><span class="am-icon-bars"></span></div>
+        <ul class="am-dropdown-content admin-members-dd-ul">
+          <li><a href="#" data-am-modal="{target: '#album-discuss'}"><span class="am-icon-check"></span> 查看照片评论</a></li>
+          <li><a href="#"><span class="am-icon-times"></span> 删除照片</a></li>
+        </ul>
+      </div>
+    </header>
+    <a href="http://xiaofeig.image.alimmdn.com/cblog/{{image}}">
+      <img class="am-img-thumbnail am-img-bdrs" src="http://xiaofeig.image.alimmdn.com/cblog/{{image}}" alt="{{albumDate}}"/>
+    </a>
+  </li>
+  {{/albums}}
+</script>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/amazeui.min.js"></script>
+<script src="../js/app.js"></script>
+<script type="text/javascript" src="../js/handlebars.js"></script>
+<script type="text/javascript">
+  $(function(){
+    var clazzName = "${admin.clazz.clazzName}";
+    $.ajax({
+      type: "POST",
+      url: "/cblog/albums/list",
+      dataType: "json",
+      data: {
+        "clazzName": clazzName
+      },
+      success: function(data){
+        showItem("admin-album", data);
+        get_pagination("admin-album", data.page, data.maxPage, this.url, clazzName);
+      }
+    });
+  });
+</script>
 </body>
 </html>

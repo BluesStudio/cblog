@@ -46,9 +46,9 @@ public class AlbumController {
 	 * 创建相册生成表单
 	 * @since 2015-12-10
 	 * */
-	@RequestMapping(value="/create", produces="text/html")
+	@RequestMapping(value="/create", produces="text/html", method=RequestMethod.GET)
 	public String createForm(){
-		return "admin-album-upload-test";
+		return "admin-album-upload";
 	}
 	
 	/**
@@ -115,11 +115,16 @@ System.out.println("filename:"+filename);
 		return "class-article";
 	}*/
 
+	@RequestMapping(value="/admin-album")
+	public String list(){
+		return "admin-album";
+	}
+	
 	/**
 	 * 文章分页
 	 * */
 	@RequestMapping(value="/list",method=RequestMethod.POST, headers = "Accept=application/json")
-	public ResponseEntity<String> list(@RequestParam(value="page", required=false) Integer page, @RequestParam(value="size", required=false) Integer size, @RequestParam(value="sortFieldName", required=false) String sortFieldName, @RequestParam(value="sortOrder", required=false) String sortOrder, @RequestParam(value="clazzId", required=false) Long clazzId, Model model){
+	public ResponseEntity<String> list(@RequestParam(value="page", required=false) Integer page, @RequestParam(value="size", required=false) Integer size, @RequestParam(value="sortFieldName", required=false) String sortFieldName, @RequestParam(value="sortOrder", required=false) String sortOrder, @RequestParam(value="clazzName", required=false) String clazzName, Model model){
 		Integer pageNum=page==null? 1:page;
 		Integer sizeNum=size==null? 15:size;
 		String sortFieldNameStr=sortFieldName==null? "albumDate":sortFieldName;
@@ -129,10 +134,12 @@ System.out.println("filename:"+filename);
 		int maxResults=sizeNum;
 		List<Album> albums=null;
 		long recordNum=0L;
-		if(clazzId!=null){
+		System.out.println("clazzName:"+clazzName);
+		if(!(clazzName==null||clazzName.trim().equals(""))){
 			Map<String, Object> properties=new HashMap<String, Object>();
-			properties.put("clazz.id", clazzId);
+			properties.put("clazz.clazzName", clazzName);
 			albums=Album.findAlbumEntriesByProperties(firstResult, maxResults, sortFieldNameStr, sortOrderStr, properties);
+			System.out.println("albums.size()....:"+albums.size());
 			recordNum=Album.countAlbums(properties);
 		}else{
 			albums=Album.findAlbumEntries(firstResult, maxResults, sortFieldNameStr, sortOrderStr);

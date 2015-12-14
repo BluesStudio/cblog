@@ -49,7 +49,7 @@ public class ArticleController {
 	 * 创建文章生成表单
 	 * @since 2015-12-10
 	 * */
-	@RequestMapping(params="form", produces="text/html")
+	@RequestMapping(value="create", method=RequestMethod.GET)
 	public String createForm(){
 		return "admin-article-edit";
 	}
@@ -69,7 +69,7 @@ public class ArticleController {
 		if(bindingResult.hasErrors()){
 			return "admin-article-edit";
 		}
-		return "admin-article";
+		return "redirect:/articles/admin-article";
 	}
 	
 	
@@ -119,12 +119,18 @@ public class ArticleController {
 		return "class-article";
 	}
 	
+	@RequestMapping(value="/admin-article", method=RequestMethod.GET)
+	public String list(){
+		return "admin-article";
+	}
+	
+	
 	//这个方法可增加一些参数
 	/**
 	 * 文章分页
 	 * */
 	@RequestMapping(value="/list",method=RequestMethod.POST, headers = "Accept=application/json")
-	public ResponseEntity<String> list(@RequestParam(value="page", required=false) Integer page, @RequestParam(value="size", required=false) Integer size, @RequestParam(value="sortFieldName", required=false) String sortFieldName, @RequestParam(value="sortOrder", required=false) String sortOrder, @RequestParam(value="clazzId", required=false) Long clazzId, Model model){
+	public ResponseEntity<String> list(@RequestParam(value="page", required=false) Integer page, @RequestParam(value="size", required=false) Integer size, @RequestParam(value="sortFieldName", required=false) String sortFieldName, @RequestParam(value="sortOrder", required=false) String sortOrder, @RequestParam(value="clazzName", required=false) String clazzName, Model model){
 		Integer pageNum=page==null? 1:page;
 		Integer sizeNum=size==null? 15:size;
 		String sortFieldNameStr=sortFieldName==null? "publishDate":sortFieldName;
@@ -134,9 +140,9 @@ public class ArticleController {
 		int maxResults=sizeNum;
 		List<Article> articles=null;
 		long recordNum=0L;
-		if(clazzId!=null){
+		if(!(clazzName==null||clazzName.trim().equals(""))){
 			Map<String, Object> properties=new HashMap<String, Object>();
-			properties.put("clazz.id", clazzId);
+			properties.put("clazz.clazzName", clazzName);
 			articles=Article.findArticleEntriesByProperties(firstResult, maxResults, sortFieldNameStr, sortOrderStr, properties);
 			recordNum=Article.countArticles(properties);
 		}else{

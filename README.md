@@ -15,6 +15,15 @@
 6. admin-introduction.html班级简介这个页面的按钮都不能用
 7. 首页表单切换卡顿
 8. admin-setting.html没有显示错误信息的地方，修改成功后无任何提示信息
+9. user-setting.html页面表单提交按钮不行
+
+
+## 新问题 ##
+
+1. admin-album-upload.html ，表单提交失败
+2. ~~文章列表、照片列表、成员列表 怎样传递clazzName参数~~
+3. admin-members-add.html表单提交按钮，图片异步提交
+
 
 	
 

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
 import cn.edu.cqupt.cblog.domain.BlogUser;
+import cn.edu.cqupt.cblog.domain.Student;
 import cn.edu.cqupt.cblog.service.BlogUserService;
 import cn.edu.cqupt.cblog.web.validator.BlogUserLoginValidator;
 import cn.edu.cqupt.cblog.web.validator.BlogUserRegisterValidator;
@@ -47,6 +48,9 @@ public class BlogUserServiceImpl implements BlogUserService {
 				flag=true;
 			}
 			if(!flag){
+				Student student=new Student();
+				student.persist();
+				blogUser.setStudent(student);
 				blogUser.persist();
 			}
 		}
