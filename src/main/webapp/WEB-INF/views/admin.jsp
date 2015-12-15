@@ -12,9 +12,9 @@
     <meta name="renderer" content="webkit">
     <meta http-equiv="Cache-Control" content="no-siteapp"/>
     <meta name="apple-mobile-web-app-title" content="Amaze UI"/>
-    <link rel="stylesheet" href="../css/amazeui.min.css"/>
-    <link rel="stylesheet" href="../css/admin-style.css">
-    <link rel="stylesheet" href="../css/admin.css">
+    <link rel="stylesheet" href="/cblog/css/amazeui.min.css"/>
+    <link rel="stylesheet" href="/cblog/css/admin-style.css">
+    <link rel="stylesheet" href="/cblog/css/admin.css">
 </head>
 <body>
 <!--[if lte IE 9]>
@@ -24,7 +24,7 @@
 
 <header class="am-topbar admin-header">
     <div class="am-topbar-brand">
-        <a href="index.html" target="_blank"><strong>cBlog</strong></a>
+        <a href="/cblog/index" target="_blank"><strong>cBlog</strong></a>
         <small>班级博客后台管理</small>
     </div>
 
@@ -36,14 +36,14 @@
 
         <ul class="am-nav am-nav-pills am-topbar-nav am-topbar-right admin-header-list">
             <li><a><span class="am-icon-star"></span> ${sessionScope.admin.clazz.clazzName }班 </a></li>
-            <li><a href="class-home.html" target="_blank"><span class="am-icon-home"></span> 进入博客主页 </a></li>
+            <li><a href="/cblog/clazzs/clazzIntroduction/${admin.clazz.clazzName}" target="_blank"><span class="am-icon-home"></span> 进入博客主页 </a></li>
             <li class="am-dropdown" data-am-dropdown>
                 <a class="am-dropdown-toggle" data-am-dropdown-toggle href="javascript:;">
                     <span class="am-icon-user"></span> ${sessionScope.admin.username } <span class="am-icon-caret-down"></span>
                 </a>
                 <ul class="am-dropdown-content">
-                    <li><a href="admin-setting.html"><span class="am-icon-cog"></span> 更多设置</a></li>
-                    <li><a href="#"><span class="am-icon-power-off"></span> 退出</a></li>
+                    <li><a href="/cblog/clazzs/admin-setting"><span class="am-icon-cog"></span> 更多设置</a></li>
+                    <li><a href="/cblog/admins/logout"><span class="am-icon-power-off"></span> 退出</a></li>
                 </ul>
             </li>
             <li><a href="javascript:;" id="admin-fullscreen"><span class="am-icon-arrows-alt"></span> <span
@@ -56,40 +56,40 @@
     <!-- sidebar start -->
     <div class="admin-sidebar">
         <ul class="am-list admin-sidebar-list">
-            <li class="admin-sidebar-list-hover"><a href="admin.html"><span class="am-icon-home"></span> 首页<span
+            <li class="admin-sidebar-list-hover"><a href="/cblog/index"><span class="am-icon-home"></span> 首页<span
                     class="am-icon-star am-fr am-margin-right admin-icon-yellow"></span></a></li>
             <li class="admin-parent">
                 <a class="am-cf" data-am-collapse="{target: '#collapse-nav1'}"><span class="am-icon-file"></span> 班级文章管理
                     <span class="am-icon-angle-right am-fr am-margin-right"></span></a>
                 <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav1">
-                    <li><a href="/cblog/articles?clazzId=${sessionScope.admin.clazz.id }"><span class="am-icon-calendar"></span> 文章列表<span
+                    <li><a href="/cblog/articles/admin-article"><span class="am-icon-calendar"></span> 文章列表<span
                             class="am-badge am-badge-secondary am-margin-right am-fr">${fn:length(sessionScope.admin.clazz.articles) }</span></a></li>
-                    <li><a href="/cblog/articles?form"><span class="am-icon-pencil-square-o"></span> 写文章</a></li>
+                    <li><a href="/cblog/articles/create"><span class="am-icon-pencil-square-o"></span> 写文章</a></li>
                 </ul>
             </li>
             <li class="admin-parent">
                 <a class="am-cf" data-am-collapse="{target: '#collapse-nav2'}"><span class="am-icon-th"></span> 班级相册管理
                     <span class="am-icon-angle-right am-fr am-margin-right"></span></a>
                 <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav2">
-                    <li><a href="admin-album.html"><span class="am-icon-calendar"></span> 照片列表<span
+                    <li><a href="/cblog/albums/admin-album"><span class="am-icon-calendar"></span> 照片列表<span
                             class="am-badge am-badge-success am-margin-right am-fr">${fn:length(sessionScope.admin.clazz.albums) }</span></a></li>
-                    <li><a href="admin-album-upload.html"><span class="am-icon-upload"></span> 上传照片</a></li>
+                    <li><a href="/cblog/albums/create"><span class="am-icon-upload"></span> 上传照片</a></li>
                 </ul>
             </li>
             <li class="admin-parent">
                 <a class="am-cf" data-am-collapse="{target: '#collapse-nav3'}"><span class="am-icon-users"></span>
                     班级成员管理 <span class="am-icon-angle-right am-fr am-margin-right"></span></a>
                 <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav3">
-                    <li><a href="admin-members.html"><span class="am-icon-calendar"></span> 成员列表<span
+                    <li><a href="/cblog/students/admin-members"><span class="am-icon-calendar"></span> 成员列表<span
                             class="am-badge am-badge-warning am-margin-right am-fr">${fn:length(sessionScope.admin.clazz.students) }</span></a></li>
-                    <li><a href="admin-members-add.html"><span class="am-icon-plus"></span> 添加成员</a></li>
-                    <li><a href="admin-members-apply.html"><span class="am-icon-user-md"></span> 绑定申请核实<span
-                            class="am-badge am-badge-danger am-margin-right am-fr am-round">+0</span></a></li>
+                    <li><a href="/cblog/students/create"><span class="am-icon-plus"></span> 添加成员</a></li>
+                    <li><a href="/cblog/userRequests/admin-members-apply"><span class="am-icon-user-md"></span> 绑定申请核实<span
+                            class="am-badge am-badge-danger am-margin-right am-fr am-round">+${fn:length(userRequests) }</span></a></li>
                 </ul>
             </li>
-            <li><a href="admin-introduction.html"><span class="am-icon-check"></span> 班级简介管理</a></li>
-            <li><a href="admin-setting.html"><span class="am-icon-cog"></span> 更多设置</a></li>
-            <li><a href="#"><span class="am-icon-sign-out"></span> 退出</a></li>
+            <li><a href="/cblog/clazzs/admin-introduction"><span class="am-icon-check"></span> 班级简介管理</a></li>
+            <li><a href="/cblog/clazzs/admin-setting"><span class="am-icon-cog"></span> 更多设置</a></li>
+            <li><a href="/cblog/admins/logout"><span class="am-icon-sign-out"></span> 退出</a></li>
         </ul>
 
         <div class="am-panel am-panel-default admin-sidebar-panel">
@@ -103,7 +103,7 @@
 
         <div class="am-panel am-panel-default admin-sidebar-panel">
             <div class="am-panel-bd">
-                <p><span class="am-icon-tag"></span> ©cBlog <a href="aboutus.html" target="_blank"
+                <p><span class="am-icon-tag"></span> ©cBlog <a href="/cblog/aboutUs" target="_blank"
                                                                class="am-panel-bd-aboutus">关于我们</a></p>
 
                 <p>网站设计与前端开发：闵聪<br>网站后台开发：高小飞<br>安卓移动端开发：王春河</p>
@@ -123,11 +123,11 @@
         </div>
 
         <ul class="am-avg-sm-1 am-avg-md-5 am-margin am-padding am-text-center admin-content-list ">
-            <li><a href="admin-article.html" class="am-text-secondary"><span
+            <li><a href="/cblog/articles/admin-article" class="am-text-secondary"><span
                     class="am-icon-btn am-icon-file-text"></span><br/>班级文章<br/>${fn:length(sessionScope.admin.clazz.articles) }</a></li>
-            <li><a href="admin-album.html" class="am-text-success"><span class="am-icon-btn am-icon-th"></span><br/>班级照片<br/>${fn:length(sessionScope.admin.clazz.albums) }</a>
+            <li><a href="/cblog/albums/admin-album" class="am-text-success"><span class="am-icon-btn am-icon-th"></span><br/>班级照片<br/>${fn:length(sessionScope.admin.clazz.albums) }</a>
             </li>
-            <li><a href="admin-members.html" class="am-text-warning"><span
+            <li><a href="/cblog/students/admin-members" class="am-text-warning"><span
                     class="am-icon-btn am-icon-users"></span><br/>班级成员<br/>${fn:length(sessionScope.admin.clazz.students) }</a></li>
             <li><a class="am-text-danger""am-text-warning"><span class="am-icon-btn am-icon-copy"></span><br/>总评论数<br/>${fn:length(sessionScope.admin.clazz.albums) }</a>
             </li>
@@ -142,35 +142,35 @@
         </div>
         <div class="am-g am-padding">
             <ul class="am-avg-sm-1 am-avg-md-2 am-avg-lg-5 am-thumbnails">
-                <li><a href="admin-article-edit.html">
+                <li><a href="/cblog/articles/create">
                     <div class="am-panel am-panel-default admin-start-panel">
                         <div class="am-panel-bd admin-start-box">
                             <div class="admin-start-box-bd"><span class="am-icon-pencil"></span>写新文章</div>
                         </div>
                     </div>
                 </a></li>
-                <li><a href="admin-album-upload.html">
+                <li><a href="/cblog/albums/create">
                     <div class="am-panel am-panel-default admin-start-panel">
                         <div class="am-panel-bd admin-start-box">
                             <div class="admin-start-box-bd"><span class="am-icon-upload"></span>上传图片</div>
                         </div>
                     </div>
                 </a></li>
-                <li><a href="admin-members-add.html">
+                <li><a href="/cblog/students/create">
                     <div class="am-panel am-panel-default admin-start-panel">
                         <div class="am-panel-bd admin-start-box">
                             <div class="admin-start-box-bd"><span class="am-icon-plus"></span>添加成员</div>
                         </div>
                     </div>
                 </a></li>
-                <li><a href="admin-introduction.html">
+                <li><a href="/cblog/clazzs/admin-introduction">
                     <div class="am-panel am-panel-default admin-start-panel">
                         <div class="am-panel-bd admin-start-box">
                             <div class="admin-start-box-bd"><span class="am-icon-pencil-square-o"></span>修改简介</div>
                         </div>
                     </div>
                 </a></li>
-                <li><a href="admin-setting.html">
+                <li><a href="/cblog/clazzs/admin-setting">
                     <div class="am-panel am-panel-default admin-start-panel">
                         <div class="am-panel-bd admin-start-box">
                             <div class="admin-start-box-bd"><span class="am-icon-cog"></span>更多设置</div>
@@ -188,11 +188,11 @@
 
 <footer>
     <hr>
-    <p class="am-padding-left">Copyright © 2015 <a href="index.html" target="_blank">cBlog.</a></p>
+    <p class="am-padding-left">Copyright © 2015 <a href="/cblog/index" target="_blank">cBlog.</a></p>
 </footer>
 
-<script src="../js/jquery.min.js"></script>
-<script src="../js/amazeui.min.js"></script>
-<script src="../js/app.js"></script>
+<script src="/cblog/js/jquery.min.js"></script>
+<script src="/cblog/js/amazeui.min.js"></script>
+<script src="/cblog/js/app.js"></script>
 </body>
 </html>

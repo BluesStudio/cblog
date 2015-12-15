@@ -111,7 +111,7 @@
       <li><a href="admin-article.html" class="am-text-secondary"><span class="am-icon-btn am-icon-file-text"></span><br/>班级文章<br/>13</a></li>
       <li><a href="admin-album.html" class="am-text-success"><span class="am-icon-btn am-icon-th"></span><br/>班级照片<br/>45</a></li>
       <li><a href="admin-members.html" class="am-text-warning"><span class="am-icon-btn am-icon-users"></span><br/>班级成员<br/>27</a></li>
-      <li><a class="am-text-danger""am-text-warning"><span class="am-icon-btn am-icon-copy"></span><br/>总评论数<br/>22</a></li>
+      <li><a class="am-text-danger am-text-warning"><span class="am-icon-btn am-icon-copy"></span><br/>总评论数<br/>22</a></li>
       <li><a class="am-text-warning"><span class="am-icon-btn am-icon-recycle"></span><br/>访问量<br/>2333</a></li>
     </ul>
 
@@ -143,67 +143,13 @@
                 <th class="table-id">ID</th><th class="table-adate am-hide-sm-only">活动日期</th><th class="table-pdate am-hide-sm-only">发表时间</th><th class="table-title">标题</th><th class="table-set">操作</th>
               </tr>
           </thead>
-          <tbody>
-	        <c:set var="count" value="${fn:length(articles) }"/>
-			<c:forEach items="${articles }" var="article" >
-			
-            <tr>
-              <td>${count }</td>
-              <td class="am-hide-sm-only"><fmt:formatDate value="${article.activityDate }" pattern="yyyy年MM月dd日"/></td>
-              <td class="am-hide-sm-only"><fmt:formatDate value="${article.publishDate }" pattern="yyyy年MM月dd日 HH:mm:ss"/></td>
-              <td><a href="/cblog/articles/${article.id }" target="_blank">${article.title }</a></td>
-              <td>
-                <div class="am-btn-toolbar">
-                  <div class="am-btn-group am-btn-group-xs">
-                    <button class="am-btn am-btn-default am-btn-xs am-text-secondary"><span class="am-icon-pencil-square-o"></span> <a href="http://localhost:8080/cblog/articles/${article.id }?form">编辑</a></button>
-                    <button class="am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only"><span class="am-icon-trash-o"></span> 删除</button>
-                    <div class="am-btn am-btn-default am-btn-xs am-hide-sm-only article-discuss-openbutton" data-am-modal="{target: '#article-discuss'}"><span class="am-icon-copy"></span> 展开评论 （<span>1</span>）</div>
-                  </div>
-                </div>
-              </td>
-              <div>	
-              </div>
-            </tr>	
-            <c:set var="count" value="${count-1 }"/>		
-			</c:forEach>
-
-        <!-- 
-            <tr>
-              <td>1</td>
-              <td class="am-hide-sm-only">2015年01月01日</td>
-              <td class="am-hide-sm-only">2015年01月01日 17:28:47</td>
-              <td><a href="class-article.html" target="_blank">大学入学</a></td>
-              <td>
-                <div class="am-btn-toolbar">
-                  <div class="am-btn-group am-btn-group-xs">
-                    <button class="am-btn am-btn-default am-btn-xs am-text-secondary"><span class="am-icon-pencil-square-o"></span> 编辑</button>
-                    <button class="am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only"><span class="am-icon-trash-o"></span> 删除</button>
-                    <div class="am-btn am-btn-default am-btn-xs am-hide-sm-only article-discuss-openbutton" data-am-modal="{target: '#article-discuss'}"><span class="am-icon-copy"></span> 展开评论 （<span>4</span>）</div>
-                  </div>
-                </div>
-              </td>
-              <div> 	
-              </div>
-            </tr>
-           -->  
-            
-          </tbody>
+              <tbody class="admin-article-list"></tbody>
         </table>
-          <div class="am-cf">
-			  每页最多 15 条记录
-			  <div class="am-fr">
-			    <ul class="am-pagination">
-			      <li class="am-disabled"><a href="#">«</a></li>
-			      <li class="am-active"><a href="#">1</a></li>
-			      <li><a href="#">2</a></li>
-			      <li><a href="#">3</a></li>
-			      <li><a href="#">4</a></li>
-			      <li><a href="#">5</a></li>
-			      <li><a href="#">»</a></li>
-			    </ul>
-			  </div>
-			</div>
-          <hr />
+          <div id="admin-article-pagination">
+              <p class="am-fl am-margin-left">第 <span class="am-pagination-indexpage">1</span> / <span class="am-pagination-totalpage">1</span> 页</p>
+              <ol class="am-pagination am-fr">
+              </ol>
+          </div>
         </form>
       </div>
 
@@ -250,9 +196,46 @@
   <hr>
   <p class="am-padding-left">Copyright © 2015 <a href="index.html" target="_blank">cBlog.</a></p>
 </footer>
-
+<!-- handlebars -->
+<script id="admin-article-item" type="text/x-handlebars-template">
+    {{#articles}}
+    <tr>
+        <td>{{tableId /cblog/page @index}}</td>
+        <td class="am-hide-sm-only">{{activityDate}}</td>
+        <td class="am-hide-sm-only">{{publishDate}}</td>
+        <td><a href="class-article.html" target="_blank">{{title}}</a></td>
+        <td>
+            <div class="am-btn-toolbar">
+                <div class="am-btn-group am-btn-group-xs">
+                    <button class="am-btn am-btn-default am-btn-xs am-text-secondary"><span class="am-icon-pencil-square-o"></span> 编辑</button>
+                    <button class="am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only"><span class="am-icon-trash-o"></span> 删除</button>
+                    <div class="am-btn am-btn-default am-btn-xs am-hide-sm-only article-discuss-openbutton" data-am-modal="{target: '#article-discuss'}"><span class="am-icon-copy"></span> 展开评论 （<span>1</span>）</div>
+                </div>
+            </div>
+        </td>
+    </tr>
+    {{/articles}}
+</script>
 <script src="/cblog/js/jquery.min.js"></script>
 <script src="/cblog/js/amazeui.min.js"></script>
 <script src="/cblog/js/app.js"></script>
+<script type="text/javascript" src="/cblog/js/handlebars.js"></script>
+<script type="text/javascript">
+$(function(){
+    var clazzName = "${admin.clazz.clazzName}";
+    $.ajax({
+        type: "POST",
+        url: "/cblog/articles/list",
+        dataType: "json",
+        data: {
+            "clazzName": clazzName
+        },
+        success: function(data){
+            showItem("admin-article", data);
+            get_pagination("admin-article", data.page, data.maxPage, this.url, clazzName);
+        }
+    });
+});
+</script>
 </body>
 </html>

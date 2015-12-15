@@ -1,6 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!doctype html>
 <html class="no-js">
 <head>
@@ -65,7 +64,7 @@
       <a class="am-cf" data-am-collapse="{target: '#collapse-nav2'}"><span class="am-icon-th"></span> 班级相册管理 <span class="am-icon-angle-right am-fr am-margin-right"></span></a>
       	<ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav2">
           <li><a href="admin-album.html"><span class="am-icon-calendar"></span> 照片列表<span class="am-badge am-badge-success am-margin-right am-fr">45</span></a></li>
-          <li class="admin-sidebar-list-hover"><a href="admin-album-upload.html"><span class="am-icon-upload"></span> 上传照片</a></li>
+          <li><a href="admin-album-upload.html"><span class="am-icon-upload"></span> 上传照片</a></li>
         </ul>
       </li>
       <li class="admin-parent">
@@ -73,7 +72,7 @@
         <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav3">
           <li><a href="admin-members.html"><span class="am-icon-calendar"></span> 成员列表<span class="am-badge am-badge-warning am-margin-right am-fr">27</span></a></li>
           <li><a href="admin-members-add.html"><span class="am-icon-plus"></span> 添加成员</a></li>
-          <li><a href="admin-members-apply.html"><span class="am-icon-user-md"></span> 绑定申请核实<span class="am-badge am-badge-danger am-margin-right am-fr am-round">+2</span></a></li>
+          <li class="admin-sidebar-list-hover"><a href="admin-members-apply.html"><span class="am-icon-user-md"></span> 绑定申请核实<span class="am-badge am-badge-danger am-margin-right am-fr am-round">+2</span></a></li>
         </ul>
       </li>
       <li><a href="admin-introduction.html"><span class="am-icon-check"></span> 班级简介管理</a></li>
@@ -103,40 +102,68 @@
   <div class="admin-content">
 
     <div class="am-cf am-padding">
-      <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">上传图片</strong> / <small>upload</small></div>
+      <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">申请核实</strong> / <small>apply</small></div>
     </div>
-    <hr/>
-    <div class="am-g">
-        <form class="am-form am-form-horizontal" action="/cblog/albums/create" method="POST">
-          <div class="am-g am-margin-top">
-            <label class="am-u-sm-4 am-u-md-2 am-text-right">
-              时间
-            </label>
-            <div class="am-u-sm-8 am-u-md-4 am-u-end col-end">
-              <input type="text" class="am-input-sm" placeholder="照片时间" data-am-datepicker name="albumDate">
+    <div class="am-u-sm-12">
+    <table class="am-table am-table-striped am-table-hover table-main">
+       <thead>
+          <tr>
+            <th class="table-id">ID</th><th class="table-username">用户名</th><th class="table-username">学号</th><th class="table-name">姓名</th><th class="table-why am-hide-sm-only">理由</th><th class="table-set">操作</th>
+          </tr>
+      </thead>
+      <tbody>
+	    <c:set var="count" value="1"></c:set>
+		<c:forEach items="${userRequests }" var="userRequest">
+		<tr>
+          <td>${count }</td>
+          <td>${userRequest.blogUser.username }</td>
+          <td class="am-hide-sm-only">${userRequest.stuId }</td>
+          <td class="am-hide-sm-only">${userRequest.stuName }</td>
+          <td>${userRequest.reason }</td>
+          <td>
+            <div class="am-btn-toolbar">
+              <div class="am-btn-group am-btn-group-xs">
+              <c:if test="${userRequest.dispose=='unresolve' }">
+                <a class="am-btn am-btn-default am-btn-xs am-text-secondary" href="/cblog/userRequests/update?dispose=agree&userRequestId=${userRequest.id }"><span class="am-icon-check"></span> 同意</a>
+                <a class="am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only" href="/cblog//userRequests/update?dispose=disagree&userRequestId=${userRequest.id }"><span class="am-icon-trash-o"></span> 驳回</a>
+                </c:if>
+                <c:if test="${userRequest.dispose=='agree' }">
+                <a class="am-btn am-btn-default am-btn-xs am-text-secondary"><span class="am-icon-check"></span> 已同意</a>
+                </c:if>
+                <c:if test="${userRequest.dispose=='agree' }">
+                <a class="am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only"><span class="am-icon-trash-o"></span> 已驳回</a>
+                </c:if>
+              </div>
             </div>
+          </td>
+          <div>	
           </div>
-
-          <div class="am-form-group am-margin">
-            <label class="am-u-sm-4 am-u-md-2 am-text-right">
-              选择图片
-            </label>
-            <div class="am-u-sm-8 am-u-md-4 am-u-end col-end am-form-file">
-              <button type="button" class="am-btn am-btn-default">
-                <i class="am-icon-cloud-upload"></i> 选择要上传的图片</button>
-              <input id="doc-form-file" type="file" accept="image/*" multiple="" name="imageFile">
-              <div id="file-list"></div>
+        </tr>
+        <c:set var="count" value="${count+1 }"/>
+		</c:forEach>
+        <!-- 
+        <tr>
+          <td>2</td>
+          <td>wenhui</td>
+          <td class="am-hide-sm-only">2013211649</td>
+          <td class="am-hide-sm-only">文慧</td>
+          <td>我是文明慧</td>
+          <td>
+            <div class="am-btn-toolbar">
+              <div class="am-btn-group am-btn-group-xs">
+                <a class="am-btn am-btn-default am-btn-xs am-text-secondary"><span class="am-icon-check"></span> 同意</a>
+                <a class="am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only"><span class="am-icon-trash-o"></span> 驳回</a>
+              </div>
             </div>
+          </td>
+          <div>	
           </div>
-          <div id="file-list"></div>
-          <div class="am-form-group"> 
-            <div class="am-u-sm-9 am-u-sm-push-3">
-              <button type="button" class="am-btn am-btn-primary">保存修改</button>
-            </div>
-          </div>
-        </form>
-    </div>
-
+        </tr>
+         -->
+        </tbody>
+      </table><hr>
+     </div>
+ 	
   </div>
   <!-- content end -->
 
@@ -150,16 +177,5 @@
 <script src="/cblog/js/jquery.min.js"></script>
 <script src="/cblog/js/amazeui.min.js"></script>
 <script src="/cblog/js/app.js"></script>
-<script>
-  $(function() {
-    $('#doc-form-file').on('change', function() {
-      var fileNames = '';
-      $.each(this.files, function() {
-        fileNames += '<span class="am-badge">' + this.name + '</span> ';
-      });
-      $('#file-list').html(fileNames);
-    });
-  });
-</script>
 </body>
 </html>

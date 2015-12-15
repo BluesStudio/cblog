@@ -1,6 +1,9 @@
 package cn.edu.cqupt.cblog.web;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -21,7 +24,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.edu.cqupt.cblog.domain.BlogUser;
+import cn.edu.cqupt.cblog.domain.Clazz;
 import cn.edu.cqupt.cblog.domain.Student;
+import cn.edu.cqupt.cblog.domain.UserRequest;
 import cn.edu.cqupt.cblog.service.BlogUserService;
 
 
@@ -81,13 +86,22 @@ public class BlogUserController {
         return new ResponseEntity<String>("{\"success\":\"true\"}", headers, HttpStatus.OK);
 	}
 	
+	@RequestMapping(value="/index", method=RequestMethod.GET)
+	public String index(HttpSession session){
+		//session.setAttribute("blogUser", BlogUser.findBlogUser(1L));
+		return "user";
+	}
+	
 	@RequestMapping(value="/user-setting", method=RequestMethod.GET)
-	public String userSetting(){
+	public String userSetting(HttpSession session){
+		//session.setAttribute("blogUser", BlogUser.findBlogUser(1L));
 		return "user-setting";
 	}
 	
 	@RequestMapping(value="/user-setting", method=RequestMethod.POST)
 	public String updateInfo(@ModelAttribute("blogUser") BlogUser blogUserTemp, BindingResult bindingResult, HttpSession session){
+		
+		
 		BlogUser blogUser=(BlogUser)session.getAttribute("blogUser");
 		Student student=blogUserTemp.getStudent();
 		if(student==null){
@@ -146,4 +160,48 @@ public class BlogUserController {
 		return "redirect:/blogUsers/modifyPasswd";
 	}
 	
+	
+	//修改班级
+	@RequestMapping(value="/modifyClazz", method=RequestMethod.POST)
+	public String modifyClazz(@ModelAttribute("userRequest") UserRequest userRequest, BindingResult bindingResult, HttpSession session){
+		if(userRequest==null){
+			bindingResult.reject("userRequest.clazzName", "班级编号不能为空");
+			bindingResult.reject("userRequest.stuName", "姓名不能为空");
+			bindingResult.reject("userRequest.stuId", "学号编号不能为空");
+			bindingResult.reject("userRequest.reason", "申请理由不能为空");
+		}else{
+			if(userRequest.getClazzName()==null||userRequest.getClazzName().trim().equals("")){
+				bindingResult.reject("userRequest.clazzName", "班级编号不能为空");
+			}else{
+				Map<String, Object> properties=new HashMap<String, Object>();
+				properties.put("clazzName", userRequest.getClazzName());
+				if(Clazz.findClazzsByProperties(properties).size()==0){
+					bindingResult.reject("userRequest.clazzName", "该班级不存在");
+				}
+			}
+			if(userRequest.getStuName()==null||userRequest.getStuName().trim().equals("")){
+				bindingResult.reject("userRequest.stuName", "姓名不能为空");
+			}
+			if(userRequest.getStuId()==null||userRequest.getStuId().trim().equals("")){
+				bindingResult.reject("userRequest.stuId", "学号编号不能为空");
+			}
+			if(userRequest.getReason()==null||userRequest.getReason().trim().equals("")){
+				bindingResult.reject("userRequest.reason", "申请理由不能为空");
+			}
+		}
+		if(bindingResult.hasErrors()){
+			return "user-setting";
+		}
+		userRequest.setDispose("unresolve");
+		userRequest.setBlogUser((BlogUser)session.getAttribute("blogUser"));
+		userRequest.setUserRequestDate(new Date());
+		userRequest.persist();
+		return "user-setting";
+	}
+	
+	@RequestMapping("/logout")
+	public String logout(HttpSession session){
+		session.removeAttribute("blogUser");
+		return "redirect:/index";
+	}
 }

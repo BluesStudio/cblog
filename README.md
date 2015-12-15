@@ -3,18 +3,31 @@
 
 ## 问题反馈 ##
 
-1. index.html页面使用了#之后，切换不流畅，浏览器地址框未改变
-2. 注册表单部分没有用来显示错误信息的位置
-3. index.html的子页面如#apply命名不规范，建议如下：
-	- 管理员注册博客：#adminRegister
-	- 管理员登录：#adminLogin
-	- 用户注册：#userRegister
-	- 用户登录:#userLogin
-4. admin-members-add.html这个页面没有错误信息的位置，还有些写文章的那个也是
-5. admin-members-add.html这个页面保存修改按钮不起作用
-6. admin-introduction.html班级简介这个页面的按钮都不能用
-7. 首页表单切换卡顿
-8. admin-setting.html没有显示错误信息的地方，修改成功后无任何提示信息
+1. ~~index.html页面使用了#之后，切换不流畅，浏览器地址框未改变~~
+2. ~~注册表单部分没有用来显示错误信息的位置~~
+3. ~~index.html的子页面如#apply命名不规范，建议如下：~~
+	- ~~管理员注册博客：#adminRegister~~
+	- ~~管理员登录：#adminLogin~~
+	- ~~用户注册：#userRegister~~
+	- ~~用户登录:#userLogin~~
+4. ~~admin-members-add.html这个页面没有错误信息的位置，还有些写文章的那个也是~~
+5. ~~admin-members-add.html这个页面保存修改按钮不起作用~~
+6. ~~admin-introduction.html班级简介这个页面的按钮都不能用~~
+7. ~~首页表单切换卡顿~~
+8. ~~admin-setting.html没有显示错误信息的地方，修改成功后无任何提示信息~~
+9. ~~user-setting.html页面表单提交按钮不行~~
+
+
+## 新问题 ##
+
+1. ~~admin-album-upload.html ，表单提交失败~~
+2. ~~文章列表、照片列表、成员列表 怎样传递clazzName参数~~
+3. ~~admin-members-add.html表单提交按钮，图片异步提交~~
+
+问题待明天反馈
+`12/15/2015 12:01:25 AM`
+ 
+
 
 	
 

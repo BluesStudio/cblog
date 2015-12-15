@@ -49,7 +49,7 @@ public class StudentController {
 	 * */
 	@RequestMapping(value="/create",method=RequestMethod.GET, produces="text/html")
 	public String createForm(){
-		return "admin-members-add-test";
+		return "admin-members-add";
 	}
 	
 	/**
@@ -69,9 +69,14 @@ public class StudentController {
 		}
 		return "redirect:/students/list";
 	}
-	@RequestMapping(value="/list",method=RequestMethod.GET, produces="text/html")
+	@RequestMapping(value="/admin-members", method=RequestMethod.GET, produces="text/html")
 	public String list(){
 		return "admin-members";
+	}
+	
+	@RequestMapping("/admin-members-apply")
+	public String admin_members_apply(){
+		return "admin-members-apply";
 	}
 	
 	//这个方法可增加一些参数
@@ -79,7 +84,7 @@ public class StudentController {
 	 * 学生分页
 	 * */
 	@RequestMapping(value="/list",method=RequestMethod.POST, headers = "Accept=application/json")
-	public ResponseEntity<String> listToJson(@RequestParam(value="page", required=false) Integer page, @RequestParam(value="size", required=false) Integer size, @RequestParam(value="sortFieldName", required=false) String sortFieldName, @RequestParam(value="sortOrder", required=false) String sortOrder, @RequestParam(value="clazzId", required=false) Long clazzId, Model model){
+	public ResponseEntity<String> listToJson(@RequestParam(value="page", required=false) Integer page, @RequestParam(value="size", required=false) Integer size, @RequestParam(value="sortFieldName", required=false) String sortFieldName, @RequestParam(value="sortOrder", required=false) String sortOrder, @RequestParam(value="clazzName", required=false) String clazzName, Model model){
 		Integer pageNum=page==null? 1:page;
 		Integer sizeNum=size==null? 15:size;
 		String sortFieldNameStr=sortFieldName==null? "id":sortFieldName;
@@ -89,9 +94,9 @@ public class StudentController {
 		int maxResults=sizeNum;
 		List<Student> students=null;
 		long recordNum=0L;
-		if(clazzId!=null){
+		if(!(clazzName==null||clazzName.trim().equals(""))){
 			Map<String, Object> properties=new HashMap<String, Object>();
-			properties.put("clazz.id", clazzId);
+			properties.put("clazz.clazzName", clazzName);
 			students=Student.findStudentEntriesByProperties(firstResult, maxResults, sortFieldNameStr, sortOrderStr, properties);
 			recordNum=Student.countStudents(properties);
 		}else{

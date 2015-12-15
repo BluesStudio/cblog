@@ -135,7 +135,7 @@ public class UserRequest {
 	 * @since 2015-12-10
 	 * 新增，根据属性集查找
 	 * */
-	public static List<UserRequest> findUserRequestsByProperties(Map<String, String> properties){
+	public static List<UserRequest> findUserRequestsByProperties(Map<String, Object> properties){
 		
 		StringBuilder jpaQueryBuilder=new StringBuilder();
 		for(String key: properties.keySet()){
@@ -149,7 +149,7 @@ public class UserRequest {
 		List<UserRequest> userRequests=null;
 		try{
 			TypedQuery<UserRequest> query=entityManager().createQuery(jpaQuery, UserRequest.class);
-			for(Entry<String, String> entry: properties.entrySet()){
+			for(Entry<String, Object> entry: properties.entrySet()){
 				query.setParameter(entry.getKey(), entry.getValue());
 			}
 			//若无结果，返回一个size为0的list

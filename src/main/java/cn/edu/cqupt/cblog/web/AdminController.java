@@ -42,8 +42,8 @@ public class AdminController {
 
 	@RequestMapping(value="/index", method=RequestMethod.GET)
 	public String index(Model model, HttpSession session){
-		Admin admin=Admin.findAdmin(1L);
-		Map<String, String> properties=new HashMap<String, String>();
+		Admin admin=(Admin)session.getAttribute("admin");
+		Map<String, Object> properties=new HashMap<String, Object>();
 		properties.put("clazzName", admin.getClazz().getClazzName());
 		properties.put("dispose", "unsolved");
 		List<UserRequest> userRequests=UserRequest.findUserRequestsByProperties(properties);
@@ -51,6 +51,8 @@ public class AdminController {
 //System.out.println(ReflectionToStringBuilder.toString(userRequests, ToStringStyle.SIMPLE_STYLE));
 
 //没有总评论数
+		//session.setAttribute("admin", admin);
+		admin=Admin.findAdmin(admin.getId());
 		session.setAttribute("admin", admin);
 		model.addAttribute("userRequests", userRequests);
 		return "admin";
@@ -133,5 +135,11 @@ public class AdminController {
 		admin.setPasswd(newPasswd);
 		session.setAttribute("admin", admin.merge());
 		return "redirect:/admins/modifyPasswd";
+	}
+	
+	@RequestMapping("/logout")
+	public String logout(HttpSession session){
+		session.removeAttribute("admin");
+		return "redirect:/index";
 	}
 }
