@@ -59,45 +59,56 @@
 	<div class="content">
 		<h1 class="content-title">班级成员</h1>
 		<table class="members">
-			<tr>
-				<td><img src="../img/class/members/1.jpg" class="members-img mimg"></td>
-				<td><img src="../img/class/members/1.jpg" class="members-img mimg"></td>
-				<td><img src="../img/class/members/1.jpg" class="members-img mimg"></td>
-				<td><img src="../img/class/members/1.jpg" class="members-img mimg"></td>
-				<td><img src="../img/class/members/1.jpg" class="members-img mimg"></td>
-				<td><img src="../img/class/members/1.jpg" class="members-img mimg"></td>
-			</tr>
-			
-			<tr>
-				<td><img src="../img/class/members/1.jpg" class="members-img mimg"></td>
-				<td><img src="../img/class/members/1.jpg" class="members-img mimg"></td>
-				<td><img src="../img/class/members/1.jpg" class="members-img mimg"></td>
-				<td><img src="../img/class/members/1.jpg" class="members-img mimg"></td>
-				<td><img src="../img/class/members/1.jpg" class="members-img mimg"></td>
-				<td><img src="../img/class/members/1.jpg" class="members-img mimg"></td>
-			</tr>
-			<tr>
-				<td><img src="../img/class/members/1.jpg" class="members-img mimg"></td>
-				<td><img src="../img/class/members/1.jpg" class="members-img mimg"></td>
-				<td><img src="../img/class/members/1.jpg" class="members-img mimg"></td>
-				<td><img src="../img/class/members/1.jpg" class="members-img mimg"></td>
-				<td><img src="../img/class/members/1.jpg" class="members-img mimg"></td>
-				<td><img src="../img/class/members/1.jpg" class="members-img mimg"></td>
-			</tr>
 		</table>
-
-
-
 	</div>
 </div>
 <div id="footer">
 	<img src="../img/class/grass.png" class="grass">
 </div>
 
+<!-- handlebars -->
+<script id="list-item" type="text/x-handlebars-template">
+    {{#list this}}
+    <img src="http://xiaofeig.image.alimmdn.com/cblog/{{stuImg}}" class="members-img mimg">
+    {{/list}}
+</script>
 <!--  script  -->
 <script src="../js/jquery.min.js" type="text/javascript"></script>
 <script src="../js/smoothscroll.js" type="text/javascript"></script>
 <script src="../js/big.js" type="text/javascript"></script>
 <script src="../js/top.js" type="text/javascript"></script>
+<script type="text/javascript" src="../js/handlebars.js"></script>
+<script type="text/javascript">
+	$(function(){
+		var members = $(".members");
+		var list_source = $("#list-item").html();
+		var list_template = Handlebars.compile(list_source);
+		var clazzName = "0401306";
+		$.ajax({
+			type: "POST",
+			url: "http://125.87.196.167:8080/cblog/students/list",
+			dataType: "json",
+			data: {
+				"clazzName": clazzName
+			},
+			success: function(data){
+				var list_data = data.students;
+				Handlebars.registerHelper('list', function(items, options) {
+					var out = "";
+                    var n = 6;
+					for(var i = 0, l = items.length; i <= Math.floor(l/n); i++) {
+						out += "<tr>";
+						for (var j = 0; j < Math.min(n, l-n*i); j++) {
+							out += "<td>" + options.fn(items[n*i+j]) + "</td>";
+						}
+						out += "</tr>";
+					}
+					return out;
+				});
+                members.append(list_template(list_data));
+			}
+		});
+	})
+</script>
 </body>
 </html>
