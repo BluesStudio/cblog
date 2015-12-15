@@ -19,7 +19,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -89,7 +88,6 @@ public class ArticleController {
 	 * */
 	@RequestMapping(value="/update", method=RequestMethod.POST, produces="text/html")
 	public String update(@ModelAttribute("article") Article temp, BindingResult bindingResult, HttpSession session, Model model){
-		System.out.println("article.update");
 		Admin admin=(Admin)session.getAttribute("admin");
 		
 		Article article=Article.findArticle(temp.getId());
@@ -103,9 +101,9 @@ public class ArticleController {
 		Long clazzId=admin.getClazz().getId();
 		articleService.update(article, bindingResult, clazzId);
 		if(bindingResult.hasErrors()){
-			for(FieldError error:bindingResult.getFieldErrors()){
+			/*for(FieldError error:bindingResult.getFieldErrors()){
 				System.out.println(error.getDefaultMessage());
-			}
+			}*/
 			
 			model.addAttribute("article", article);
 			return "admin-article-update";
@@ -167,7 +165,6 @@ public class ArticleController {
 			jsonArr.add(subJson);
 		}
 		json.put("articles", jsonArr);
-System.out.println("json.toString:"+json.toString());
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
 		return new ResponseEntity<String>(json.toString(), headers, HttpStatus.OK);

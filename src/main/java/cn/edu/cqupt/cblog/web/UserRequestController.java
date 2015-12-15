@@ -37,9 +37,11 @@ public class UserRequestController {
 	public String update(@ModelAttribute("dispose") String dispose, @ModelAttribute("userRequestId") Long userRequestId, HttpSession session, BindingResult bindingResult){
 		Clazz clazz=((Admin)session.getAttribute("admin")).getClazz();
 		UserRequest userRequest=UserRequest.findUserRequest(userRequestId);
+		System.out.println("dispose:"+dispose);
+		System.out.println("userRequestId:"+userRequestId);
 		if(userRequest.getClazzName().equals(clazz.getClazzName())){
 			if(dispose.equals("agree")){
-				System.out.println("9999");
+				System.out.println("agree");
 				userRequest.setDispose(dispose);
 				BlogUser blogUser=userRequest.getBlogUser();
 				
@@ -62,12 +64,15 @@ public class UserRequestController {
 					blogUser.setStudent(stu);
 					blogUser.merge();
 				}
-				System.out.println("5555555555");
+				System.out.println("agreeEnd");
 			}else if(dispose.equals("disagree")){
+				System.out.println("disagree");
 				userRequest.setDispose(dispose);
+				userRequest.merge();
+				System.out.println("disagreeEnd");
 			}
 		}
-		System.out.println("--------------");
+		System.out.println("end");
 		return "redirect:/userRequests/admin-members-apply";				
 	}
 }

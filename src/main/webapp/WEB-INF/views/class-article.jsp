@@ -22,11 +22,11 @@
 	<div class="content">
 		<div id="logo">${article.clazz.clazzName }</div>
 		<ul class="menu">
-			<li><a href="class-home.html" class="clicked"><span>主页</span></a></li>
-			<li><a href="class-introduction.html"><span>简介</span></a></li>
-			<li><a href="class-album.html"><span>相册</span></a></li>
-			<li><a href="class-members.html"><span>成员</span></a></li>
-			<li><a href="index.html"><span>登录</span></a></li>
+			<li><a href="/cblog/clazzs/class-home/${article.clazz.clazzName }" class="clicked"><span>主页</span></a></li>
+			<li><a href="/cblog/clazzs/clazzIntroduction/${article.clazz.clazzName }"><span>简介</span></a></li>
+			<li><a href="/cblog/clazzs/class-album/${article.clazz.clazzName }"><span>相册</span></a></li>
+			<li><a href="/cblog/clazzs/class-members/${article.clazz.clazzName }"><span>成员</span></a></li>
+			<li><a href="/cblog/index"><span>登录</span></a></li>
 		</ul>
 	</div>
 </div>

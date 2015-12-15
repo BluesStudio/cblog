@@ -24,6 +24,7 @@ public class StudentServiceImpl implements StudentService {
 	public void create(Student student, BindingResult bindingResult) {
 		studentValidator.validate(student, bindingResult);
 		if(!bindingResult.hasErrors()){
+			System.out.println("student.persist");
 			student.persist();
 		}
 	}

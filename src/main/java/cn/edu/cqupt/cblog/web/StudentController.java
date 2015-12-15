@@ -9,8 +9,6 @@ import javax.servlet.http.HttpSession;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -18,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -56,16 +55,17 @@ public class StudentController {
 	 * 提交创建的学生
 	 * */
 	@RequestMapping(value="/create", method=RequestMethod.POST, produces="text/html")
-	public String create(@ModelAttribute("student") Student student, BindingResult bindingResult, HttpSession session){
-		System.out.println(ReflectionToStringBuilder.toString(student, ToStringStyle.SIMPLE_STYLE));
+	public String create(@ModelAttribute("student") Student student, BindingResult bindingResult, HttpSession session, Model model){
 		Clazz clazz=((Admin)session.getAttribute("admin")).getClazz();
 		student.setClazz(clazz);
 		studentService.create(student, bindingResult);
-		/*System.out.println("------------------------------");
-		System.out.println(ReflectionToStringBuilder.toString(bindingResult, ToStringStyle.SIMPLE_STYLE));
-		System.out.println("------------------------------");*/
+		
 		if(bindingResult.hasErrors()){
-			return "admin-members-add-test";
+			for(ObjectError error:bindingResult.getAllErrors()){
+				//System.out.println(error.getCode()+":"+error.getDefaultMessage());
+				model.addAttribute(error.getCode(), error.getDefaultMessage());
+			}
+			return "admin-members-add";
 		}
 		return "redirect:/students/list";
 	}
@@ -121,7 +121,6 @@ public class StudentController {
 			jsonArr.add(subJson);
 		}
 		json.put("students", jsonArr);
-System.out.println("json.toString:"+json.toString());
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
 		return new ResponseEntity<String>(json.toString(), headers, HttpStatus.OK);

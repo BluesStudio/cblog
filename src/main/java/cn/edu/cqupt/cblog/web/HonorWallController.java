@@ -20,13 +20,14 @@ import cn.edu.cqupt.cblog.util.MultipartFileResolver;
 public class HonorWallController {
 
 	@RequestMapping(value="/create", method=RequestMethod.POST)
-	public String create(@ModelAttribute("honorWall")MultipartFile honorWall, BindingResult bindingResult, HttpSession session){
+	public String create(@ModelAttribute("honorWall")MultipartFile honorWall, HttpSession session){
 		HonorWall wall=new HonorWall();
 		Admin admin=(Admin)session.getAttribute("admin");
 		wall.setClazz(admin.getClazz());
 		wall.setImage(MultipartFileResolver.resolveMultipartFile(honorWall));
 		wall.persist();
-		return "admin-introduction";
+		session.setAttribute("admin", Admin.findAdmin(admin.getId()));
+		return "redirect:/clazzs/admin-introduction";
 	}
 	
 	@RequestMapping(value="/delete/{id}", method=RequestMethod.GET)
@@ -35,9 +36,10 @@ public class HonorWallController {
 		Admin admin=(Admin)session.getAttribute("admin");
 		if(honorWall==null||honorWall.getClazz()==null||honorWall.getClazz().getId().equals(admin.getClazz().getId())){
 			bindingResult.reject("honorWall.id.required", "荣誉墙图片已删除或不存在");
-			return "admin-introduction";
+			return "redirect:/clazzs/admin-introduction";
 		}
 		honorWall.remove();
-		return "admin-introduction";
+		session.setAttribute("admin", Admin.findAdmin(admin.getId()));
+		return "redirect:/clazzs/admin-introduction";
 	}
 }

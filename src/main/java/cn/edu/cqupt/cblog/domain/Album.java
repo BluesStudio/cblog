@@ -22,6 +22,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.roo.addon.javabean.annotations.RooJavaBean;
 import org.springframework.roo.addon.javabean.annotations.RooToString;
 import org.springframework.roo.addon.jpa.annotations.activerecord.RooJpaActiveRecord;
@@ -45,8 +46,8 @@ public class Album {
 
     /**
      */
-    @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat(style = "M-")
+    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(iso=ISO.DATE)
     private Date albumDate;
     
     //新增

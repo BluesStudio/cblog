@@ -24,7 +24,7 @@
 
 <header class="am-topbar admin-header">
   <div class="am-topbar-brand">
-    <a href="index.html" target="_blank"><strong>cBlog</strong></a> <small>用户个人中心</small>
+    <a href="/cblog/blogUsers/index" target="_blank"><strong>cBlog</strong></a> <small>用户个人中心</small>
   </div>
 
   <button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-success am-show-sm-only" data-am-collapse="{target: '#topbar-collapse'}"><span class="am-sr-only">导航切换</span> <span class="am-icon-bars"></span></button>
@@ -38,14 +38,14 @@
           <button type="submit" class="user-so-btn"><span class="am-icon-search"></span></button>
           </form>
       </li>
-      <li><a href="class-home.html" target="_blank"><span class="am-icon-home"></span> 进入本班博客 </a></li>
+      <li><a href="/cblog/clazzs/class-home/${blogUser.student.clazz.clazzName }" target="_blank"><span class="am-icon-home"></span> 进入本班博客 </a></li>
       <li class="am-dropdown" data-am-dropdown>
         <a class="am-dropdown-toggle" data-am-dropdown-toggle href="javascript:;">
-          <span class="am-icon-user"></span> 闵聪 <span class="am-icon-caret-down"></span>
+          <span class="am-icon-user"></span> ${blogUser.student.stuName } <span class="am-icon-caret-down"></span>
         </a>
         <ul class="am-dropdown-content">
-          <li><a href="user-setting.html"><span class="am-icon-cog"></span> 更多设置</a></li>
-          <li><a href="#"><span class="am-icon-power-off"></span> 退出</a></li>
+          <li><a href="/cblog/blogUsers/user-setting"><span class="am-icon-cog"></span> 更多设置</a></li>
+          <li><a href="/cblog/blogUsers/logout"><span class="am-icon-power-off"></span> 退出</a></li>
         </ul>
       </li>
       <li><a href="javascript:;" id="admin-fullscreen"><span class="am-icon-arrows-alt"></span> <span class="admin-fullText">开启全屏</span></a></li>
@@ -57,17 +57,17 @@
   <!-- sidebar start -->
   <div class="admin-sidebar">
     <ul class="am-list admin-sidebar-list">
-      <li class="admin-sidebar-list-hover"><a href="user.html"><span class="am-icon-home"></span> 首页<span class="am-icon-star am-fr am-margin-right admin-icon-yellow"></span></a></li>
-      <li><a href="user-setting.html"><span class="am-icon-cog"></span> 更多设置</a></li>
-      <li><a href="#"><span class="am-icon-sign-out"></span> 退出</a></li>
+      <li class="admin-sidebar-list-hover"><a href="/cblog/blogUsers/index"><span class="am-icon-home"></span> 首页<span class="am-icon-star am-fr am-margin-right admin-icon-yellow"></span></a></li>
+      <li><a href="/cblog/blogUsers/user-setting"><span class="am-icon-cog"></span> 更多设置</a></li>
+      <li><a href="/cblog/blogUsers/logout"><span class="am-icon-sign-out"></span> 退出</a></li>
     </ul>
     
     <div class="am-panel am-panel-default admin-sidebar-panel">
       <div class="am-panel-bd">
         <p><span class="am-icon-bookmark"></span> 基本信息</p>
-        <p>用户名：mcc108<br>
-        姓名：闵聪<br>
-        所在班级：0401308班<a href="user-setting.html"> 修改</a></p>
+        <p>用户名：${blogUser.student.stuName }<br>
+        姓名：${blogUser.student.stuName }<br>
+        所在班级：${blogUser.student.clazz.clazzName }班<a href="/cblog/blogUsers/user-setting"> 修改</a></p>
       </div>
     </div>
 
@@ -80,7 +80,7 @@
     
     <div class="am-panel am-panel-default admin-sidebar-panel">
       <div class="am-panel-bd">
-        <p><span class="am-icon-tag"></span> ©cBlog <a href="aboutus.html" target="_blank" class="am-panel-bd-aboutus">关于我们</a></p>
+        <p><span class="am-icon-tag"></span> ©cBlog <a href="/cblog/aboutUs" target="_blank" class="am-panel-bd-aboutus">关于我们</a></p>
         <p>网站设计与前端开发：闵聪<br>网站后台开发：高小飞<br>安卓移动端开发：王春河</p>
       </div>
     </div>
@@ -95,10 +95,10 @@
       <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">首页</strong> / <small>admin</small></div>
     </div>
     <div class="am-cf am-margin am-padding admin-content-list user-box">
-      <a class="am-btn am-btn-primary user-change-btn" href="user-setting.html">修改</a>
+      <a class="am-btn am-btn-primary user-change-btn" href="/cblog/blogUsers/user-setting">修改</a>
       <h2 class="user-title">个人信息</h2>
       <div class="am-u-md-2 user-logo">
-      <img class="am-img-thumbnail" src="/cblog/img/class/members/1.jpg">
+      <img class="am-img-thumbnail" src="http://xiaofeig.image.alimmdn.com/cblog/${blogUser.student.stuImg }">
       </div>
       <div class="am-u-md-3">
         <div class="am-input-group user-group">
@@ -208,7 +208,7 @@
 
 <footer>
   <hr>
-  <p class="am-padding-left">Copyright © 2015 <a href="index.html" target="_blank">cBlog.</a></p>
+  <p class="am-padding-left">Copyright © 2015 <a href="/cblog/index" target="_blank">cBlog.</a></p>
 </footer>
 
 <script src="/cblog/js/jquery.min.js"></script>

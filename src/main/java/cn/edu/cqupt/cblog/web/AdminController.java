@@ -54,7 +54,8 @@ public class AdminController {
 		//session.setAttribute("admin", admin);
 		admin=Admin.findAdmin(admin.getId());
 		session.setAttribute("admin", admin);
-		model.addAttribute("userRequests", userRequests);
+		session.setAttribute("clazz", admin.getClazz());
+		session.setAttribute("userRequests_size", userRequests.size());
 		return "admin";
 	}
 	
@@ -108,6 +109,7 @@ public class AdminController {
 	
 	@RequestMapping(value="/modifyPasswd", method=RequestMethod.POST)
 	public String modifyPasswd(@ModelAttribute("oldPasswd") String oldPasswd, @ModelAttribute("newPasswd") String newPasswd, @ModelAttribute("newPasswd2") String newPasswd2, BindingResult bindingResult, HttpSession session, Model model){
+		System.out.println("////////////////////");
 		Admin admin=(Admin)session.getAttribute("admin");
 		
 		if(oldPasswd==null||oldPasswd.trim().equals("")){
@@ -132,6 +134,7 @@ public class AdminController {
 			}
 			return "admin-setting";
 		}
+//这个待会儿试一下，看是不是游离态		
 		admin.setPasswd(newPasswd);
 		session.setAttribute("admin", admin.merge());
 		return "redirect:/admins/modifyPasswd";

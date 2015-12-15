@@ -120,13 +120,13 @@ public class BlogUserController {
 		blogUser.setStudent(student);
 		blogUser.merge();
 		session.setAttribute("blogUser", blogUser);
-		return "user-setting";
+		return "redirect:/blogUsers/user-setting";
 	}
 	
 	
 	@RequestMapping(value="/modifyPasswd", method=RequestMethod.GET)
 	public String modifyPasswd(){
-		return "user-setting";
+		return "redirect:/blogUsers/user-setting";
 	}
 	
 	@RequestMapping(value="/modifyPasswd", method=RequestMethod.POST)
@@ -157,7 +157,7 @@ public class BlogUserController {
 		}
 		blogUser.setPasswd(newPasswd);
 		session.setAttribute("blogUser", blogUser.merge());
-		return "redirect:/blogUsers/modifyPasswd";
+		return "redirect:/blogUsers/user-setting";
 	}
 	
 	
@@ -196,7 +196,7 @@ public class BlogUserController {
 		userRequest.setBlogUser((BlogUser)session.getAttribute("blogUser"));
 		userRequest.setUserRequestDate(new Date());
 		userRequest.persist();
-		return "user-setting";
+		return "redirect:/blogUsers/user-setting";
 	}
 	
 	@RequestMapping("/logout")

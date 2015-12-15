@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -55,10 +56,7 @@ public class AlbumController {
 	 * 提交创建的相册
 	 * */
 	@RequestMapping(value="/create", method=RequestMethod.POST, produces="text/html")
-	public String create(@ModelAttribute("imageFile") MultipartFile imageFile,@ModelAttribute("albumDate") Date albumDate, BindingResult bindingResult, HttpSession session){
-		System.out.println("albumController.create post");
-		System.out.println("imageFile:"+imageFile.getOriginalFilename());
-		
+	public String create(@ModelAttribute("imageFile") MultipartFile imageFile,@ModelAttribute(value="albumDate") String albumDate, BindingResult bindingResult, HttpSession session){
 		String filename=imageFile.getOriginalFilename().substring(imageFile.getOriginalFilename().lastIndexOf(".")+1);
 		/*if(!(filename.equals("bmp")||filename.equals("gif")||filename.equals("jpeg")||filename.equals("jpg")||filename.equals("png"))){
 			break;
@@ -72,7 +70,6 @@ public class AlbumController {
 		filename=UUID.randomUUID().toString().replaceAll("-", "")+"."+filename;
 		
 		File file=new File(dir, filename);
-		System.out.println("albumController.create:"+file.getAbsolutePath());
 		Clazz clazz=null;
 		try {
 			FileOutputStream out=new FileOutputStream(file);
@@ -85,15 +82,18 @@ public class AlbumController {
 			in.close();
 			out.close();
 			Result<UploadResponse> result=FileUploadUtil.uploadFile(file,"cblog",filename);
-System.out.println("url:"+result.getData().getUrl().toString());
 			
 			Album album=new Album();
-			album.setAlbumDate(albumDate);
+			try {
+				album.setAlbumDate(new SimpleDateFormat("yyyy-MM-dd").parse(albumDate));
+			} catch (ParseException e) {
+				e.printStackTrace();
+				album.setAlbumDate(new Date());
+			}
 			album.setImage(filename);
 			clazz=((Admin)session.getAttribute("admin")).getClazz();
 			album.setClazz(clazz);
 			album.persist();
-System.out.println("filename:"+filename);
 			
 			/*if(clazz.getAlbums()==null){
 				clazz.setAlbums(new HashSet<Album>());
@@ -105,7 +105,7 @@ System.out.println("filename:"+filename);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return "redirect:/albums?clazzId="+clazz.getId();
+		return "redirect:/albums/admin-album";
 	}
 	
 	
@@ -121,7 +121,7 @@ System.out.println("filename:"+filename);
 	}
 	
 	/**
-	 * 文章分页
+	 * 相册分页
 	 * */
 	@RequestMapping(value="/list",method=RequestMethod.POST, headers = "Accept=application/json")
 	public ResponseEntity<String> list(@RequestParam(value="page", required=false) Integer page, @RequestParam(value="size", required=false) Integer size, @RequestParam(value="sortFieldName", required=false) String sortFieldName, @RequestParam(value="sortOrder", required=false) String sortOrder, @RequestParam(value="clazzName", required=false) String clazzName, Model model){
@@ -134,12 +134,10 @@ System.out.println("filename:"+filename);
 		int maxResults=sizeNum;
 		List<Album> albums=null;
 		long recordNum=0L;
-		System.out.println("clazzName:"+clazzName);
 		if(!(clazzName==null||clazzName.trim().equals(""))){
 			Map<String, Object> properties=new HashMap<String, Object>();
 			properties.put("clazz.clazzName", clazzName);
 			albums=Album.findAlbumEntriesByProperties(firstResult, maxResults, sortFieldNameStr, sortOrderStr, properties);
-			System.out.println("albums.size()....:"+albums.size());
 			recordNum=Album.countAlbums(properties);
 		}else{
 			albums=Album.findAlbumEntries(firstResult, maxResults, sortFieldNameStr, sortOrderStr);
@@ -161,7 +159,6 @@ System.out.println("filename:"+filename);
 			jsonArr.add(subJson);
 		}
 		json.put("albums", jsonArr);
-System.out.println("json.toString:"+json.toString());
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
 		return new ResponseEntity<String>(json.toString(), headers, HttpStatus.OK);

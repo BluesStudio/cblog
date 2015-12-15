@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!doctype html>
 <html class="no-js">
 <head>
@@ -11,9 +12,9 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="Cache-Control" content="no-siteapp" />
   <meta name="apple-mobile-web-app-title" content="Amaze UI" />
-  <link rel="stylesheet" href="../css/amazeui.min.css"/>
-  <link rel="stylesheet" href="../css/admin-style.css">
-  <link rel="stylesheet" href="../css/admin.css">
+  <link rel="stylesheet" href="/cblog/css/amazeui.min.css"/>
+  <link rel="stylesheet" href="/cblog/css/admin-style.css">
+  <link rel="stylesheet" href="/cblog/css/admin.css">
 </head>
 <body>
 <!--[if lte IE 9]>
@@ -108,14 +109,14 @@
       <div class="am-u-md-6">
         <div class="am-panel am-panel-default">
           <div class="am-panel-hd am-cf" data-am-collapse="{target: '#collapse-panel-1'}">概述<span class="am-icon-chevron-down am-fr" ></span></div>
-          <form method="POST" action="/cblog/clazzs/mergeOverview" enctype="multipart/form-data">
+          <form action="/cblog/clazzs/mergeOverview" method="POST" enctype="multipart/form-data">
           <div class="am-panel-bd am-collapse am-in" id="collapse-panel-1">
            <div class="am-g am-margin-top">
             <label class="am-u-md-2 am-text-right">
               简述
             </label>
             <div class="am-u-md-10 am-u-end col-end">
-              <textarea class="am-form-field change-disabled" rows="5" id="doc-ta-1" disabled name="overview"></textarea>
+              <textarea class="am-form-field change-disabled" rows="5" id="doc-ta-1" disabled name="overview">${admin.clazz.overview }</textarea>
             </div>
            </div>
            <div class="am-g am-margin">
@@ -126,10 +127,13 @@
               <button type="button" class="am-btn am-btn-default change-disabled" disabled>
                 <i class="am-icon-cloud-upload"></i> 选择要上传的图片</button>
                 <div class="am-fr change-btn"><button type="button" class="am-btn am-btn-danger change-disabled-btn">修改</button>
-              <button type="button" class="am-btn am-btn-primary save-disabled-btn">保存</button></div>
+              <button type="submit" class="am-btn am-btn-primary save-disabled-btn">保存</button></div>
               <input id="doc-form-file" class="change-disabled" type="file" accept="image/*" multiple="" disabled name="clazzImg">
               <div id="file-list"></div>
-              <img src="../img/class/introduction/0.jpg" class="admin-introduction-img am-margin-top am-img-thumbnail">
+              <c:if test="${admin.clazz.clazzImg!=null }">
+              <img src="http://xiaofeig.image.alimmdn.com/cblog/${admin.clazz.clazzImg }" class="admin-introduction-img am-margin-top am-img-thumbnail">
+              </c:if>
+              
             </div>
             </div>
           </div>
@@ -137,9 +141,10 @@
         </div>
 
         <div class="am-panel am-panel-default">
-        <form>
+        
           <div class="am-panel-hd am-cf" data-am-collapse="{target: '#collapse-panel-2'}">荣誉<span class="am-icon-chevron-down am-fr" ></span></div>
           <div id="collapse-panel-2" class="am-panel-bd am-in am-collapse">
+          <form action="/cblog/clazzHonors/create" method="POST">
             <div class="am-g am-margin-top">
             <label class="am-u-md-2 am-text-right">
               班级
@@ -147,17 +152,20 @@
             </label>
             <div class="am-u-md-10 am-u-end col-end">
               <div class="honortext">
-              <p>学院运动会精神文明队 <button type="button" class="am-close am-icon-times"></button></p>
-              <p>学院运动会精神文明队 <button type="button" class="am-close am-icon-times"></button></p>
+              <c:forEach items="${admin.clazz.clazzHonors }" var="clazzHonor">
+              	<p>${clazzHonor.honorName } <button type="button" class="am-close am-icon-times"></button></p>
+              </c:forEach>
               </div>
               <div class="am-input-group am-input-group-sm am-margin-top am-margin-right">
-		      <input type="text" class="am-form-field change-disabled" placeholder="添加班级荣誉">
+		      <input type="text" class="am-form-field change-disabled" placeholder="${clazzHonor_required==null? '添加班级荣誉':clazzHonor_required }" name="clazzHonor">
 		      <span class="am-input-group-btn">
-		        <button class="am-btn am-btn-default" type="button">提交</button>
+		        <button class="am-btn am-btn-default" type="submit">提交</button>
 		      </span>
 		      </div>
             </div>
            </div>
+           </form>
+           <form action="/cblog/personalHonors/create" method="POST">
            <div class="am-g am-margin-top">
             <label class="am-u-md-2 am-text-right">
               个人
@@ -165,20 +173,23 @@
             </label>
             <div class="am-u-md-10 am-u-end col-end">
               <div class="honortext">
-              <p>学院运动会精神文明队 <button type="button" class="am-close am-icon-times"></button></p>
-              <p>学院运动会精神文明队 <button type="button" class="am-close am-icon-times"></button></p>
+              <c:forEach items="${admin.clazz.personalHonors }" var="personalHonor">
+              	<p>${personalHonor.student.stuName}：${personalHonor.award } <button type="button" class="am-close am-icon-times"></button></p>
+              </c:forEach>
            	  </div>
               <div class="am-input-group-sm am-margin-top am-margin-right">
-		      <input type="text" class="am-form-field change-disabled admin-add-ph-bd" placeholder="添加个人荣誉">
+		      <input type="text" class="am-form-field change-disabled admin-add-ph-bd" placeholder="${award_required==null? '添加个人荣誉':award_required }" value="${award_required==null? award:''}" name="award">
 		      </div>
 		      <div class="am-input-group am-input-group-sm am-margin-right admin-add-nm-group">
-		      <input type="text" class="am-form-field change-disabled admin-add-ph-nm" placeholder="添加姓名">
+		      <input type="text" class="am-form-field change-disabled admin-add-ph-nm" placeholder="${stuName_required==null? '添加姓名':stuName_required }" value="${stuName_required==null? stuName:'' }" name="stuName">
 		      <span class="am-input-group-btn">
-		        <button class="am-btn am-btn-default admin-add-ph-btn" type="button">提交</button>
+		        <button class="am-btn am-btn-default admin-add-ph-btn" type="submit">提交</button>
 		      </span>
 		      </div>
             </div>
            </div>
+           </form>
+           <form action="/cblog/honorWalls/create" method="POST" enctype="multipart/form-data">
            <div class="am-g am-margin">
             <label class="am-u-md-2 am-text-right">
               荣誉墙
@@ -187,19 +198,19 @@
               <button type="button" class="am-btn am-btn-default change-disabled" disabled>
                 <i class="am-icon-cloud-upload"></i> 添加图片</button>
               <div class="am-fr change-btn"><button type="button" class="am-btn am-btn-danger change-disabled-btn">修改</button>
-              <button type="button" class="am-btn am-btn-primary save-disabled-btn">保存</button></div>
-              <input id="doc-form-file" class="change-disabled" type="file" accept="image/*" multiple="">
+              <button type="submit" class="am-btn am-btn-primary save-disabled-btn">保存</button></div>
+              <input id="doc-form-file" class="change-disabled" type="file" accept="image/*" multiple="" name="honorWall">
               <div id="file-list"></div>
               
             </div>
             <div class="honorwall">
-            <img src="../img/class/introduction/1.jpg" class="admin-introduction-img am-margin-top am-img-thumbnail"><button type="button" class="am-margin am-close am-close-alt am-icon-times"></button>
-              <img src="../img/class/introduction/2.jpg" class="admin-introduction-img am-margin-top am-img-thumbnail"><button type="button" class="am-margin am-close am-close-alt am-icon-times"></button>
-              <img src="../img/class/introduction/3.jpg" class="admin-introduction-img am-margin-top am-img-thumbnail"><button type="button" class="am-margin am-close am-close-alt am-icon-times"></button>
+            <c:forEach items="${admin.clazz.honorWalls }" var="honorWall">
+            <img src="http://xiaofeig.image.alimmdn.com/cblog/${honorWall.image }" class="admin-introduction-img am-margin-top am-img-thumbnail"><button type="button" class="am-margin am-close am-close-alt am-icon-times"></button>
+            </c:forEach>
               </div>
             </div>
+            </form>
           </div>
-          </form>
         </div>
 
       </div>
@@ -207,20 +218,20 @@
       <div class="am-u-md-6">
         <div class="am-panel am-panel-default">
           <div class="am-panel-hd am-cf" data-am-collapse="{target: '#collapse-panel-3'}">标语<span class="am-icon-chevron-down am-fr" ></span></div>
-          <form method="POST" action="/cblog/clazzs/mergeSlogan">
+          <form action="/cblog/clazzs/mergeSlogan" method="POST">
            <div id="collapse-panel-3" class="am-panel-bd am-collapse am-in">
             <div class="am-g am-margin">
             <label class="am-u-md-2 am-text-right">
               标语
             </label>
             <div class="am-u-md-10 am-u-end col-end">
-              <textarea class="am-form-field change-disabled" rows="3" id="doc-ta-1" disabled name="slogan"></textarea>
+              <textarea class="am-form-field change-disabled" rows="3" id="doc-ta-1" disabled name="slogan">${admin.clazz.slogan }</textarea>
             </div>
            </div>
           <div class="am-g change-btn"> 
            <div class="am-u-sm-10 am-u-sm-push-2">
               <button type="button" class="am-btn am-btn-danger change-disabled-btn">修改</button>
-              <button type="button" class="am-btn am-btn-primary save-disabled-btn">保存</button>
+              <button type="submit" class="am-btn am-btn-primary save-disabled-btn">保存</button>
             </div>
           </div>
           </div>
@@ -229,7 +240,7 @@
 
         <div class="am-panel am-panel-default">
           <div class="am-panel-hd am-cf" data-am-collapse="{target: '#collapse-panel-4'}">班旗<span class="am-icon-chevron-down am-fr" ></span></div>
-          <form method="POST" action="/cblog/clazzs/mergeFlagImg" enctype="multipart/form-data">
+          <form action="/cblog/clazzs/mergeFlagImg" method="POST" enctype="multipart/form-data">
           <div class="am-panel-bd am-collapse am-in" id="collapse-panel-4">
            <div class="am-g am-margin">
             <label class="am-u-md-2 am-text-right">
@@ -240,11 +251,11 @@
               <button type="button" class="am-btn am-btn-default change-disabled" disabled>
                 <i class="am-icon-cloud-upload"></i> 选择要上传的图片</button>
               <div class="am-fr change-btn"><button type="button" class="am-btn am-btn-danger change-disabled-btn">修改</button>
-              <button type="button" class="am-btn am-btn-primary save-disabled-btn">保存</button></div>
+              <button type="submit" class="am-btn am-btn-primary save-disabled-btn">保存</button></div>
               <input id="doc-form-file" class="change-disabled" type="file" accept="image/*" multiple="" disabled name="flagImg">
               <div id="file-list"></div>
               
-              <img src="../img/class/introduction/6.jpg" class="admin-introduction-img am-margin-top am-img-thumbnail">
+              <img src="http://xiaofeig.image.alimmdn.com/cblog/${admin.clazz.flagImg }" class="admin-introduction-img am-margin-top am-img-thumbnail">
             </div>
           
           </div>
@@ -255,14 +266,14 @@
 
         <div class="am-panel am-panel-default">
           <div class="am-panel-hd am-cf" data-am-collapse="{target: '#collapse-panel-5'}">班歌<span class="am-icon-chevron-down am-fr" ></span></div>
-          <form method="POST" action="/cblog/clazzs/mergeSong" enctype="multipart/form-data">
+          <form action="/cblog/clazzs/mergeSong" method="POST" enctype="multipart/form-data">
           <div class="am-panel-bd am-collapse am-in" id="collapse-panel-5">
           <div class="am-g am-margin">
             <label class="am-u-md-2 am-text-right">
               歌名
             </label>
             <div class="am-u-md-10">
-              <input class="am-form-field change-disabled" type="text" disabled name="songTitle">
+              <input class="am-form-field change-disabled" type="text" disabled name="songTitle" value="${admin.clazz.songTitle }">
             </div>
             </div>
           <div class="am-g am-margin">
@@ -270,7 +281,7 @@
               歌词
             </label>
             <div class="am-u-md-10 am-u-end col-end">
-              <textarea class="am-form-field change-disabled" rows="8" id="doc-ta-1" disabled name="lyric"></textarea>
+              <textarea class="am-form-field change-disabled" rows="8" id="doc-ta-1" disabled name="lyric">${admin.clazz.lyric }</textarea>
             </div>
            </div>
            <div class="am-g am-margin">
@@ -278,19 +289,19 @@
               地址
             </label>
             <div class="am-u-md-10">
-              <input class="am-form-field change-disabled" type="text" disabled name="song">
+              <input class="am-form-field change-disabled" type="text" disabled name="song" value="http://xiaofeig.image.alimmdn.com/cblog/${admin.clazz.song }">
               <small class="admin-task-meta">请输入正确音乐的地址（http://开头）</small>
             </div>
             <div class="am-u-md-10 am-u-sm-push-2 am-u-end col-end am-form-file">
               <button type="button" class="am-btn am-btn-default change-disabled" disabled>
                 <i class="am-icon-cloud-upload"></i> 或者选择要上传的音乐</button>
                 <div class="am-fr change-btn"><button type="button" class="am-btn am-btn-danger change-disabled-btn">修改</button>
-              <button type="button" class="am-btn am-btn-primary save-disabled-btn">保存</button></div>
+              <button type="submit" class="am-btn am-btn-primary save-disabled-btn">保存</button></div>
               <input id="doc-form-file" class="change-disabled" type="file" accept="audio/*" multiple="" disabled name="songFile">
               <div id="file-list"></div>
               <audio class="admin-bange am-margin-top" controls="controls" height="100" width="100">
-					<source src="../music/class/benpao.mp3" type="audio/mpeg">
-	              <embed height="100" width="100" src="../music/class/benpao.mp3">
+					<source src="http://xiaofeig.image.alimmdn.com/cblog/${admin.clazz.song }" type="audio/mpeg">
+	              <embed height="100" width="100" src="http://xiaofeig.image.alimmdn.com/cblog/${admin.clazz.song }">
 	           </audio>
             </div>
             </div>
@@ -311,10 +322,10 @@
   <p class="am-padding-left">Copyright © 2015 <a href="index.html" target="_blank">cBlog.</a></p>
 </footer>
 
-<script src="../js/jquery.min.js"></script>
-<script src="../js/amazeui.min.js"></script>
-<script src="../js/app.js"></script>
-<script src="../js/textarea.js"></script>
+<script src="/cblog/js/jquery.min.js"></script>
+<script src="/cblog/js/amazeui.min.js"></script>
+<script src="/cblog/js/app.js"></script>
+<script src="/cblog/js/textarea.js"></script>
 <script>
   $(function(){
   	var text = $("textarea");

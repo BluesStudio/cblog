@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,9 +20,10 @@ import cn.edu.cqupt.cblog.domain.ClazzHonor;
 public class ClazzHonorController {
 
 	@RequestMapping(value="/create", method=RequestMethod.POST)
-	public String create(@ModelAttribute("clazzHonor")String clazzHonor, BindingResult bindingResult, HttpSession session){
+	public String create(@ModelAttribute("clazzHonor")String clazzHonor, BindingResult bindingResult, HttpSession session, Model model){
 		if(clazzHonor==null||clazzHonor.trim().equals("")){
-			bindingResult.reject("clazzHonor.required", "班级荣誉名称不能为空");
+			//bindingResult.reject("clazzHonor.required", "班级荣誉名称不能为空");
+			model.addAttribute("clazzHonor_required", "班级荣誉名称不能为空");
 			return "admin-introduction";
 		}
 		
@@ -31,7 +33,8 @@ public class ClazzHonorController {
 		honor.setClazzHonorDate(new Date());
 		honor.setHonorName(clazzHonor);
 		honor.persist();
-		return "admin-introduction";
+		session.setAttribute("admin", Admin.findAdmin(admin.getId()));
+		return "redirect:/clazzs/admin-introduction";
 	}
 	
 	
@@ -41,9 +44,10 @@ public class ClazzHonorController {
 		Admin admin=(Admin)session.getAttribute("admin");
 		if(clazzHonor==null||clazzHonor.getClazz()==null||clazzHonor.getClazz().getId().equals(admin.getClazz().getId())){
 			bindingResult.reject("clazzHonor.id.required", "班级荣誉已删除或不存在");
-			return "admin-introduction";
+			return "redirect:/clazzs/admin-introduction";
 		}
 		clazzHonor.remove();
-		return "admin-introduction";
+		session.setAttribute("admin", Admin.findAdmin(admin.getId()));
+		return "redirect:/clazzs/admin-introduction";
 	}
 }

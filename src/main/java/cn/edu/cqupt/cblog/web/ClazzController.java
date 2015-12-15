@@ -22,7 +22,9 @@ import cn.edu.cqupt.cblog.util.MultipartFileResolver;
 public class ClazzController {
 	
 	@RequestMapping(value="/admin-introduction", method=RequestMethod.GET)
-	public String introductionForm(){
+	public String introductionForm(HttpSession session, Model model){
+		Admin admin=(Admin)session.getAttribute("admin");
+		session.setAttribute("admin", Admin.findAdmin(admin.getId()));
 		return "admin-introduction";
 	}
 	@RequestMapping(value="/admin-setting", method=RequestMethod.GET)
@@ -33,11 +35,12 @@ public class ClazzController {
 	@RequestMapping(value="/mergeOverview", method=RequestMethod.POST)
 	public String mergeIntroduction(@ModelAttribute("overview") String overview, @ModelAttribute("clazzImg") MultipartFile clazzImg, HttpSession session){
 		Admin admin=(Admin)session.getAttribute("admin");
-		Clazz clazz=admin.getClazz();
+		Clazz clazz=Clazz.findClazz(admin.getClazz().getId());
 		clazz.setOverview(overview);
 		clazz.setClazzImg(MultipartFileResolver.resolveMultipartFile(clazzImg));
-		admin.setClazz(clazz.merge());
-		
+		clazz.merge();
+		admin=Admin.findAdmin(admin.getId());
+		session.setAttribute("admin", admin);
 		return "redirect:/clazzs/admin-introduction";
 	}
 	
@@ -74,12 +77,39 @@ public class ClazzController {
 	}
 	
 	
-	//显示首页
+
+	
+	//显示主页
+	@RequestMapping(value="/class-home/{clazzName}", method=RequestMethod.GET)
+	public String clazz_home(@PathVariable("clazzName") String clazzName, Model model){
+		Map<String, Object> properties=new HashMap<String, Object>();
+		properties.put("clazzName", clazzName);
+		model.addAttribute("clazz", Clazz.findClazzsByProperties(properties).get(0));
+		return "class-home";
+	}
+	
+	//显示简介
 	@RequestMapping(value="/clazzIntroduction/{clazzName}", method=RequestMethod.GET)
 	public String clazz_introduction(@PathVariable("clazzName") String clazzName, Model model){
 		Map<String, Object> properties=new HashMap<String, Object>();
 		properties.put("clazzName", clazzName);
 		model.addAttribute("clazz", Clazz.findClazzsByProperties(properties).get(0));
 		return "class-introduction";
+	}
+	//显示相册
+	@RequestMapping(value="/class-album/{clazzName}", method=RequestMethod.GET)
+	public String clazz_album(@PathVariable("clazzName") String clazzName, Model model){
+		Map<String, Object> properties=new HashMap<String, Object>();
+		properties.put("clazzName", clazzName);
+		model.addAttribute("clazz", Clazz.findClazzsByProperties(properties).get(0));
+		return "class-album";
+	}
+	//显示成员
+	@RequestMapping(value="/class-members/{clazzName}", method=RequestMethod.GET)
+	public String clazz_members(@PathVariable("clazzName") String clazzName, Model model){
+		Map<String, Object> properties=new HashMap<String, Object>();
+		properties.put("clazzName", clazzName);
+		model.addAttribute("clazz", Clazz.findClazzsByProperties(properties).get(0));
+		return "class-members";
 	}
 }

@@ -19,11 +19,11 @@
 	<div class="content">
 		<div id="logo">${clazz.clazzName }</div>
 		<ul class="menu">
-			<li><a href="class-home.html"><span>主页</span></a></li>
+			<li><a href="/cblog/clazzs/class-home/${clazz.clazzName }"><span>主页</span></a></li>
 			<li><a href="#" class="clicked"><span>简介</span></a></li>
-			<li><a href="class-album.html"><span>相册</span></a></li>
-			<li><a href="class-members.html"><span>成员</span></a></li>
-			<li><a href="index.html"><span>登录</span></a></li>
+			<li><a href="/cblog/clazzs/class-album/${clazz.clazzName }"><span>相册</span></a></li>
+			<li><a href="/cblog/clazzs/class-members/${clazz.clazzName }"><span>成员</span></a></li>
+			<li><a href="/cblog/index"><span>登录</span></a></li>
 		</ul>
 	</div>
 </div>
@@ -92,7 +92,7 @@
 				<div class="rongyuqiang">
 					<h3>荣誉墙</h3>
 					<c:forEach items="${clazz.honorWalls }" var="honorWall">
-					<img src="http://xiaofeig.image.alimmdn.com/cblog/${honorWalls.image }" class="bimg border"/>
+					<img src="http://xiaofeig.image.alimmdn.com/cblog/${honorWall.image }" class="bimg border"/>
 					</c:forEach>
 				</div>
 				</div>
