@@ -3,9 +3,6 @@ var showItem  = function(s, data){
     list.empty();
     var source = $("#"+s+"-item").html();
     var template = Handlebars.compile(source);
-    Handlebars.registerHelper('tableId', function(page, index) {
-        return (page-1) * 15 + index + 1;
-    });
     list.html(template(data));
 };
 function get_pagination(which, indexPage, totalPage, url, clazzName){

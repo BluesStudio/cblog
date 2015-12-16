@@ -30,13 +30,13 @@
 
 ## 最新问题 ##
 
-1. admin-introduction.html中叉叉都没得什么用哦
-2. admin-setting.html中不知如何反馈错误消息给用户（密码修改成功）
-3. admin-article.html中文章没有显示出来，但已请求了数据库
-4. 开启全屏失败
+1. ~~admin-introduction.html中叉叉都没得什么用哦~~
+2. ~~admin-setting.html中不知如何反馈错误消息给用户（密码修改成功）~~
+3. ~~admin-article.html中文章没有显示出来，但已请求了数据库~~
+4. ~~开启全屏失败~~
 5. class-home.html没做诶
 6. 班级相册班级成员图片均无点击效果
-7. user-setting.html个人信息保存按钮么用
+7. ~~user-setting.html个人信息保存按钮么用~~
 
 ## 小飞的待解决问题 ##
 

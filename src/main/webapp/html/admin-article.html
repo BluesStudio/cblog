@@ -41,7 +41,7 @@
           <li><a href="#"><span class="am-icon-power-off"></span> 退出</a></li>
         </ul>
       </li>
-      <li><a href="javascript:;" id="admin-fullscreen"><span class="am-icon-arrows-alt"></span> <span class="admin-fullText">开启全屏</span></a></li>
+      <li><a href="javascript:;" id="admin-fullscreen"><span class="am-icon-arrows-alt"></span> </a></li>
     </ul>
   </div>
 </header>
@@ -227,6 +227,9 @@ $(function(){
             "clazzName": clazzName
         },
         success: function(data){
+            Handlebars.registerHelper('tableId', function(page, index) {
+                return (page-1) * 15 + index + 1;
+            });
             showItem("admin-article", data);
             get_pagination("admin-article", data.page, data.maxPage, this.url, clazzName);
         }
