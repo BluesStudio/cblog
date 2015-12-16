@@ -104,16 +104,16 @@
             <h2 class="user-title">个人信息</h2>
 
             <div class="am-u-md-2 user-logo">
-                <img class="am-img-thumbnail" src="/cblog/img/class/members/1.jpg">
+                <img class="am-img-thumbnail" src="http://xiaofeig.image.alimmdn.com/cblog/${blogUser.student.stuImg }">
 
-                <form class="am-form">
+                <form class="am-form" action="/cblog/blogUsers/modifyStuImg" method="POST" enctype="multipart/form-data">
                     <div class="am-form-group am-form-file">
                         <button type="button" class="am-btn am-btn-default am-btn-sm user-tx-upload">
                             选择图片
                         </button>
                         <button type="submit" class="am-btn am-btn-danger am-btn-sm user-tx-submit"><i
                                 class="am-icon-cloud-upload"></i></button>
-                        <input id="doc-form-file" type="file" accept="image/*" multiple="">
+                        <input id="doc-form-file" type="file" accept="image/*" multiple="" name="stuImg">
 
                         <div id="file-list"></div>
                     </div>
@@ -171,15 +171,15 @@
 
         <div class="am-cf am-margin">
             <div class="am-u-md-6">
-                <form data-am-validator>
+                <form data-am-validator action="/cblog/blogUsers/modifyPasswd" method="POST">
                     <div class="am-panel am-panel-default">
                         <div class="am-panel-bd">
                             <h2 class="user-title">修改密码</h2>
-                            <input class="am-form-field" type="password" id="doc-vld-name-2" placeholder="原密码"/>
+                            <input class="am-form-field" type="password" id="doc-vld-name-2" placeholder="${oldPasswd_required==null? '原密码':oldPasswd_required }" name="oldPasswd" value="${oldPasswd_required==null? oldPasswd:'' }"/>
                             <input class="am-margin-top am-form-field" type="password" id="doc-vld-pwd-1"
-                                   placeholder="新密码" required/>
+                                   placeholder="${newPasswd_required==null? '新密码':newPasswd_required }" required name="newPasswd" />
                             <input class="am-margin-top am-form-field" type="password" id="doc-vld-pwd-2"
-                                   placeholder="确认新密码" data-equal-to="#doc-vld-pwd-1" required/>
+                                   placeholder="${newPasswd2_required==null? '确认新密码':newPasswd2_required }" data-equal-to="#doc-vld-pwd-1" required name="newPasswd2" />
                             <button class="am-margin-top am-btn am-btn-secondary" type="submit">提交</button>
                         </div>
                     </div>

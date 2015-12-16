@@ -16,18 +16,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import cn.edu.cqupt.cblog.domain.BlogUser;
 import cn.edu.cqupt.cblog.domain.Clazz;
 import cn.edu.cqupt.cblog.domain.Student;
 import cn.edu.cqupt.cblog.domain.UserRequest;
 import cn.edu.cqupt.cblog.service.BlogUserService;
+import cn.edu.cqupt.cblog.util.MultipartFileResolver;
 
 
 @Controller
@@ -123,6 +124,14 @@ public class BlogUserController {
 		return "redirect:/blogUsers/user-setting";
 	}
 	
+	@RequestMapping(value="/modifyStuImg", method=RequestMethod.POST)
+	public String modifyStuImg(@ModelAttribute("stuImg") MultipartFile stuImg, HttpSession session ){
+		BlogUser blogUser=(BlogUser)session.getAttribute("blogUser");
+		blogUser.getStudent().setStuImg(MultipartFileResolver.resolveMultipartFile(stuImg));
+		System.out.println("modifyStuImg:"+blogUser.getStudent().getStuImg());
+		blogUser.getStudent().merge();
+		return "redirect:/blogUsers/user-setting";
+	}
 	
 	@RequestMapping(value="/modifyPasswd", method=RequestMethod.GET)
 	public String modifyPasswd(){
@@ -134,24 +143,23 @@ public class BlogUserController {
 		BlogUser blogUser=(BlogUser)session.getAttribute("blogUser");
 		
 		if(oldPasswd==null||oldPasswd.trim().equals("")){
-			bindingResult.reject("oldPasswd.required", "请输入原密码");
+			bindingResult.reject("oldPasswd_required", "请输入原密码");
 		}else if(!oldPasswd.equals(blogUser.getPasswd())){
-			bindingResult.reject("oldPasswd.required", "原密码输入错误");
+			bindingResult.reject("oldPasswd_required", "原密码输入错误");
 		}
 		if(newPasswd==null||newPasswd.trim().equals("")){
-			bindingResult.reject("newPasswd.required", "请输入新密码");
+			bindingResult.reject("newPasswd_required", "请输入新密码");
 		}else if(newPasswd.length()<6||newPasswd.length()>60){
-			bindingResult.reject("newPasswd.required", "新密码长度只能为6-60");
+			bindingResult.reject("newPasswd_required", "新密码长度只能为6-60");
 		}
 		if(newPasswd2==null||newPasswd2.trim().equals("")){
-			bindingResult.reject("newPasswd2.required", "请确认新密码");
+			bindingResult.reject("newPasswd2_required", "请确认新密码");
 		}else if(!newPasswd2.equals(newPasswd)){
-			bindingResult.reject("newPasswd2.required", "两次新密码不一致");
+			bindingResult.reject("newPasswd2_required", "两次新密码不一致");
 		}
 		if(bindingResult.hasErrors()){
-			List<FieldError> errors=bindingResult.getFieldErrors();
-			for(FieldError error: errors){
-				System.out.println(error.getDefaultMessage());
+			for(ObjectError error: bindingResult.getAllErrors()){
+				model.addAttribute(error.getCode(), error.getDefaultMessage());
 			}
 			return "user-setting";
 		}
@@ -192,7 +200,7 @@ public class BlogUserController {
 		if(bindingResult.hasErrors()){
 			return "user-setting";
 		}
-		userRequest.setDispose("unresolve");
+		userRequest.setDispose("unresolved");
 		userRequest.setBlogUser((BlogUser)session.getAttribute("blogUser"));
 		userRequest.setUserRequestDate(new Date());
 		userRequest.persist();

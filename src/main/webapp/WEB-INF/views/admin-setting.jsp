@@ -126,9 +126,9 @@
                 <div class="am-panel am-panel-default">
                     <div class="am-panel-bd">
                         <h2 class="user-title">修改密码</h2>
-                        <input class="am-form-field" type="password" id="doc-vld-name-2" placeholder="原密码" name="oldPasswd"/>
-                        <input class="am-margin-top am-form-field" type="password" id="doc-vld-pwd-1" placeholder="新密码" required name="newPasswd"/>
-                        <input class="am-margin-top am-form-field" type="password" id="doc-vld-pwd-2" placeholder="确认新密码" data-equal-to="#doc-vld-pwd-1" required name="newPasswd2"/>
+                        <input class="am-form-field" type="password" id="doc-vld-name-2" placeholder="${oldPasswd_required==null? '原密码':oldPasswd_required }" name="oldPasswd" value="${oldPasswd_required==null? oldPasswd:'' }"/>
+                        <input class="am-margin-top am-form-field" type="password" id="doc-vld-pwd-1" placeholder="${newPasswd_required==null? '新密码':newPasswd_required }" required name="newPasswd" />
+                        <input class="am-margin-top am-form-field" type="password" id="doc-vld-pwd-2" placeholder="${newPasswd2_required==null? '确认新密码':newPasswd2_required }" data-equal-to="#doc-vld-pwd-1" required name="newPasswd2" />
                         <button class="am-margin-top am-btn am-btn-secondary" type="submit">提交</button>
                     </div>
                 </div>

@@ -136,14 +136,14 @@
           <td>
             <div class="am-btn-toolbar">
               <div class="am-btn-group am-btn-group-xs">
-              <c:if test="${userRequest.dispose=='unresolve' }">
-                <a class="am-btn am-btn-default am-btn-xs am-text-secondary" href="/cblog/userRequests/update?dispose=agree&userRequestId=${userRequest.id }"><span class="am-icon-check"></span> 同意</a>
-                <a class="am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only" href="/cblog//userRequests/update?dispose=disagree&userRequestId=${userRequest.id }"><span class="am-icon-trash-o"></span> 驳回</a>
+              <c:if test="${userRequest.dispose=='unresolved' }">
+                <a class="am-btn am-btn-default am-btn-xs am-text-secondary" href="/cblog/userRequests/update?dispose=agreed&userRequestId=${userRequest.id }"><span class="am-icon-check"></span> 同意</a>
+                <a class="am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only" href="/cblog//userRequests/update?dispose=disagreed&userRequestId=${userRequest.id }"><span class="am-icon-trash-o"></span> 驳回</a>
                 </c:if>
-                <c:if test="${userRequest.dispose=='agree' }">
+                <c:if test="${userRequest.dispose=='agreed' }">
                 <a class="am-btn am-btn-default am-btn-xs am-text-secondary"><span class="am-icon-check"></span> 已同意</a>
                 </c:if>
-                <c:if test="${userRequest.dispose=='disagree' }">
+                <c:if test="${userRequest.dispose=='disagreed' }">
                 <a class="am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only"><span class="am-icon-trash-o"></span> 已驳回</a>
                 </c:if>
               </div>

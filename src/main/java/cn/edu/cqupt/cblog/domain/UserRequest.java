@@ -59,7 +59,7 @@ public class UserRequest {
 
     /**
      * 请求处理标志
-     * unsolved、agree、disagree
+     * unresolved、agreed、disagreed
      */
     private String dispose;
 

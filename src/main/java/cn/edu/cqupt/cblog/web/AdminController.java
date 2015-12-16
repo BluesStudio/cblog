@@ -45,7 +45,7 @@ public class AdminController {
 		Admin admin=(Admin)session.getAttribute("admin");
 		Map<String, Object> properties=new HashMap<String, Object>();
 		properties.put("clazzName", admin.getClazz().getClazzName());
-		properties.put("dispose", "unsolved");
+		properties.put("dispose", "unresolved");
 		List<UserRequest> userRequests=UserRequest.findUserRequestsByProperties(properties);
 //System.out.println(ReflectionToStringBuilder.toString(admin, ToStringStyle.SIMPLE_STYLE));
 //System.out.println(ReflectionToStringBuilder.toString(userRequests, ToStringStyle.SIMPLE_STYLE));
@@ -56,6 +56,7 @@ public class AdminController {
 		session.setAttribute("admin", admin);
 		session.setAttribute("clazz", admin.getClazz());
 		session.setAttribute("userRequests_size", userRequests.size());
+		System.out.println("userRequests.size():"+userRequests.size());
 		return "admin";
 	}
 	
@@ -109,28 +110,27 @@ public class AdminController {
 	
 	@RequestMapping(value="/modifyPasswd", method=RequestMethod.POST)
 	public String modifyPasswd(@ModelAttribute("oldPasswd") String oldPasswd, @ModelAttribute("newPasswd") String newPasswd, @ModelAttribute("newPasswd2") String newPasswd2, BindingResult bindingResult, HttpSession session, Model model){
-		System.out.println("////////////////////");
 		Admin admin=(Admin)session.getAttribute("admin");
 		
 		if(oldPasswd==null||oldPasswd.trim().equals("")){
-			bindingResult.reject("oldPasswd.required", "请输入原密码");
+			bindingResult.reject("oldPasswd_required", "请输入原密码");
 		}else if(!oldPasswd.equals(admin.getPasswd())){
-			bindingResult.reject("oldPasswd.required", "原密码输入错误");
+			bindingResult.reject("oldPasswd_required", "原密码输入错误");
 		}
 		if(newPasswd==null||newPasswd.trim().equals("")){
-			bindingResult.reject("newPasswd.required", "请输入新密码");
+			bindingResult.reject("newPasswd_required", "请输入新密码");
 		}else if(newPasswd.length()<6||newPasswd.length()>60){
-			bindingResult.reject("newPasswd.required", "新密码长度只能为6-60");
+			bindingResult.reject("newPasswd_required", "新密码长度只能为6-60");
 		}
 		if(newPasswd2==null||newPasswd2.trim().equals("")){
-			bindingResult.reject("newPasswd2.required", "请确认新密码");
+			bindingResult.reject("newPasswd2_required", "请确认新密码");
 		}else if(!newPasswd2.equals(newPasswd)){
-			bindingResult.reject("newPasswd2.required", "两次新密码不一致");
+			bindingResult.reject("newPasswd2_required", "两次新密码不一致");
 		}
 		if(bindingResult.hasErrors()){
-			List<FieldError> errors=bindingResult.getFieldErrors();
-			for(FieldError error: errors){
-				System.out.println(error.getDefaultMessage());
+			
+			for(ObjectError error: bindingResult.getAllErrors()){
+				model.addAttribute(error.getCode(), error.getDefaultMessage());
 			}
 			return "admin-setting";
 		}

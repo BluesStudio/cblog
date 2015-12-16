@@ -37,11 +37,8 @@ public class UserRequestController {
 	public String update(@ModelAttribute("dispose") String dispose, @ModelAttribute("userRequestId") Long userRequestId, HttpSession session, BindingResult bindingResult){
 		Clazz clazz=((Admin)session.getAttribute("admin")).getClazz();
 		UserRequest userRequest=UserRequest.findUserRequest(userRequestId);
-		System.out.println("dispose:"+dispose);
-		System.out.println("userRequestId:"+userRequestId);
 		if(userRequest.getClazzName().equals(clazz.getClazzName())){
-			if(dispose.equals("agree")){
-				System.out.println("agree");
+			if(dispose.equals("agreed")){
 				userRequest.setDispose(dispose);
 				BlogUser blogUser=userRequest.getBlogUser();
 				
@@ -64,15 +61,17 @@ public class UserRequestController {
 					blogUser.setStudent(stu);
 					blogUser.merge();
 				}
-				System.out.println("agreeEnd");
-			}else if(dispose.equals("disagree")){
-				System.out.println("disagree");
+			}else if(dispose.equals("disagreed")){
 				userRequest.setDispose(dispose);
 				userRequest.merge();
-				System.out.println("disagreeEnd");
+				Map<String, Object> properties=new HashMap<String, Object>();
+				properties.put("clazzName", clazz.getClazzName());
+				properties.put("dispose", "unresolved");
+				List<UserRequest> userRequests=UserRequest.findUserRequestsByProperties(properties);
+				session.setAttribute("userRequests_size", userRequests.size());
+				System.out.println("userRequests.size():"+userRequests.size());
 			}
 		}
-		System.out.println("end");
 		return "redirect:/userRequests/admin-members-apply";				
 	}
 }
