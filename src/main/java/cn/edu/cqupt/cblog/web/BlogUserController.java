@@ -165,13 +165,16 @@ public class BlogUserController {
 		}
 		blogUser.setPasswd(newPasswd);
 		session.setAttribute("blogUser", blogUser.merge());
-		return "redirect:/blogUsers/user-setting";
+		model.addAttribute("message", "密码修改成功");
+		model.addAttribute("url", "/cblog/blogUsers/user-setting");
+		model.addAttribute("redirectPage", "更多设置");
+		return "redirect";
 	}
 	
 	
 	//修改班级
 	@RequestMapping(value="/modifyClazz", method=RequestMethod.POST)
-	public String modifyClazz(@ModelAttribute("userRequest") UserRequest userRequest, BindingResult bindingResult, HttpSession session){
+	public String modifyClazz(@ModelAttribute("userRequest") UserRequest userRequest, BindingResult bindingResult, HttpSession session, Model model){
 		if(userRequest==null){
 			bindingResult.reject("userRequest.clazzName", "班级编号不能为空");
 			bindingResult.reject("userRequest.stuName", "姓名不能为空");
@@ -204,12 +207,18 @@ public class BlogUserController {
 		userRequest.setBlogUser((BlogUser)session.getAttribute("blogUser"));
 		userRequest.setUserRequestDate(new Date());
 		userRequest.persist();
-		return "redirect:/blogUsers/user-setting";
+		model.addAttribute("message", "班级申请成功");
+		model.addAttribute("url", "/cblog/blogUsers/user-setting");
+		model.addAttribute("redirectPage", "更多设置");
+		return "redirect";
 	}
 	
 	@RequestMapping("/logout")
-	public String logout(HttpSession session){
+	public String logout(HttpSession session, Model model){
 		session.removeAttribute("blogUser");
-		return "redirect:/index";
+		model.addAttribute("message", "退出成功");
+		model.addAttribute("url", "/cblog/index");
+		model.addAttribute("redirectPage", "首页");
+		return "redirect";
 	}
 }

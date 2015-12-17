@@ -153,7 +153,7 @@
             <div class="am-u-md-10 am-u-end col-end">
               <div class="honortext">
               <c:forEach items="${admin.clazz.clazzHonors }" var="clazzHonor">
-              	<p>${clazzHonor.honorName } <button type="button" class="am-close am-icon-times"></button></p>
+              	<p>${clazzHonor.honorName } <a href="/cblog/clazzHonors/delete/${clazzHonor.id }" class="am-close am-icon-times"></a></p>
               </c:forEach>
               </div>
               <div class="am-input-group am-input-group-sm am-margin-top am-margin-right">
@@ -174,7 +174,7 @@
             <div class="am-u-md-10 am-u-end col-end">
               <div class="honortext">
               <c:forEach items="${admin.clazz.personalHonors }" var="personalHonor">
-              	<p>${personalHonor.student.stuName}：${personalHonor.award } <button type="button" class="am-close am-icon-times"></button></p>
+              	<p>${personalHonor.student.stuName}：${personalHonor.award } <a href="/cblog/personalHonors/delete/${personalHonor.id }" class="am-close am-icon-times"></a></p>
               </c:forEach>
            	  </div>
               <div class="am-input-group-sm am-margin-top am-margin-right">
@@ -205,7 +205,7 @@
             </div>
             <div class="honorwall">
             <c:forEach items="${admin.clazz.honorWalls }" var="honorWall">
-            <img src="http://xiaofeig.image.alimmdn.com/cblog/${honorWall.image }" class="admin-introduction-img am-margin-top am-img-thumbnail"><button type="button" class="am-margin am-close am-close-alt am-icon-times"></button>
+            <img src="http://xiaofeig.image.alimmdn.com/cblog/${honorWall.image }" class="admin-introduction-img am-margin-top am-img-thumbnail"><a href="/cblog/honorWalls/delete/${honorWall.id }" class="am-margin am-close am-close-alt am-icon-times"></a>
             </c:forEach>
               </div>
             </div>

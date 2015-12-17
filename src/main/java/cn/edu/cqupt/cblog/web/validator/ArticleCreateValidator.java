@@ -7,7 +7,7 @@ import org.springframework.validation.Validator;
 import cn.edu.cqupt.cblog.domain.Article;
 
 @Component
-public class ArticleValidator implements Validator{
+public class ArticleCreateValidator implements Validator{
 
 	@Override
 	public boolean supports(Class<?> clazz) {
@@ -18,26 +18,26 @@ public class ArticleValidator implements Validator{
 	public void validate(Object target, Errors errors) {
 		Article article=(Article)target;
 		if(article==null){
-			errors.reject("article.title.required", "题目不能为空");
-			errors.reject("article.activityDate.required", "活动时间不能为空");
-			errors.reject("article.site.required", "活动地点不能为空");
-			errors.reject("article.participant.required", "参与者不能为空");
-			errors.reject("article.content.required", "文章内容不能为空");
+			errors.reject("article_title_required", "文章标题不能为空");
+			errors.reject("article_activityDate_required", "活动时间不能为空");
+			errors.reject("article_site_required", "活动地点不能为空");
+			errors.reject("article_participant_required", "参与者不能为空");
+			errors.reject("article_content_required", "文章内容不能为空");
 		}else{
 			if(article.getTitle()==null||article.getTitle().trim().equals("")){
-				errors.reject("article.title.required", "题目不能为空");
+				errors.reject("article_title_required", "文章标题不能为空");
 			}
 			if(article.getActivityDate()==null){
-				errors.reject("article.activityDate.required", "活动时间不能为空");
+				errors.reject("article_activityDate_required", "活动时间不能为空");
 			}
 			if(article.getSite()==null||article.getSite().trim().equals("")){
-				errors.reject("article.site.required", "活动地点不能为空");
+				errors.reject("article_site_required", "活动地点不能为空");
 			}
 			if(article.getParticipant()==null||article.getParticipant().trim().equals("")){
-				errors.reject("article.participant.required", "参与者不能为空");	
+				errors.reject("article_participant_required", "参与者不能为空");	
 			}
 			if(article.getContent()==null||article.getContent().trim().equals("")){
-				errors.reject("article.content.required", "文章内容不能为空");
+				errors.reject("article_content_required", "文章内容不能为空");
 			}
 		}
 		

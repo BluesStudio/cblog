@@ -19,4 +19,8 @@ public class IndexController {
 	public String aboutUs(){
 		return "aboutus";
 	}
+	@RequestMapping("/404")
+	public String error_404(){
+		return "404";
+	}
 }

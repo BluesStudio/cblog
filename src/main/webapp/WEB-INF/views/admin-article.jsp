@@ -186,7 +186,7 @@
         <h3 class="article-discuss-title"><a href="class-article.html" target="_blank">学校第十届田径运动会隆重开幕</a></h3>
             <ul class="am-comments-list admin-content-comment">
               <li class="am-comment">
-                <a href="#"><img src="/cblog/img/class/members/1.jpg" alt="" class="am-comment-avatar" id="article-discuss-user-logo"></a>
+                <a href="#"><img src="../img/class/members/1.jpg" alt="" class="am-comment-avatar" id="article-discuss-user-logo"></a>
                 <div class="am-comment-main">
                   <header class="am-comment-hd">
                     <div class="am-comment-meta"><a class="am-comment-author">闵聪</a> 评论于 <time>2014-7-12 15:30</time></div>
@@ -218,7 +218,7 @@
 <script id="admin-article-item" type="text/x-handlebars-template">
     {{#articles}}
     <tr>
-        <td>{{tableId /cblog/page @index}}</td>
+        <td>{{tableId ../page @index}}</td>
         <td class="am-hide-sm-only">{{activityDate}}</td>
         <td class="am-hide-sm-only">{{publishDate}}</td>
         <td><a href="class-article.html" target="_blank">{{title}}</a></td>
@@ -234,13 +234,13 @@
     </tr>
     {{/articles}}
 </script>
-<script src="/cblog/js/jquery.min.js"></script>
-<script src="/cblog/js/amazeui.min.js"></script>
-<script src="/cblog/js/app.js"></script>
-<script type="text/javascript" src="/cblog/js/handlebars.js"></script>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/amazeui.min.js"></script>
+<script src="../js/app.js"></script>
+<script type="text/javascript" src="../js/handlebars.js"></script>
 <script type="text/javascript">
 $(function(){
-    var clazzName = "${admin.clazz.clazzName}";
+    var clazzName = "${clazz.clazzName }";
     $.ajax({
         type: "POST",
         url: "/cblog/articles/list",
@@ -249,6 +249,9 @@ $(function(){
             "clazzName": clazzName
         },
         success: function(data){
+            Handlebars.registerHelper('tableId', function(page, index) {
+                return (page-1) * 15 + index + 1;
+            });
             showItem("admin-article", data);
             get_pagination("admin-article", data.page, data.maxPage, this.url, clazzName);
         }

@@ -3,7 +3,6 @@ package cn.edu.cqupt.cblog.web;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,11 +30,11 @@ public class HonorWallController {
 	}
 	
 	@RequestMapping(value="/delete/{id}", method=RequestMethod.GET)
-	public String create(@PathVariable("id") Long id, BindingResult bindingResult, HttpSession session){
+	public String create(@PathVariable("id") Long id, HttpSession session){
 		HonorWall honorWall=HonorWall.findHonorWall(id);
 		Admin admin=(Admin)session.getAttribute("admin");
-		if(honorWall==null||honorWall.getClazz()==null||honorWall.getClazz().getId().equals(admin.getClazz().getId())){
-			bindingResult.reject("honorWall.id.required", "荣誉墙图片已删除或不存在");
+		if(honorWall==null||honorWall.getClazz()==null||!honorWall.getClazz().getId().equals(admin.getClazz().getId())){
+			//bindingResult.reject("honorWall.id.required", "荣誉墙图片已删除或不存在");
 			return "redirect:/clazzs/admin-introduction";
 		}
 		honorWall.remove();

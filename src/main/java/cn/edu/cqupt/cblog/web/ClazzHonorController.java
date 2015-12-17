@@ -38,16 +38,18 @@ public class ClazzHonorController {
 	}
 	
 	
-	@RequestMapping(value="/delete/{id}", method=RequestMethod.GET)
-	public String create(@PathVariable("id") Long id, BindingResult bindingResult, HttpSession session){
+	@RequestMapping(value="/delete/{id}")
+	public String create(@PathVariable("id") Long id, HttpSession session){
 		ClazzHonor clazzHonor=ClazzHonor.findClazzHonor(id);
 		Admin admin=(Admin)session.getAttribute("admin");
-		if(clazzHonor==null||clazzHonor.getClazz()==null||clazzHonor.getClazz().getId().equals(admin.getClazz().getId())){
-			bindingResult.reject("clazzHonor.id.required", "班级荣誉已删除或不存在");
+		if(clazzHonor==null||clazzHonor.getClazz()==null||!clazzHonor.getClazz().getId().equals(admin.getClazz().getId())){
+			//bindingResult.reject("clazzHonor.id.required", "班级荣誉已删除或不存在");
+			System.out.println("null");
 			return "redirect:/clazzs/admin-introduction";
 		}
 		clazzHonor.remove();
 		session.setAttribute("admin", Admin.findAdmin(admin.getId()));
 		return "redirect:/clazzs/admin-introduction";
 	}
+	
 }

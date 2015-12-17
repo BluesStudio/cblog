@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,6 +36,7 @@ public class ArticleController {
 
 	@Autowired
 	private ArticleService articleService;
+	
 	
 	public ArticleService getArticleService() {
 		return articleService;
@@ -56,8 +58,8 @@ public class ArticleController {
 	/**
 	 * 提交创建的文章
 	 * */
-	@RequestMapping(method=RequestMethod.POST, produces="text/html")
-	public String create(@ModelAttribute("article") Article article, BindingResult bindingResult, HttpSession session){
+	@RequestMapping(value="create", method=RequestMethod.POST, produces="text/html")
+	public String create(@ModelAttribute("article") Article article, BindingResult bindingResult, HttpSession session, Model model){
 		article.setClazz(((Admin)session.getAttribute("admin")).getClazz());
 		article.setPublishDate(new Date());
 		//System.out.println(ReflectionToStringBuilder.toString(article, ToStringStyle.SIMPLE_STYLE));
@@ -66,6 +68,10 @@ public class ArticleController {
 		System.out.println(ReflectionToStringBuilder.toString(bindingResult, ToStringStyle.SIMPLE_STYLE));
 		System.out.println("------------------------------");*/
 		if(bindingResult.hasErrors()){
+			for(ObjectError error: bindingResult.getAllErrors()){
+				model.addAttribute(error.getCode(), error.getDefaultMessage());
+			}
+			model.addAttribute("article", article);
 			return "admin-article-edit";
 		}
 		return "redirect:/articles/admin-article";
@@ -76,7 +82,7 @@ public class ArticleController {
 	 * 更新文章生成表单
 	 * @since 2015-12-10
 	 * */
-	@RequestMapping(value="/{id}", params="form", produces="text/html")
+	@RequestMapping(value="/update/{id}", produces="text/html")
 	public String updateForm(@PathVariable("id") Long id, Model model){
 		model.addAttribute("article", Article.findArticle(id));
 		return "admin-article-update";
@@ -97,18 +103,21 @@ public class ArticleController {
 		article.setParticipant(temp.getParticipant());
 		article.setContent(temp.getContent());
 		article.setPublishDate(new Date());
-		
+		System.out.println("article:"+article);
 		Long clazzId=admin.getClazz().getId();
 		articleService.update(article, bindingResult, clazzId);
 		if(bindingResult.hasErrors()){
-			/*for(FieldError error:bindingResult.getFieldErrors()){
-				System.out.println(error.getDefaultMessage());
-			}*/
-			
+			for(ObjectError error: bindingResult.getAllErrors()){
+				model.addAttribute(error.getCode(), error.getDefaultMessage());
+				System.out.println(error.getCode()+","+error.getDefaultMessage());
+			}
 			model.addAttribute("article", article);
 			return "admin-article-update";
 		}
-		return "redirect:/articles?clazzId="+clazzId;
+		model.addAttribute("message", "文章更新成功");
+		model.addAttribute("url", "/cblog/articles/admin-article");
+		model.addAttribute("redirectPage", "文章列表");
+		return "redirect";
 	}
 	
 	@RequestMapping(value="/{id}", produces="text/html")
@@ -170,7 +179,7 @@ public class ArticleController {
 		return new ResponseEntity<String>(json.toString(), headers, HttpStatus.OK);
 	}
 	
-	@RequestMapping(value="/{id}", method=RequestMethod.DELETE, produces="text/html")
+	@RequestMapping(value="delete/{id}", method=RequestMethod.DELETE, produces="text/html")
 	public String delete(){
 		return "";
 	}

@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -137,12 +136,18 @@ public class AdminController {
 //这个待会儿试一下，看是不是游离态		
 		admin.setPasswd(newPasswd);
 		session.setAttribute("admin", admin.merge());
-		return "redirect:/admins/modifyPasswd";
+		model.addAttribute("message", "密码修改成功");
+		model.addAttribute("url", "/cblog/admins/modifyPasswd");
+		model.addAttribute("redirectPage", "更多设置");
+		return "redirect";
 	}
 	
 	@RequestMapping("/logout")
-	public String logout(HttpSession session){
+	public String logout(HttpSession session, Model model){
 		session.removeAttribute("admin");
-		return "redirect:/index";
+		model.addAttribute("message", "退出成功");
+		model.addAttribute("url", "/cblog/index");
+		model.addAttribute("redirectPage", "首页");
+		return "redirect";
 	}
 }

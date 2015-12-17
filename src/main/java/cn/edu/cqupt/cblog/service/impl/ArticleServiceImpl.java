@@ -9,39 +9,51 @@ import org.springframework.validation.BindingResult;
 
 import cn.edu.cqupt.cblog.domain.Article;
 import cn.edu.cqupt.cblog.service.ArticleService;
-import cn.edu.cqupt.cblog.web.validator.ArticleValidator;
+import cn.edu.cqupt.cblog.web.validator.ArticleCreateValidator;
+import cn.edu.cqupt.cblog.web.validator.ArticleUpdateValidator;
 
 @Service
 public class ArticleServiceImpl implements ArticleService {
 
 	@Autowired
-	private ArticleValidator articleValidator;
+	private ArticleCreateValidator articleCreateValidator;
+	@Autowired
+	private ArticleUpdateValidator articleUpdateValidator;
 
-	
-	public ArticleValidator getArticleValidator() {
-		return articleValidator;
+
+	public ArticleCreateValidator getArticleCreateValidator() {
+		return articleCreateValidator;
 	}
-
-	public void setArticleValidator(ArticleValidator articleValidator) {
-		this.articleValidator = articleValidator;
+	public void setArticleCreateValidator(
+			ArticleCreateValidator articleCreateValidator) {
+		this.articleCreateValidator = articleCreateValidator;
+	}
+	
+	public ArticleUpdateValidator getArticleUpdateValidator() {
+		return articleUpdateValidator;
+	}
+	public void setArticleUpdateValidator(
+			ArticleUpdateValidator articleUpdateValidator) {
+		this.articleUpdateValidator = articleUpdateValidator;
 	}
 	@Override
 	public void create(Article article, BindingResult bindingResult) {
-		articleValidator.validate(article, bindingResult);
+		articleCreateValidator.validate(article, bindingResult);
 		if(!bindingResult.hasErrors()){
 			article.persist();
 		}
 	}
 	@Override
 	public void update(Article article, BindingResult bindingResult, Long clazzId) {
-		Map<String, Object> properties=new HashMap<String, Object>();
-		properties.put("id", article.getId());
-		properties.put("clazz.id", clazzId);
-		if(Article.findArticlesByProperties(properties).size()==0){
-			bindingResult.reject("article.id.required", "修改的文章不存在");
-		}
-		articleValidator.validate(article, bindingResult);
+		articleUpdateValidator.validate(article, bindingResult);
 		if(!bindingResult.hasErrors()){
+			Map<String, Object> properties=new HashMap<String, Object>();
+			properties.put("id", article.getId());
+			properties.put("clazz.id", clazzId);
+			if(Article.findArticlesByProperties(properties).size()==0){
+				bindingResult.reject("article.id.required", "修改的文章不存在");
+				return;
+			}
 			System.out.println("articleService.update");
 			article.persist();
 		}

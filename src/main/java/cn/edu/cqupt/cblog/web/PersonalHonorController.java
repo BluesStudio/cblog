@@ -73,11 +73,11 @@ public class PersonalHonorController {
 	}
 	
 	@RequestMapping(value="/delete/{id}", method=RequestMethod.GET)
-	public String create(@PathVariable("id") Long id, BindingResult bindingResult, HttpSession session){
+	public String create(@PathVariable("id") Long id, HttpSession session){
 		PersonalHonor personalHonor=PersonalHonor.findPersonalHonor(id);
 		Admin admin=(Admin)session.getAttribute("admin");
-		if(personalHonor==null||personalHonor.getClazz()==null||personalHonor.getClazz().getId().equals(admin.getClazz().getId())){
-			bindingResult.reject("personalHonor.id.required", "个人荣誉已删除或不存在");
+		if(personalHonor==null||personalHonor.getClazz()==null||!personalHonor.getClazz().getId().equals(admin.getClazz().getId())){
+			//bindingResult.reject("personalHonor.id.required", "个人荣誉已删除或不存在");
 			return "redirect:/clazzs/admin-introduction";
 		}
 		personalHonor.remove();

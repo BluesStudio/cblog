@@ -98,7 +98,7 @@
       <a class="am-btn am-btn-primary user-change-btn" href="/cblog/blogUsers/user-setting">修改</a>
       <h2 class="user-title">个人信息</h2>
       <div class="am-u-md-2 user-logo">
-      <img class="am-img-thumbnail" src="http://xiaofeig.image.alimmdn.com/cblog/${blogUser.student.stuImg }">
+      <img class="am-img-thumbnail" src="http://xiaofeig.image.alimmdn.com/cblog/${blogUser.student.stuImg==null? 'ea4398e5806943f487c67b28c1f3e6d5.png':blogUser.student.stuImg }">
       </div>
       <div class="am-u-md-3">
         <div class="am-input-group user-group">

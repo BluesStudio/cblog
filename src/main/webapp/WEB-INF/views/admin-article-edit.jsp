@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!doctype html>
 <html class="no-js">
 <head>
@@ -124,26 +126,26 @@
 		<div class="am-g">
 	      <div class="am-input-group admin-article-input">
             <label class="am-input-group-label">文章标题</label>
-             <input type="text" class="am-form-field" placeholder="文章标题" name="title">
+             <input type="text" class="am-form-field" placeholder="${article_title_required==null? '文章标题':article_title_required }" name="title" value="${article.title }">
           </div>
           <ul class="am-avg-sm-3">
             <li><div class="am-input-group admin-article-input admin-article-input-mr">
               <label class="am-input-group-label">活动时间</label>
-               <input type="text" class="am-form-field" placeholder="活动时间" data-am-datepicker name="activityDate">
+               <input type="text" class="am-form-field" placeholder="${article_activityDate_required==null? '活动时间':article_activityDate_required }" data-am-datepicker name="activityDate" value="<fmt:formatDate value='${article.activityDate }' pattern='yyyy-MM-dd'/>">
             </div></li>
 
 		    <li><div class="am-input-group admin-article-input admin-article-input-mr">
 	            <label class="am-input-group-label">活动地点</label>
-	             <input type="text" class="am-form-field" placeholder="活动地点" name="site">
+	             <input type="text" class="am-form-field" placeholder="${article_site_required==null? '活动地点':article_site_required }" name="site" value="${article.site }">
 	        </div></li>
 
 		    <li><div class="am-input-group admin-article-input">
 	            <label class="am-input-group-label">参与者</label>
-	             <input type="text" class="am-form-field" placeholder="参与者" name="participant">
+	             <input type="text" class="am-form-field" placeholder="${article_participant_required==null? '参与者':article_participant_required }" name="participant" value="${article.participant }">
 	        </div></li>
 	      </ul>
 	    </div>
-   	  	<textarea id="editor" placeholder="这里输入内容" autofocus name="content"></textarea>
+   	  	<textarea id="editor" placeholder="${article_content_required==null? '这里输入内容':article_content_required }" autofocus name="content">${article.content }</textarea>
    	  	<button type="submit" class="am-btn am-btn-primary am-fr">发表</button>
    	  </form>
     </div>
