@@ -43,7 +43,6 @@
           <li><a href="#"><span class="am-icon-power-off"></span> 退出</a></li>
         </ul>
       </li>
-      <li><a href="javascript:;" id="admin-fullscreen"><span class="am-icon-arrows-alt"></span> </a></li>
     </ul>
   </div>
 </header>

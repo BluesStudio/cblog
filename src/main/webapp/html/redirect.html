@@ -6,22 +6,25 @@
     <link rel="stylesheet" href="../css/amazeui.min.css"/>
 </head>
 <body>
-    <h2>修改成功，正在跳转至<a id="redirect" href="http://congm.in">首页</a></h2>
+    <p>修改成功，正在跳转至<a id="redirect" href="http://congm.in">首页</a></p>
     <script>
         var src = document.getElementById("redirect").href;
-        var h2 = document.getElementsByTagName("h2")[0];
+        var p = document.getElementsByTagName("p")[0];
         setTimeout(function(){
-            h2.innerHTML += ".";
+            p.innerHTML += ".";
         }, 500);
         setTimeout(function(){
-            h2.innerHTML += ".";
+            p.innerHTML += ".";
         }, 1500);
         setTimeout(function(){
-            h2.innerHTML += ".";
+            p.innerHTML += ".";
         }, 2500);
         setTimeout(function(){
+            p.innerHTML += ".";
+        }, 3500);
+        setTimeout(function(){
             window.location.href = src;
-        }, 3000);
+        }, 4000);
     </script>
 </body>
 </html>

@@ -41,7 +41,6 @@
           <li><a href="#"><span class="am-icon-power-off"></span> 退出</a></li>
         </ul>
       </li>
-      <li><a href="javascript:;" id="admin-fullscreen"><span class="am-icon-arrows-alt"></span> </a></li>
     </ul>
   </div>
 </header>
@@ -203,8 +202,8 @@
         <td>
             <div class="am-btn-toolbar">
                 <div class="am-btn-group am-btn-group-xs">
-                    <button class="am-btn am-btn-default am-btn-xs am-text-secondary"><span class="am-icon-pencil-square-o"></span> 编辑</button>
-                    <button class="am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only"><span class="am-icon-trash-o"></span> 删除</button>
+                    <a href="/cblog/articles/update/{{id}}" class="am-btn am-btn-default am-btn-xs am-text-secondary"><span class="am-icon-pencil-square-o"></span> 编辑</a>
+                    <a href="/cblog/articles/delete/{{id}}" class="am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only"><span class="am-icon-trash-o"></span> 删除</a>
                     <div class="am-btn am-btn-default am-btn-xs am-hide-sm-only article-discuss-openbutton" data-am-modal="{target: '#article-discuss'}"><span class="am-icon-copy"></span> 展开评论 （<span>1</span>）</div>
                 </div>
             </div>
