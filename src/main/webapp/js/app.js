@@ -43,7 +43,7 @@ function get_pagination(which, indexPage, totalPage, url, clazzName){
             },
             success: function(d){
                 showItem(which, d);
-                get_pagination(which, d.page, d.maxPage, url, showItem);
+                get_pagination(which, d.page, d.maxPage, url, clazzName);
             }
         });
     });
