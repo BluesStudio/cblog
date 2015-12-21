@@ -44,7 +44,8 @@
     {{#articles}}
 	<li>
 	    <div class="timeline-left">
-            <div class="year">{{publishDate}}</div>
+            <div class="year">{{activityY}}</div>
+            <div class="date">{{activityD}}</div>
             <div class="place">{{site}}</div>
 		</div>
         <div class="ci"></div>
@@ -58,10 +59,9 @@
 	            <span class="tag-where">{{site}}</span>
 			</div>
 			<div class="post-entry">
-			    <img src="../img/class/index/img001.jpg" class="alignleft border pimg bimg">
 			    <a href="class-article.html">
                     <div class="preview">
-                        {{content}}
+                        {{{content}}}
                     </div>
 	            </a>
 	            <div class="more">
@@ -90,12 +90,17 @@
     var clazzName = "0401306";
     $.ajax({
         type: "POST",
-        url: "/cblog/articles/list",
+        url: "http://i.xiaofeig.cn/cblog/articles/list",
         dataType: "json",
         data: {
             "clazzName": clazzName
         },
         success: function(data){
+            $.each(data.articles, function(i, e){
+                var year = e.activityDate.slice(0,5), date = e.activityDate.slice(5);
+                data.articles[i].activityY = year;
+                data.articles[i].activityD = date;
+            });
 			timeline.append(list_template(data));
         }
     });
