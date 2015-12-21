@@ -171,11 +171,14 @@ public class ArticleController {
 			subJson.put("publishDate", format.format(article.getPublishDate()));
 			subJson.put("title", article.getTitle());
 			subJson.put("content", article.getContent());
+			subJson.put("site", article.getSite());
+			subJson.put("participant", article.getParticipant());
 			jsonArr.add(subJson);
 		}
 		json.put("articles", jsonArr);
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
+		System.out.println("aritcle.list:"+json.toString());
 		return new ResponseEntity<String>(json.toString(), headers, HttpStatus.OK);
 	}
 	
