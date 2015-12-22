@@ -1,27 +1,25 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!doctype html>
 <html class="no-js">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>cBlog-后台管理-${clazz.clazzName }班</title>
-    <meta name="description" content="这是一个 index 页面">
-    <meta name="keywords" content="index">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <meta name="renderer" content="webkit">
-    <meta http-equiv="Cache-Control" content="no-siteapp"/>
-    <meta name="apple-mobile-web-app-title" content="Amaze UI"/>
-    <link rel="stylesheet" href="/cblog/css/amazeui.min.css"/>
-    <link rel="stylesheet" href="/cblog/css/admin-style.css">
-    <link rel="stylesheet" href="/cblog/css/admin.css">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>cBlog-后台管理-${clazz.clazzName }班</title>
+  <meta name="description" content="这是一个 index 页面">
+  <meta name="keywords" content="index">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-title" content="Amaze UI" />
+  <link rel="stylesheet" href="/cblog/css/amazeui.min.css"/>
+  <link rel="stylesheet" href="/cblog/css/admin-style.css">
+  <link rel="stylesheet" href="/cblog/css/admin.css">
 </head>
 <body>
 <!--[if lte IE 9]>
 <p class="browsehappy">你正在使用<strong>过时</strong>的浏览器，Amaze UI 暂不支持。 请 <a href="http://browsehappy.com/" target="_blank">升级浏览器</a>
-    以获得更好的体验！</p>
+  以获得更好的体验！</p>
 <![endif]-->
 
 <header class="am-topbar admin-header">
@@ -185,7 +183,7 @@
         <h3 class="article-discuss-title"><a href="class-article.html" target="_blank">学校第十届田径运动会隆重开幕</a></h3>
             <ul class="am-comments-list admin-content-comment">
               <li class="am-comment">
-                <a href="#"><img src="../img/class/members/1.jpg" alt="" class="am-comment-avatar" id="article-discuss-user-logo"></a>
+                <a href="#"><img src="/cblog/img/class/members/1.jpg" alt="" class="am-comment-avatar" id="article-discuss-user-logo"></a>
                 <div class="am-comment-main">
                   <header class="am-comment-hd">
                     <div class="am-comment-meta"><a class="am-comment-author">闵聪</a> 评论于 <time>2014-7-12 15:30</time></div>
@@ -224,8 +222,8 @@
         <td>
             <div class="am-btn-toolbar">
                 <div class="am-btn-group am-btn-group-xs">
-                    <button class="am-btn am-btn-default am-btn-xs am-text-secondary"><span class="am-icon-pencil-square-o"></span> 编辑</button>
-                    <button class="am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only"><span class="am-icon-trash-o"></span> 删除</button>
+                    <a href="/cblog/articles/update/{{id}}" class="am-btn am-btn-default am-btn-xs am-text-secondary"><span class="am-icon-pencil-square-o"></span> 编辑</a>
+                    <a href="/cblog/articles/delete/{{id}}" class="am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only"><span class="am-icon-trash-o"></span> 删除</a>
                     <div class="am-btn am-btn-default am-btn-xs am-hide-sm-only article-discuss-openbutton" data-am-modal="{target: '#article-discuss'}"><span class="am-icon-copy"></span> 展开评论 （<span>1</span>）</div>
                 </div>
             </div>
@@ -233,13 +231,13 @@
     </tr>
     {{/articles}}
 </script>
-<script src="../js/jquery.min.js"></script>
-<script src="../js/amazeui.min.js"></script>
-<script src="../js/app.js"></script>
-<script type="text/javascript" src="../js/handlebars.js"></script>
+<script src="/cblog/js/jquery.min.js"></script>
+<script src="/cblog/js/amazeui.min.js"></script>
+<script src="/cblog/js/app.js"></script>
+<script type="text/javascript" src="/cblog/js/handlebars.js"></script>
 <script type="text/javascript">
 $(function(){
-    var clazzName = "${clazz.clazzName }";
+    var clazzName = "${clazz.clazzName}";
     $.ajax({
         type: "POST",
         url: "/cblog/articles/list",

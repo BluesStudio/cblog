@@ -46,7 +46,8 @@
     {{#articles}}
 	<li>
 	    <div class="timeline-left">
-            <div class="year">{{publishDate}}</div>
+            <div class="year">{{activityY}}</div>
+            <div class="date">{{activityD}}</div>
             <div class="place">{{site}}</div>
 		</div>
         <div class="ci"></div>
@@ -60,10 +61,9 @@
 	            <span class="tag-where">{{site}}</span>
 			</div>
 			<div class="post-entry">
-			    <img src="/cblog/img/class/index/img001.jpg" class="alignleft border pimg bimg">
 			    <a href="class-article.html">
                     <div class="preview">
-                        {{content}}
+                        {{{content}}}
                     </div>
 	            </a>
 	            <div class="more">
@@ -84,6 +84,7 @@
 <script src="/cblog/js/smoothscroll.js" type="text/javascript"></script>
 <script src="/cblog/js/big.js" type="text/javascript"></script>
 <script src="/cblog/js/top.js" type="text/javascript"></script>
+<script type="text/javascript" src="/cblog/js/handlebars.js"></script>
 <script type="text/javascript">
     var timeline = $("#timeline");
     var list_source = $("#article-item").html();
@@ -97,7 +98,12 @@
             "clazzName": clazzName
         },
         success: function(data){
-            members.append(list_template(data));
+            $.each(data.articles, function(i, e){
+                var year = e.activityDate.slice(0,5), date = e.activityDate.slice(5);
+                data.articles[i].activityY = year;
+                data.articles[i].activityD = date;
+            });
+			timeline.append(list_template(data));
         }
     });
 </script>
