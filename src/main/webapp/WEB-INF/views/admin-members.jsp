@@ -12,9 +12,9 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="Cache-Control" content="no-siteapp" />
   <meta name="apple-mobile-web-app-title" content="Amaze UI" />
-  <link rel="stylesheet" href="../css/amazeui.min.css"/>
-  <link rel="stylesheet" href="../css/admin-style.css">
-  <link rel="stylesheet" href="../css/admin.css">
+  <link rel="stylesheet" href="/cblog/css/amazeui.min.css"/>
+  <link rel="stylesheet" href="/cblog/css/admin-style.css">
+  <link rel="stylesheet" href="/cblog/css/admin.css">
 </head>
 <body>
 <!--[if lte IE 9]>
@@ -58,7 +58,7 @@
     <!-- sidebar start -->
     <div class="admin-sidebar">
         <ul class="am-list admin-sidebar-list">
-            <li class="admin-sidebar-list-hover"><a href="/cblog/index"><span class="am-icon-home"></span> 首页<span
+            <li class="admin-sidebar-list-hover"><a href="/cblog/admins/index"><span class="am-icon-home"></span> 首页<span
                     class="am-icon-star am-fr am-margin-right admin-icon-yellow"></span></a></li>
             <li class="admin-parent">
                 <a class="am-cf" data-am-collapse="{target: '#collapse-nav1'}"><span class="am-icon-file"></span> 班级文章管理
@@ -138,7 +138,7 @@
     <div class="am-g">
       <div class="am-u-sm-12 am-u-md-6">
         <div class="am-btn-toolbar">
-          <a href="admin-members-add.html"><div class="am-btn-group am-btn-group-xs">
+          <a href="/cblog/students/create"><div class="am-btn-group am-btn-group-xs">
             <button type="button" class="am-btn am-btn-default"><span class="am-icon-plus"></span> 添加新成员</button>
           </div></a>
         </div>
@@ -255,10 +255,10 @@
   </li>
   {{/students}}
 </script>
-<script src="../js/jquery.min.js"></script>
-<script src="../js/amazeui.min.js"></script>
-<script src="../js/app.js"></script>
-<script type="text/javascript" src="../js/handlebars.js"></script>
+<script src="/cblog/js/jquery.min.js"></script>
+<script src="/cblog/js/amazeui.min.js"></script>
+<script src="/cblog/js/app.js"></script>
+<script type="text/javascript" src="/cblog/js/handlebars.js"></script>
 <script type="text/javascript">
   $(function(){
     var clazzName = "${admin.clazz.clazzName }";

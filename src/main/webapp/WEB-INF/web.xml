@@ -111,7 +111,7 @@
     <session-config>
         <session-timeout>10</session-timeout>
     </session-config>
-    
+    <!-- 
     <error-page>
         <exception-type>java.lang.Exception</exception-type>
         <location>/404</location>
@@ -129,6 +129,6 @@
         <error-code>500</error-code>
         <location>/404</location>
     </error-page>
-    
+     -->
     
 </web-app>

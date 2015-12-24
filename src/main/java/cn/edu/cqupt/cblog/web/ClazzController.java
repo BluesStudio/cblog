@@ -37,7 +37,9 @@ public class ClazzController {
 		Admin admin=(Admin)session.getAttribute("admin");
 		Clazz clazz=Clazz.findClazz(admin.getClazz().getId());
 		clazz.setOverview(overview);
-		clazz.setClazzImg(MultipartFileResolver.resolveMultipartFile(clazzImg));
+		if(clazzImg.getOriginalFilename()!=null&&!clazzImg.getOriginalFilename().equals("")){
+			clazz.setClazzImg(MultipartFileResolver.resolveMultipartFile(clazzImg));
+		}
 		clazz.merge();
 		admin=Admin.findAdmin(admin.getId());
 		session.setAttribute("admin", admin);

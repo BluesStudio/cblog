@@ -56,7 +56,8 @@ public class StudentController {
 	 * */
 	@RequestMapping(value="/create", method=RequestMethod.POST, produces="text/html")
 	public String create(@ModelAttribute("student") Student student, BindingResult bindingResult, HttpSession session, Model model){
-		Clazz clazz=((Admin)session.getAttribute("admin")).getClazz();
+		Admin admin=(Admin)session.getAttribute("admin");
+		Clazz clazz=admin.getClazz();
 		student.setClazz(clazz);
 		studentService.create(student, bindingResult);
 		
@@ -67,10 +68,16 @@ public class StudentController {
 			}
 			return "admin-members-add";
 		}
-		return "redirect:/students/list";
+		model.addAttribute("message", "成员添加成功");
+		model.addAttribute("url", "/cblog/students/admin-members");
+		model.addAttribute("redirectPage", "成员列表");
+		return "redirect";
 	}
 	@RequestMapping(value="/admin-members", method=RequestMethod.GET, produces="text/html")
-	public String list(){
+	public String list(HttpSession session){
+		Admin admin=(Admin)session.getAttribute("admin");
+		Clazz clazz=Clazz.findClazz(admin.getClazz().getId());
+		session.setAttribute("clazz", clazz);
 		return "admin-members";
 	}
 	

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -33,7 +34,9 @@
 			<div class="introduction-box">
 				<h2>班旗</h2>
 				<div class="box-bd">
+					<c:if test="${clazz.flagImg!=null }">
 					<img src="http://xiaofeig.image.alimmdn.com/cblog/${clazz.flagImg }" class="banqi border bimg">
+					</c:if>
 				</div>
 			</div>
 		</li>
@@ -61,12 +64,9 @@
 					<div class="box3-p">
 						<p>${clazz.overview }</p>
 					</div>
-					<c:if test="${clazz.clazzImg==null }">
-					<img src="/cblog/img/class/introduction/0.jpg" id="mainimg" class="border bimg">
-					</c:if>
-					<c:if test="${clazz.clazzImg!=null }">
-					<img src="http://xiaofeig.image.alimmdn.com/cblog/${clazz.clazzImg }" id="mainimg" class="border bimg">
-					</c:if>
+					<c:if test="${clazz.clazzImg!=null&&fn:length(clazz.clazzImg)>0 }">
+		              <img src="http://xiaofeig.image.alimmdn.com/cblog/${clazz.clazzImg }" id="mainimg" class="border bimg">
+              		</c:if>
 				</div>
 			</div>
 		</li>

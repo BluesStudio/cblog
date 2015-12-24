@@ -98,30 +98,32 @@ public class BlogUserController {
 		//session.setAttribute("blogUser", BlogUser.findBlogUser(1L));
 		return "user-setting";
 	}
+	@RequestMapping("/hello")	
+	public String hello(){
+		return "hello";
+	}
 	
 	@RequestMapping(value="/user-setting", method=RequestMethod.POST)
-	public String updateInfo(@ModelAttribute("blogUser") BlogUser blogUserTemp, BindingResult bindingResult, HttpSession session){
-		
-		
-		BlogUser blogUser=(BlogUser)session.getAttribute("blogUser");
-		Student student=blogUserTemp.getStudent();
-		if(student==null){
-			student=new Student();
+	public String updateInfo(@ModelAttribute("student") Student student, BindingResult bindingResult, HttpSession session){
+		BlogUser blogUserTemp=(BlogUser)session.getAttribute("blogUser");
+		Student stu=blogUserTemp.getStudent();
+		if(stu==null){
+			stu=new Student();
 		}
-		student.setStuName(blogUserTemp.getStudent().getStuName());
-		student.setGender(blogUserTemp.getStudent().getGender());
-		student.setAge(blogUserTemp.getStudent().getAge());
-		student.setStuId(blogUserTemp.getStudent().getStuId());
-		student.setMotto(blogUserTemp.getStudent().getMotto());
+		stu.setStuName(student.getStuName());
+		stu.setGender(student.getGender());
+		stu.setAge(student.getAge());
+		stu.setStuId(student.getStuId());
+		stu.setMotto(student.getMotto());
 		if(blogUserTemp.getStudent()==null){
-			student.persist();
+			stu.persist();
 		}else{
-			student.merge();
+			stu.merge();
 		}
-		blogUser.setStudent(student);
-		blogUser.merge();
-		session.setAttribute("blogUser", blogUser);
-		return "redirect:/blogUsers/user-setting";
+		blogUserTemp.setStudent(stu);
+		blogUserTemp.merge();
+		session.setAttribute("blogUser", blogUserTemp);
+		return "redirect:/blogUsers/index";
 	}
 	
 	@RequestMapping(value="/modifyStuImg", method=RequestMethod.POST)

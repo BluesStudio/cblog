@@ -38,7 +38,7 @@
           <button type="submit" class="user-so-btn"><span class="am-icon-search"></span></button>
           </form>
       </li>
-      <li><a href="/cblog/clazzs/class-home/${blogUser.student.clazz.clazzName }" target="_blank"><span class="am-icon-home"></span> 进入本班博客 </a></li>
+      <li><a href="${blogUser.student.clazz==null||blogUser.student.clazz.clazzName==null? '#':'/cblog/clazzs/class-home/'+blogUser.student.clazz.clazzName }" target="_blank"><span class="am-icon-home"></span> 进入本班博客 </a></li>
       <li class="am-dropdown" data-am-dropdown>
         <a class="am-dropdown-toggle" data-am-dropdown-toggle href="javascript:;">
           <span class="am-icon-user"></span> ${blogUser.student.stuName } <span class="am-icon-caret-down"></span>
@@ -64,7 +64,7 @@
     <div class="am-panel am-panel-default admin-sidebar-panel">
       <div class="am-panel-bd">
         <p><span class="am-icon-bookmark"></span> 基本信息</p>
-        <p>用户名：${blogUser.student.stuName }<br>
+        <p>用户名：${blogUser.username }<br>
         姓名：${blogUser.student.stuName }<br>
         所在班级：${blogUser.student.clazz.clazzName }班<a href="/cblog/blogUsers/user-setting"> 修改</a></p>
       </div>
@@ -97,15 +97,13 @@
         </div>
 
         <div class="am-cf am-margin am-padding admin-content-list user-box">
-            <button type="submit" class="am-btn am-btn-danger user-change-btn user-changeok">保存</button>
-            <a class="am-btn am-btn-primary user-change-btn user-change user-none">修改</a>
 
             <h2 class="user-title">个人信息</h2>
 
             <div class="am-u-md-2 user-logo">
                 <img class="am-img-thumbnail" src="http://xiaofeig.image.alimmdn.com/cblog/${blogUser.student.stuImg==null? 'ea4398e5806943f487c67b28c1f3e6d5.png':blogUser.student.stuImg }">
 
-                <form class="am-form" action="/cblog/blogUsers/modifyStuImg" method="POST" enctype="multipart/form-data">
+                <form method="post" action="/cblog/blogUsers/modifyStuImg" id="fileUpload-form" enctype="multipart/form-data" class="am-form">
                     <div class="am-form-group am-form-file">
                         <button type="button" class="am-btn am-btn-default am-btn-sm user-tx-upload">
                             选择图片
@@ -113,51 +111,55 @@
                         <button type="submit" class="am-btn am-btn-danger am-btn-sm user-tx-submit"><i
                                 class="am-icon-cloud-upload"></i></button>
                         <input id="doc-form-file" type="file" accept="image/*" multiple="" name="stuImg">
-
                         <div id="file-list"></div>
                     </div>
                 </form>
             </div>
             <form action="/cblog/blogUsers/user-setting" method="POST">
+            <!-- 
+                <button type="submit" class="am-btn am-btn-danger user-change-btn user-changeok">保存</button>
+                <a class="am-btn am-btn-primary user-change-btn user-change user-none">修改</a>
+                 -->
+                 <button type="submit" class="am-btn am-btn-danger user-change-btn">保存</button>
                 <div class="am-u-md-3">
                     <div class="am-input-group user-group">
                         <label class="am-input-group-label">姓名</label>
-                        <input class="am-form-field user-m" type="text" name="student.stuName" value="${blogUser.student.stuName }">
+                        <input class="am-form-field user-m" type="text" name="stuName" value="${blogUser.student.stuName }">
                     </div>
                     <div class="am-input-group user-group">
                         <label class="am-input-group-label">用户名</label>
-                        <input class="am-form-field user-n" type="text" name="lname" value="${blogUser.username }" disabled>
+                        <input class="am-form-field user-n" type="text" value="${blogUser.username }" disabled>
                     </div>
                 </div>
                 <div class="am-u-md-3">
                     <div class="am-input-group user-group">
                         <label class="am-input-group-label">性别</label>
-                        <input class="am-form-field user-m" type="text" name="student.gender" value="${blogUser.student.gender }">
+                        <input class="am-form-field user-m" type="text" name="gender" value="${blogUser.student.gender }">
                     </div>
                     <div class="am-input-group user-group">
                         <label class="am-input-group-label">班级</label>
                         <c:if test="${blogUser.student.clazz==null }">
-                        <input class="am-form-field user-n" type="text" name="lname" value="" disabled>
+                        <input class="am-form-field user-n" type="text" value="" disabled>
                         </c:if>
                         <c:if test="${blogUser.student.clazz!=null }">
-                        <input class="am-form-field user-n" type="text" name="lname" value="${blogUser.student.clazz.clazzName }" disabled>
+                        <input class="am-form-field user-n" type="text" value="${blogUser.student.clazz.clazzName }" disabled>
                         </c:if>
                     </div>
                 </div>
                 <div class="am-u-md-4">
                     <div class="am-input-group user-group">
                         <label class="am-input-group-label">年龄</label>
-                        <input class="am-form-field user-m" type="text" name="student.age" value="${blogUser.student.gender }">
+                        <input class="am-form-field user-m" type="text" name="age" value="${blogUser.student.gender }">
                     </div>
                     <div class="am-input-group user-group">
                         <label class="am-input-group-label">学号</label>
-                        <input class="am-form-field user-m" type="text" name="student.stuId" value="${blogUser.student.stuId }">
+                        <input class="am-form-field user-m" type="text" name="stuId" value="${blogUser.student.stuId }">
                     </div>
                 </div>
                 <div class="am-u-md-10">
                     <div class="am-input-group user-group">
                         <label class="am-input-group-label">座右铭</label>
-                        <input class="am-form-field user-m" type="text" name="student.motto"
+                        <input class="am-form-field user-m" type="text" name="motto"
                                value="${blogUser.student.motto }">
                     </div>
                     <small class="admin-task-meta"><span class="am-icon-angle-right"></span> 如需修改班级，请到本页下方进行操作。</small>
@@ -254,7 +256,7 @@
         userchange.click(function () {
             var userm = $(this).parents(".user-box").find(".user-m");
             userm.each(function () {
-                $(this).replaceWith('<input class="am-form-field user-m" type="text" name="lname" value="' + $(this).html() + '" />');
+                $(this).replaceWith('<input class="am-form-field user-m" type="text" name="" value="' + $(this).html() + '" />');
             });
             $(this).hide();
             $(this).siblings(".user-changeok").show();

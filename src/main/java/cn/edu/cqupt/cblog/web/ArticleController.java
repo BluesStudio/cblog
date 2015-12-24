@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import cn.edu.cqupt.cblog.domain.Admin;
 import cn.edu.cqupt.cblog.domain.Article;
+import cn.edu.cqupt.cblog.domain.Clazz;
 import cn.edu.cqupt.cblog.service.ArticleService;
 
 @Controller
@@ -50,7 +51,7 @@ public class ArticleController {
 	 * 创建文章生成表单
 	 * @since 2015-12-10
 	 * */
-	@RequestMapping(value="create", method=RequestMethod.GET)
+	@RequestMapping(value="/create", method=RequestMethod.GET)
 	public String createForm(){
 		return "admin-article-edit";
 	}
@@ -58,9 +59,10 @@ public class ArticleController {
 	/**
 	 * 提交创建的文章
 	 * */
-	@RequestMapping(value="create", method=RequestMethod.POST, produces="text/html")
+	@RequestMapping(value="/create", method=RequestMethod.POST, produces="text/html")
 	public String create(@ModelAttribute("article") Article article, BindingResult bindingResult, HttpSession session, Model model){
-		article.setClazz(((Admin)session.getAttribute("admin")).getClazz());
+		Admin admin=(Admin)session.getAttribute("admin");
+		article.setClazz(admin.getClazz());
 		article.setPublishDate(new Date());
 		//System.out.println(ReflectionToStringBuilder.toString(article, ToStringStyle.SIMPLE_STYLE));
 		articleService.create(article, bindingResult);
@@ -74,7 +76,10 @@ public class ArticleController {
 			model.addAttribute("article", article);
 			return "admin-article-edit";
 		}
-		return "redirect:/articles/admin-article";
+		model.addAttribute("message", "文章发表成功");
+		model.addAttribute("url", "/cblog/articles/admin-article");
+		model.addAttribute("redirectPage", "文章列表");
+		return "redirect";
 	}
 	
 	
@@ -127,7 +132,10 @@ public class ArticleController {
 	}
 	
 	@RequestMapping(value="/admin-article", method=RequestMethod.GET)
-	public String list(){
+	public String list(HttpSession session){
+		Admin admin=(Admin)session.getAttribute("admin");
+		Clazz clazz=Clazz.findClazz(admin.getClazz().getId());
+		session.setAttribute("clazz", clazz);
 		return "admin-article";
 	}
 	
@@ -182,8 +190,21 @@ public class ArticleController {
 		return new ResponseEntity<String>(json.toString(), headers, HttpStatus.OK);
 	}
 	
-	@RequestMapping(value="delete/{id}", method=RequestMethod.DELETE, produces="text/html")
-	public String delete(){
-		return "";
+	@RequestMapping(value="delete/{id}", method=RequestMethod.GET, produces="text/html")
+	public String delete(@PathVariable("id") Long id, HttpSession session, Model model){
+		Article article=Article.findArticle(id);
+		Admin admin=(Admin)session.getAttribute("admin");
+		if(article==null||article.getClazz()==null||!article.getClazz().getId().equals(admin.getClazz().getId())){
+			//bindingResult.reject("honorWall.id.required", "荣誉墙图片已删除或不存在");
+			model.addAttribute("message", "文章删除失败");
+			model.addAttribute("url", "/cblog/articles/admin-article");
+			model.addAttribute("redirectPage", "文章列表");
+			return "redirect";
+		}
+		article.remove();
+		model.addAttribute("message", "文章删除成功");
+		model.addAttribute("url", "/cblog/articles/admin-article");
+		model.addAttribute("redirectPage", "文章列表");
+		return "redirect";
 	}
 }

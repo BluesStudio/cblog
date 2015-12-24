@@ -38,7 +38,17 @@
           <button type="submit" class="user-so-btn"><span class="am-icon-search"></span></button>
           </form>
       </li>
-      <li><a href="/cblog/clazzs/class-home/${blogUser.student.clazz.clazzName }" target="_blank"><span class="am-icon-home"></span> 进入本班博客 </a></li>
+      <li>
+      <c:choose>
+      	<c:when test="${blogUser.student.clazz==null&&blogUser.student.clazz.clazzName==null }">
+      		<a href="#" target="_blank"><span class="am-icon-home"></span> 进入本班博客 </a>	
+      	</c:when>
+      	<c:otherwise>
+      		<a href="/cblog/clazzs/class-home/${blogUser.student.clazz.clazzName }" target="_blank"><span class="am-icon-home"></span> 进入本班博客 </a>
+      	</c:otherwise>
+      </c:choose>
+      
+      </li>
       <li class="am-dropdown" data-am-dropdown>
         <a class="am-dropdown-toggle" data-am-dropdown-toggle href="javascript:;">
           <span class="am-icon-user"></span> ${blogUser.student.stuName } <span class="am-icon-caret-down"></span>
@@ -64,7 +74,7 @@
     <div class="am-panel am-panel-default admin-sidebar-panel">
       <div class="am-panel-bd">
         <p><span class="am-icon-bookmark"></span> 基本信息</p>
-        <p>用户名：${blogUser.student.stuName }<br>
+        <p>用户名：${blogUser.username }<br>
         姓名：${blogUser.student.stuName }<br>
         所在班级：${blogUser.student.clazz.clazzName }班<a href="/cblog/blogUsers/user-setting"> 修改</a></p>
       </div>
@@ -102,22 +112,22 @@
       <div class="am-u-md-3">
         <div class="am-input-group user-group">
             <label class="am-input-group-label">姓名</label>
-             <span class="user-m">${blogUser.student.stuName }</span>
+             <span class="user-m">${blogUser.student.stuName==null? '-':blogUser.student.stuName }</span>
         </div>
         <div class="am-input-group user-group">
             <label class="am-input-group-label">用户名</label>
-             <span class="user-n">${blogUser.username }</span>
+             <span class="user-n">${blogUser.username==null? '-':blogUser.username }</span>
         </div>
       </div>
       <div class="am-u-md-3">
         <div class="am-input-group user-group">
             <label class="am-input-group-label">性别</label>
-             <span class="user-m">${blogUser.student.gender }</span>
+             <span class="user-m">${blogUser.student.gender==null? '-':blogUser.student.gender }</span>
         </div>
         <div class="am-input-group user-group">
             <label class="am-input-group-label">班级</label>
             <c:if test="${blogUser.student.clazz==null }">
-            	<span class="user-n"></span>
+            	<span class="user-n">-</span>
             </c:if>
             <c:if test="${blogUser.student.clazz!=null }">
             	<span class="user-n">${blogUser.student.clazz.clazzName }班</span>
@@ -127,17 +137,17 @@
       <div class="am-u-md-4">
         <div class="am-input-group user-group">
             <label class="am-input-group-label">年龄</label>
-             <span class="user-m">${blogUser.student.age }</span>
+             <span class="user-m">${blogUser.student.age==null? '-':blogUser.student.age }</span>
         </div>
         <div class="am-input-group user-group">
             <label class="am-input-group-label">学号</label>
-             <span class="user-m">${blogUser.student.stuId }</span>
+             <span class="user-m">${blogUser.student.stuId==null? '-':blogUser.student.stuId }</span>
         </div>
       </div>
       <div class="am-u-md-10">
         <div class="am-input-group user-group">
             <label class="am-input-group-label">座右铭</label>
-             <span class="user-m">${blogUser.student.motto }</span>
+             <span class="user-m">${blogUser.student.motto==null? '-':blogUser.student.motto }</span>
         </div>
       </div>
     </div>

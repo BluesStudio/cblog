@@ -54,7 +54,7 @@
     <!-- sidebar start -->
     <div class="admin-sidebar">
         <ul class="am-list admin-sidebar-list">
-            <li class="admin-sidebar-list-hover"><a href="/cblog/index"><span class="am-icon-home"></span> 首页<span
+            <li class="admin-sidebar-list-hover"><a href="/cblog/admins/index"><span class="am-icon-home"></span> 首页<span
                     class="am-icon-star am-fr am-margin-right admin-icon-yellow"></span></a></li>
             <li class="admin-parent">
                 <a class="am-cf" data-am-collapse="{target: '#collapse-nav1'}"><span class="am-icon-file"></span> 班级文章管理
@@ -135,7 +135,7 @@
     <div class="am-g">
       <div class="am-u-sm-12 am-u-md-6">
         <div class="am-btn-toolbar">
-          <a href="admin-album-upload.html"><div class="am-btn-group am-btn-group-xs">
+          <a href="/cblog/albums/create"><div class="am-btn-group am-btn-group-xs">
             <button type="button" class="am-btn am-btn-default"><span class="am-icon-plus"></span> 上传新图片</button>
           </div></a>
         </div>

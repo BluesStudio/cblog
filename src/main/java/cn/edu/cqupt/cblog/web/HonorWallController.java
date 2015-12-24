@@ -30,7 +30,7 @@ public class HonorWallController {
 	}
 	
 	@RequestMapping(value="/delete/{id}", method=RequestMethod.GET)
-	public String create(@PathVariable("id") Long id, HttpSession session){
+	public String delete(@PathVariable("id") Long id, HttpSession session){
 		HonorWall honorWall=HonorWall.findHonorWall(id);
 		Admin admin=(Admin)session.getAttribute("admin");
 		if(honorWall==null||honorWall.getClazz()==null||!honorWall.getClazz().getId().equals(admin.getClazz().getId())){

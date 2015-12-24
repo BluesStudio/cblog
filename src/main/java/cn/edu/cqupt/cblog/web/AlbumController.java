@@ -56,7 +56,7 @@ public class AlbumController {
 	 * 提交创建的相册
 	 * */
 	@RequestMapping(value="/create", method=RequestMethod.POST, produces="text/html")
-	public String create(@ModelAttribute("imageFile") MultipartFile imageFile,@ModelAttribute(value="albumDate") String albumDate, BindingResult bindingResult, HttpSession session){
+	public String create(@ModelAttribute("imageFile") MultipartFile imageFile,@ModelAttribute(value="albumDate") String albumDate, BindingResult bindingResult, HttpSession session, Model model){
 		String filename=imageFile.getOriginalFilename().substring(imageFile.getOriginalFilename().lastIndexOf(".")+1);
 		/*if(!(filename.equals("bmp")||filename.equals("gif")||filename.equals("jpeg")||filename.equals("jpg")||filename.equals("png"))){
 			break;
@@ -70,6 +70,7 @@ public class AlbumController {
 		filename=UUID.randomUUID().toString().replaceAll("-", "")+"."+filename;
 		
 		File file=new File(dir, filename);
+		Admin admin=(Admin)session.getAttribute("admin");
 		Clazz clazz=null;
 		try {
 			FileOutputStream out=new FileOutputStream(file);
@@ -91,7 +92,8 @@ public class AlbumController {
 				album.setAlbumDate(new Date());
 			}
 			album.setImage(filename);
-			clazz=((Admin)session.getAttribute("admin")).getClazz();
+			
+			clazz=admin.getClazz();
 			album.setClazz(clazz);
 			album.persist();
 			
@@ -105,7 +107,10 @@ public class AlbumController {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return "redirect:/albums/admin-album";
+		model.addAttribute("message", "照片上传成功");
+		model.addAttribute("url", "/cblog/albums/admin-album");
+		model.addAttribute("redirectPage", "相册列表");
+		return "redirect";
 	}
 	
 	
@@ -116,7 +121,10 @@ public class AlbumController {
 	}*/
 
 	@RequestMapping(value="/admin-album")
-	public String list(){
+	public String list(HttpSession session){
+		Admin admin=(Admin)session.getAttribute("admin");
+		Clazz clazz=Clazz.findClazz(admin.getClazz().getId());
+		session.setAttribute("clazz", clazz);
 		return "admin-album";
 	}
 	

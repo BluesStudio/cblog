@@ -53,7 +53,7 @@
     <!-- sidebar start -->
     <div class="admin-sidebar">
         <ul class="am-list admin-sidebar-list">
-            <li class="admin-sidebar-list-hover"><a href="/cblog/index"><span class="am-icon-home"></span> 首页<span
+            <li class="admin-sidebar-list-hover"><a href="/cblog/admins/index"><span class="am-icon-home"></span> 首页<span
                     class="am-icon-star am-fr am-margin-right admin-icon-yellow"></span></a></li>
             <li class="admin-parent">
                 <a class="am-cf" data-am-collapse="{target: '#collapse-nav1'}"><span class="am-icon-file"></span> 班级文章管理
@@ -123,7 +123,7 @@
           <div class="am-panel-bd">
             <div class="am-g">
               <div class="am-u-md-5">
-                <img class="am-img-circle am-img-thumbnail admin-members-img" src="/cblog/img/class/members/1.jpg" alt=""/>
+                <img class="am-img-circle am-img-thumbnail admin-members-img" src="http://xiaofeig.image.alimmdn.com/cblog/ea4398e5806943f487c67b28c1f3e6d5.png" alt=""/>
               </div>
               <div class="am-u-md-7">
                   <form method="post" action="/cblog/fileUpload" id="fileUpload-form" enctype="multipart/form-data">
