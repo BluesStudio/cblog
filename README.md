@@ -54,6 +54,7 @@
 |:---:|:---:|
 |/cblog/articles/update/{article.id}|更新文章|
 |/cblog/articles/delete/{article.id}|删除文章|
+|/cblog/articles/{article.id}|查看某篇文章|
 |/cblog/********|文章评论（还木有）|
 
 ## 小飞的待解决问题 ##
