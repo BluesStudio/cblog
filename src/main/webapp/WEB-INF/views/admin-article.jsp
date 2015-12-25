@@ -218,7 +218,7 @@
         <td>{{tableId ../page @index}}</td>
         <td class="am-hide-sm-only">{{activityDate}}</td>
         <td class="am-hide-sm-only">{{publishDate}}</td>
-        <td><a href="class-article.html" target="_blank">{{title}}</a></td>
+        <td><a href="/cblog/articles/{{id}}" target="_blank">{{title}}</a></td>
         <td>
             <div class="am-btn-toolbar">
                 <div class="am-btn-group am-btn-group-xs">
