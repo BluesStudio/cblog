@@ -1,10 +1,5 @@
 package cn.edu.cqupt.cblog.web;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -12,7 +7,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
 
@@ -34,7 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 import cn.edu.cqupt.cblog.domain.Admin;
 import cn.edu.cqupt.cblog.domain.Album;
 import cn.edu.cqupt.cblog.domain.Clazz;
-import cn.edu.cqupt.cblog.util.FileUploadUtil;
+import cn.edu.cqupt.cblog.util.MultipartFileResolver;
 
 import com.alibaba.media.Result;
 import com.alibaba.media.upload.UploadResponse;
@@ -57,33 +51,8 @@ public class AlbumController {
 	 * */
 	@RequestMapping(value="/create", method=RequestMethod.POST, produces="text/html")
 	public String create(@ModelAttribute("imageFile") MultipartFile imageFile,@ModelAttribute(value="albumDate") String albumDate, BindingResult bindingResult, HttpSession session, Model model){
-		String filename=imageFile.getOriginalFilename().substring(imageFile.getOriginalFilename().lastIndexOf(".")+1);
-		/*if(!(filename.equals("bmp")||filename.equals("gif")||filename.equals("jpeg")||filename.equals("jpg")||filename.equals("png"))){
-			break;
-		}*/
-		
-		String savePath="/home/imageTemp";
-		File dir=new File(savePath);
-		if(!dir.exists()){
-			dir.mkdirs();
-		}
-		filename=UUID.randomUUID().toString().replaceAll("-", "")+"."+filename;
-		
-		File file=new File(dir, filename);
-		Admin admin=(Admin)session.getAttribute("admin");
-		Clazz clazz=null;
-		try {
-			FileOutputStream out=new FileOutputStream(file);
-			InputStream in=imageFile.getInputStream();
-			byte[] b=new byte[1024];
-			int len=0;
-			while((len=in.read(b))>0){
-				out.write(b, 0, len);
-			}
-			in.close();
-			out.close();
-			Result<UploadResponse> result=FileUploadUtil.uploadFile(file,"cblog",filename);
-			
+		Result<UploadResponse> result=MultipartFileResolver.resolveMultipartFile(imageFile);
+		if(result!=null&&result.getHttpStatus()==200){
 			Album album=new Album();
 			try {
 				album.setAlbumDate(new SimpleDateFormat("yyyy-MM-dd").parse(albumDate));
@@ -91,23 +60,15 @@ public class AlbumController {
 				e.printStackTrace();
 				album.setAlbumDate(new Date());
 			}
-			album.setImage(filename);
-			
-			clazz=admin.getClazz();
+			album.setImage(result.getData().getName());
+			Admin admin=(Admin)session.getAttribute("admin");
+			Clazz clazz=admin.getClazz();
 			album.setClazz(clazz);
 			album.persist();
-			
-			/*if(clazz.getAlbums()==null){
-				clazz.setAlbums(new HashSet<Album>());
-			}
-			clazz.getAlbums().add(album);
-			clazz.merge();*/
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+			model.addAttribute("message", "照片上传成功");
+		}else{
+			model.addAttribute("message", "照片上传失败");
 		}
-		model.addAttribute("message", "照片上传成功");
 		model.addAttribute("url", "/cblog/albums/admin-album");
 		model.addAttribute("redirectPage", "相册列表");
 		return "redirect";

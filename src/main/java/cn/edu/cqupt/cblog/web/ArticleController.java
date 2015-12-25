@@ -186,7 +186,7 @@ public class ArticleController {
 		json.put("articles", jsonArr);
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
-		System.out.println("aritcle.list:"+json.toString());
+		//System.out.println("aritcle.list:"+json.toString());
 		return new ResponseEntity<String>(json.toString(), headers, HttpStatus.OK);
 	}
 	

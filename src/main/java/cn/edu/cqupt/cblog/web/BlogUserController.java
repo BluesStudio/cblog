@@ -30,6 +30,9 @@ import cn.edu.cqupt.cblog.domain.UserRequest;
 import cn.edu.cqupt.cblog.service.BlogUserService;
 import cn.edu.cqupt.cblog.util.MultipartFileResolver;
 
+import com.alibaba.media.Result;
+import com.alibaba.media.upload.UploadResponse;
+
 
 @Controller
 @RequestMapping("/blogUsers")
@@ -127,12 +130,19 @@ public class BlogUserController {
 	}
 	
 	@RequestMapping(value="/modifyStuImg", method=RequestMethod.POST)
-	public String modifyStuImg(@ModelAttribute("stuImg") MultipartFile stuImg, HttpSession session ){
+	public String modifyStuImg(@ModelAttribute("stuImg") MultipartFile stuImg, HttpSession session, Model model){
 		BlogUser blogUser=(BlogUser)session.getAttribute("blogUser");
-		blogUser.getStudent().setStuImg(MultipartFileResolver.resolveMultipartFile(stuImg));
-		System.out.println("modifyStuImg:"+blogUser.getStudent().getStuImg());
-		blogUser.getStudent().merge();
-		return "redirect:/blogUsers/user-setting";
+		Result<UploadResponse> result=MultipartFileResolver.resolveMultipartFile(stuImg);
+		if(result!=null&&result.getHttpStatus()==200){
+			blogUser.getStudent().setStuImg(result.getData().getName());
+			blogUser.getStudent().merge();
+			model.addAttribute("message", "照片修改成功");
+		}else{
+			model.addAttribute("message", "照片修改失败");
+		}
+		model.addAttribute("url", "/cblog/blogUsers/user-setting");
+		model.addAttribute("redirectPage", "用户设置");
+		return "redirect";
 	}
 	
 	@RequestMapping(value="/modifyPasswd", method=RequestMethod.GET)

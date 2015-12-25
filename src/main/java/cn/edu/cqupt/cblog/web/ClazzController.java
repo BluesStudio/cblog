@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.alibaba.media.Result;
+import com.alibaba.media.upload.UploadResponse;
+
 import cn.edu.cqupt.cblog.domain.Admin;
 import cn.edu.cqupt.cblog.domain.Clazz;
 import cn.edu.cqupt.cblog.util.MultipartFileResolver;
@@ -38,7 +41,10 @@ public class ClazzController {
 		Clazz clazz=Clazz.findClazz(admin.getClazz().getId());
 		clazz.setOverview(overview);
 		if(clazzImg.getOriginalFilename()!=null&&!clazzImg.getOriginalFilename().equals("")){
-			clazz.setClazzImg(MultipartFileResolver.resolveMultipartFile(clazzImg));
+			Result<UploadResponse> result=MultipartFileResolver.resolveMultipartFile(clazzImg);
+			if(result!=null&&result.getHttpStatus()==200){
+				clazz.setClazzImg(result.getData().getName());
+			}
 		}
 		clazz.merge();
 		admin=Admin.findAdmin(admin.getId());
@@ -56,12 +62,22 @@ public class ClazzController {
 	}
 	
 	@RequestMapping(value="/mergeFlagImg", method=RequestMethod.POST)
-	public String mergeFlagImg(@ModelAttribute("flagImg") MultipartFile flagImg, HttpSession session){
+	public String mergeFlagImg(@ModelAttribute("flagImg") MultipartFile flagImg, HttpSession session, Model model){
 		Admin admin=(Admin)session.getAttribute("admin");
 		Clazz clazz=admin.getClazz();
-		clazz.setFlagImg(MultipartFileResolver.resolveMultipartFile(flagImg));
-		admin.setClazz(clazz.merge());
-		return "redirect:/clazzs/admin-introduction";
+		
+		Result<UploadResponse> result=MultipartFileResolver.resolveMultipartFile(flagImg);
+		if(result!=null&&result.getHttpStatus()==200){
+			clazz.setFlagImg(result.getData().getName());
+			admin.setClazz(clazz.merge());
+			model.addAttribute("message", "班旗上传成功");
+		}else{
+			model.addAttribute("message", "班旗上传失败");
+		}
+		model.addAttribute("url", "/cblog/clazzs/admin-introduction");
+		model.addAttribute("redirectPage", "班级简介");
+		return "redirect";
+		
 	}
 	
 	@RequestMapping(value="/mergeSong", method=RequestMethod.POST)
@@ -72,8 +88,12 @@ public class ClazzController {
 		clazz.setSongTitle(songTitle);
 		clazz.setLyric(lyric);
 		clazz.setSong(song);
-		if(songFile!=null)
-			clazz.setSong(MultipartFileResolver.resolveMultipartFile(songFile));
+		if(songFile!=null){
+			Result<UploadResponse> result=MultipartFileResolver.resolveMultipartFile(songFile);
+			if(result!=null&&result.getHttpStatus()==200){
+				clazz.setSong(result.getData().getName());
+			}
+		}
 		admin.setClazz(clazz.merge());
 		return "redirect:/clazzs/admin-introduction";
 	}

@@ -3,6 +3,7 @@ package cn.edu.cqupt.cblog.web;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,20 +14,32 @@ import cn.edu.cqupt.cblog.domain.Admin;
 import cn.edu.cqupt.cblog.domain.HonorWall;
 import cn.edu.cqupt.cblog.util.MultipartFileResolver;
 
+import com.alibaba.media.Result;
+import com.alibaba.media.upload.UploadResponse;
+
 
 @Controller
 @RequestMapping("/honorWalls")
 public class HonorWallController {
 
 	@RequestMapping(value="/create", method=RequestMethod.POST)
-	public String create(@ModelAttribute("honorWall")MultipartFile honorWall, HttpSession session){
+	public String create(@ModelAttribute("honorWall")MultipartFile honorWall, HttpSession session, Model model){
 		HonorWall wall=new HonorWall();
 		Admin admin=(Admin)session.getAttribute("admin");
 		wall.setClazz(admin.getClazz());
-		wall.setImage(MultipartFileResolver.resolveMultipartFile(honorWall));
-		wall.persist();
-		session.setAttribute("admin", Admin.findAdmin(admin.getId()));
-		return "redirect:/clazzs/admin-introduction";
+		
+		Result<UploadResponse> result=MultipartFileResolver.resolveMultipartFile(honorWall);
+		if(result!=null&&result.getHttpStatus()==200){
+			wall.setImage(result.getData().getName());
+			wall.persist();
+			session.setAttribute("admin", Admin.findAdmin(admin.getId()));
+			model.addAttribute("message", "图片上传成功");
+		}else{
+			model.addAttribute("message", "图片上传失败");
+		}
+		model.addAttribute("url", "/cblog/clazzs/admin-introduction");
+		model.addAttribute("redirectPage", "班级简介");
+		return "redirect";
 	}
 	
 	@RequestMapping(value="/delete/{id}", method=RequestMethod.GET)

@@ -1,8 +1,5 @@
 package cn.edu.cqupt.cblog.util;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.UUID;
@@ -14,34 +11,26 @@ import com.alibaba.media.upload.UploadResponse;
 
 public class MultipartFileResolver {
 
-	public static String resolveMultipartFile(MultipartFile multipartfile){
-		String filename=multipartfile.getOriginalFilename().substring(multipartfile.getOriginalFilename().lastIndexOf(".")+1);
-		String savePath="/home/imageTemp";
-		File dir=new File(savePath);
-		if(!dir.exists()){
-			dir.mkdirs();
-		}
+	public static Result<UploadResponse> resolveMultipartFile(MultipartFile multipartFile){
+		String filename=multipartFile.getOriginalFilename().substring(multipartFile.getOriginalFilename().lastIndexOf(".")+1);
 		filename=UUID.randomUUID().toString().replaceAll("-", "")+"."+filename;
 		
-		File file=new File(dir, filename);
+		InputStream in=null;
+		Result<UploadResponse> result=null;
 		try {
-			FileOutputStream out=new FileOutputStream(file);
-			InputStream in=multipartfile.getInputStream();
-			byte[] b=new byte[1024];
-			int len=0;
-			while((len=in.read(b))>0){
-				out.write(b, 0, len);
+			in = multipartFile.getInputStream();
+			result=FileUploadUtil.uploadFile(in, multipartFile.getSize(), "cblog", filename);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}finally{
+			if(in!=null){
+				try {
+					in.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
-			in.close();
-			out.close();
-			Result<UploadResponse> result=FileUploadUtil.uploadFile(file,"cblog",filename);
-			//上传失败
-			//..
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
-		return filename;
+		return result;
 	}
 }

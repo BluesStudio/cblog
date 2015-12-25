@@ -104,6 +104,30 @@ public class FileUploadUtil {
     }
 
     /**
+     * @author xiaofeig
+     * @description 上传图片的入口  
+     * @param inputStream 文件上传输入流
+     * @param inputLength 文件大小
+     * @param dir 上传文件至目录dir下
+     * @param name 文件名
+     * */
+    public static Result<UploadResponse> uploadFile(InputStream inputStream, long inputLength, String dir,String name){
+        UploadRequest uploadRequest = new UploadRequest(TOKEN);    	
+        uploadRequest.setInputStream(inputStream, inputLength);
+        uploadRequest.setDir(dir);
+        uploadRequest.setName(name);
+        Result<UploadResponse> result = client.upload(uploadRequest);
+        /*if (result.isSuccess()) {
+            // 调用接口成功,打印出上传接口的返回信息
+            System.out.println(JSON.toJSONString(result.getData()));
+        } else {
+            // 调用接口失败,输出错误信息便于排查问题
+            System.out.println(JSON.toJSONString(result));
+        }*/
+        return result;
+    }
+    
+    /**
      * 实例一
      * 用户直接上传多媒体文件
      */

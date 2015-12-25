@@ -38,7 +38,16 @@
           <button type="submit" class="user-so-btn"><span class="am-icon-search"></span></button>
           </form>
       </li>
-      <li><a href="${blogUser.student.clazz==null||blogUser.student.clazz.clazzName==null? '#':'/cblog/clazzs/class-home/'+blogUser.student.clazz.clazzName }" target="_blank"><span class="am-icon-home"></span> 进入本班博客 </a></li>
+      <li>
+      <c:choose>
+      	<c:when test="${blogUser.student.clazz==null&&blogUser.student.clazz.clazzName==null }">
+      		<a href="#" target="_blank"><span class="am-icon-home"></span> 进入本班博客 </a>	
+      	</c:when>
+      	<c:otherwise>
+      		<a href="/cblog/clazzs/class-home/${blogUser.student.clazz.clazzName }" target="_blank"><span class="am-icon-home"></span> 进入本班博客 </a>
+      	</c:otherwise>
+      </c:choose>
+      </li>
       <li class="am-dropdown" data-am-dropdown>
         <a class="am-dropdown-toggle" data-am-dropdown-toggle href="javascript:;">
           <span class="am-icon-user"></span> ${blogUser.student.stuName } <span class="am-icon-caret-down"></span>
