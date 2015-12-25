@@ -31,4 +31,13 @@ public class FileUploadController {
         headers.add("Content-Type", "application/json; charset=utf-8");
 		return new ResponseEntity<String>("{\"filename\":\""+result.getData().getName()+"\"}", headers, HttpStatus.OK);
 	}
+	
+	@RequestMapping(value = "/articleImgUpload", method = RequestMethod.POST)
+    @ResponseBody
+	public ResponseEntity<String> uploadArticleImg(@ModelAttribute("fileData") MultipartFile fileData){
+		Result<UploadResponse> result=MultipartFileResolver.resolveMultipartFile(fileData);
+		HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/json; charset=utf-8");
+		return new ResponseEntity<String>("{\"success\":\"" + true + "\",\"file_path\":\"" + result.getData().getUrl() + "\"}", headers, HttpStatus.OK);
+	}
 }
